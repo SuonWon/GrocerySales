@@ -1,0 +1,84 @@
+
+.email{
+    display: flex;
+    margin-top: 10px;
+}
+
+.email input{
+    position: relative;
+    padding:10px 0 10px 65px;
+    font-size: 14px;
+}
+
+.email i{
+    margin-top: 12px;
+    position: absolute;
+    z-index: 1;
+    padding-right: 15px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+
+.email input::placeholder {
+    font-style: italic;
+}
+
+.password{
+    display: flex;
+    margin-top: 10px;
+}
+.password input{
+    margin-top: 10px;
+    position: relative;
+    padding:10px 0 10px 65px;
+    font-size: 14px;
+}
+
+.password input::placeholder {
+    font-style: italic;
+}
+
+
+.password i{
+    margin-top: 22px;
+    position: absolute;
+    z-index: 1;
+    padding-right: 15px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+
+.remember label{
+    margin-top: 10px;
+}
+
+.remember input{
+    margin-top: 15px;
+}
+
+.log{
+    margin-top: 25px;
+}
+.log i{
+    padding-right: 8px;
+}
+
+.login {
+    background-color: #2fb390;
+    border: 0;
+    width: 100%;
+    padding: 5px 0px 5px 0px;
+    color: #fff;
+}
+
+.error {
+    background: #F2DEDE;
+    color: #A94442;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-check-input:checked {
+    background-color: #2fb390 !important;
+    border-color: #2fb390 !important;
+}

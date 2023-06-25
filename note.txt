@@ -1,0 +1,54 @@
+item arrival 
+purchase 
+sale
+itemcategory
+item
+customer
+supplier
+warehouse 
+
+အပေါ်ကဟာတွေ Generate Id ပြောင်း
+
+user
+unit
+role 
+တွေက မလိုအပ်ဘူး
+
+use App\Models\GenerateId;
+
+
+
+GenerateId လုပ်တဲ့ဟာတွေကို Frontend ကနေ Backend ပြောင်းထားတယ်
+
+Purchase လုပ်တဲ့အချိန် Item တစ်ခုချင်းစီရဲ့  Item last purchase price ကို purchase ရဲ့ unit price နဲ့ update လုပ်ထားတယ်
+Purcahse လုပ်လိုက်တဲ့ Arrival Code  ကို Status ချိန်းထားတယ်
+
+Purchase ကို update လုပ်မယ့်ချိန် Arrival Code ကို N ဖြစ်နေတာ အကုန်လုံးနဲ့ သူသုံးထားတဲ့ O ဖြစ်နေတဲ့ တစ်ခု ထုတ်ပြထားတယ်
+Purchase Arrival Code ပြောင်းရင် ပြောင်းတဲ့ Code ကို O ပြောင်းပြီး အပြောင်းခံရတဲ့ Code ကို N ပြန်ပြောင်းထားတယ်။
+
+Auth Controller မှာ User Create လုပ်ရင် CreateBy ကို login ဝင်ထားတဲ့ username ပေါ်အောင်လုပ်ထားပြီ 
+တစ်ခြားဟာတွေလည်း create လုပ်ရင် login ဝင်ထားတဲ့ username ပဲ ပေါ်အောင်လုပ်ထားလိုက်ပြီ 
+
+SystemRole က no တွေ ပေါ်နေလို့ Role Desc ပါလာအောင်လုပ်ပြီး table ထဲက td နေရာမှာ SystemRole ကနေ RoleDesc ပြောင်းပေးထားတယ်။
+
+Customers CreatedBy , ModifiedBy နေရာတွေ ပြင်ထားတယ်။ auth()->user()->Username ဆိုပြီးပြင်ထားတယ် တစ်ခြား controller တွေမှာလည်းပြင်ထားတယ်
+DeletedBy , DeletedDate ပါတဲ့ နေရာတွေ သတိထားပြင်ပေးပါ။ (Sale Invoice Controller တို့ Purchase Invoice Controller တို့)
+
+Supplier Table မှာ city က null true ဖြစ်ရမှာ false ဖြစ်နေတာပြင်ထားတယ်။ ကျွန်တော့်ထဲက database မှာဖြစ်တာမို့ 
+ကိုထက်ဝေအောင်တို့ဘက်က database မှာက ဖြစ်ချင်မှ ဖြစ်မှာ ဖြစ်နေရင် ပြင်လို့ရအောင်လို့ 
+migration file ပါ တစ်ခါတည်းစစ်ပြီး nullable မဖြစ်ရင် ထည့်ပေးပါ။
+
+
+ItemArrival Table မှာ Status  ထပ်ထည့်တဲ့ အတွက် DeletedDate, DeletedBy column 2 ခု ထပ်တိုး 
+migration မှာ ပြင်ရန် 
+Table မှာပြင်ရန်
+
+
+
+
+SubTotal ဟာ ပြင်ပေးရမယ်။
+field တစ်ခုလျော့သွားလို့Ui ပြန်ချိန်ရမယ်။
+Company Information က ဘယ်လိုထည့်မှာလည်း 
+
+Auth Controller မှာ CreatedBy တွေ လိုက်ထည့်ထားတယ်
+User ကိုဆွဲထုတ်တဲ့ နေရာမှာ Role name ပေါ်အောင်ပြင်ပေးထားတယ်
