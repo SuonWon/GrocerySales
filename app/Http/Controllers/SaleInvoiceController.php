@@ -155,7 +155,7 @@ class SaleInvoiceController extends Controller
         $formData['InvoiceNo'] = $InvoiceNo;
 
         $saleinvoicedetails = $formData['saleinvoicedetails'];
-        //logger($saleinvoicedetails);
+
         // Add additional data to the form data
         $formData['CreatedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = null;
