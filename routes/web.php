@@ -44,7 +44,7 @@ Route::get('/', function (Request $request) {
 
             return redirect()->route('login')->with('danger', "Your account is disabled so you can't login!");
         }
-
+        // check for user and admin
         return redirect()->route('saleinvoices');
     } else {
         return redirect()->route('login');
