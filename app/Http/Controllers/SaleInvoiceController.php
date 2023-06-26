@@ -20,11 +20,12 @@ use Illuminate\Support\Str;
 class SaleInvoiceController extends Controller
 {
     protected $datetime;
+    protected $currentMonth;
 
     public function __construct()
     {
 
-
+        $this->currentMonth = date('Y-m');
         $this->datetime = Date('Y-m-d H:i:s');
     }
 
@@ -34,8 +35,16 @@ class SaleInvoiceController extends Controller
             ->join('customers', 'sale_invoices.CustomerCode', '=', 'customers.CustomerCode')
             ->select('sale_invoices.*', 'customers.CustomerCode', 'customers.CustomerName')
             ->where(function ($query) {
-                $query->where('sale_invoices.Status', 'O')
-                    ->orWhere('sale_invoices.Status', 'V');
+                $query->where('sale_invoices.Status', 'O');
+                    
+            });
+
+            $deletequery = SaleInvoice::orderBy('sale_invoices.CreatedDate', 'desc')
+            ->join('customers', 'sale_invoices.CustomerCode', '=', 'customers.CustomerCode')
+            ->select('sale_invoices.*', 'customers.CustomerCode', 'customers.CustomerName')
+            ->where(function($delquery){
+                $delquery->where('sale_invoices.Status', '=', "D")
+                                ->orWhere('sale_invoices.Status','=','V');
             });
 
         // Add the "paidornot" condition
@@ -49,18 +58,33 @@ class SaleInvoiceController extends Controller
         if ($request->input('saleStartDate') !== null && $request->input('saleEndDate') !== null) {
             $startDate = $request->input('saleStartDate');
             $endDate = $request->input('saleEndDate');
+
+            if($endDate < $startDate){
+                return back()->with('warning','start date must be lower than end date');
+            }
+
+            //sale query
             $query->whereBetween('sale_invoices.SalesDate', [$startDate, $endDate]);
+
+            $deletequery->whereBetween('sale_invoices.SalesDate', [$startDate, $endDate]);
         } else if ($request->input('saleStartDate') !== null && $request->input('saleEndDate') == null) {
             $query->where('sale_invoices.SalesDate', '>=', $request->input('saleStartDate'));
+            $deletequery->where('sale_invoices.SalesDate', '>=', $request->input('saleStartDate'));
         } else if ($request->input('saleStartDate') == null && $request->input('saleEndDate') !== null) {
             $query->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
+            $deletequery->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
+        }else{
+            
+            $query->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
+                  ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
+            $deletequery->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
+            ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
         }
 
-        $deletesalesinvoices = SaleInvoice::orderBy('sale_invoices.CreatedDate', 'desc')
-            ->join('customers', 'sale_invoices.CustomerCode', '=', 'customers.CustomerCode')
-            ->select('sale_invoices.*', 'customers.CustomerCode', 'customers.CustomerName')
-            ->where('sale_invoices.Status', '=', "D")->get();
+        
 
+       
+        $deletesalesinvoices = $deletequery->get();
         $salesinvoices = $query->get();
 
         return view('sales.index', [
@@ -68,6 +92,8 @@ class SaleInvoiceController extends Controller
             'deletesalesinvoices' => $deletesalesinvoices
         ]);
     }
+
+
 
     public function create()
     {
