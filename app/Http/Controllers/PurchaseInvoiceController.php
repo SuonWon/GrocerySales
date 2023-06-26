@@ -20,10 +20,12 @@ use App\Models\GenerateId;
 class PurchaseInvoiceController extends Controller
 {
     protected $datetime;
+    protected $currentMonth;
 
     public function __construct()
     {
         $this->datetime = Date('Y-m-d H:i:s');
+        $this->currentMonth = date('Y-m');
     }
 
     public function index(Request $request)
@@ -33,9 +35,19 @@ class PurchaseInvoiceController extends Controller
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
             ->where(function ($query) {
-                $query->where('purchase_invoices.Status', 'O')
-                    ->orWhere('purchase_invoices.Status', 'V');
+                $query->where('purchase_invoices.Status', 'O');
+                    
             });
+
+        $deletequery = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
+        ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
+        ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+        ->where(function($delquery){
+            $delquery->where('purchase_invoices.Status', "=", "D")
+                            ->orWhere('purchase_invoices.Status','=','V');
+        });
+
+       
 
         // Add the "paidornot" condition
         $paidOrNot = $request->input('PaymentStatus');
@@ -45,23 +57,51 @@ class PurchaseInvoiceController extends Controller
             $query->where('purchase_invoices.IsPaid', 0);
         }
 
+
         if ($request->input('startDate') !== null && $request->input('endDate') !== null) {
             $startDate = $request->input('startDate');
             $endDate = $request->input('endDate');
+
+            if($endDate < $startDate){
+                return back()->with('warning','start date must be lower than end date');
+            }
+
             $query->whereBetween('purchase_invoices.PurchaseDate', [$startDate, $endDate]);
+
+            $deletequery->whereBetween('purchase_invoices.PurchaseDate', [$startDate, $endDate]);
+
         } else if ($request->input('startDate') !== null && $request->input('endDate') == null) {
+
             $query->where('purchase_invoices.PurchaseDate', '>=', $request->input('startDate'));
+
+            $deletequery->where('purchase_invoices.PurchaseDate', '>=', $request->input('startDate'));
+
         } else if ($request->input('startDate') == null && $request->input('endDate') !== null) {
+
             $query->where('purchase_invoices.PurchaseDate', '<=', $request->input('endDate'));
+
+            $deletequery->where('purchase_invoices.PurchaseDate', '<=', $request->input('endDate'));
+
+        } else {
+            // If both startDate and endDate are null, retrieve records for the current month
+       
+            $query->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
+                  ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
+
+            $deletequery->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
+            ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
         }
+        
 
         $purchaseinvoices = $query->get();
 
-        $deletepurchaseinvoices = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
-            ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
-            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
-            ->where('purchase_invoices.Status', "=", "D")->get();
+            
+          
+        
+           
+            $deletepurchaseinvoices = $deletequery->get();
 
+   
 
         return view('purchase.purchaseinvoice.index', [
             'purchaseinvoices' => $purchaseinvoices,
