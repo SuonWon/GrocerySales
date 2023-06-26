@@ -108,6 +108,15 @@ a:focus {
     background-color: #fff;
 }
 
+#sidebar .sidebar-footer p {
+    font-size: 0.75rem;
+}
+
+#sidebar .sidebar-footer p a {
+    font-size: 0.8rem;
+    color: blue;
+}
+
 #sidebar.active ul li a {
     padding: 20px 5px;
     text-align: center;

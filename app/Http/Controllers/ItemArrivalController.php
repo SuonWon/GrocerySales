@@ -97,6 +97,9 @@ class ItemArrivalController extends Controller
         try{
             // ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->delete();
 
+            if ($itemarrival->Status == 'O') {
+                return back()->with(['error' => 'Cannot delete this record it is referenced by another table..']);
+            }
             $data = [];
             $data['Status'] = 'D';
             $data['DeletedBy'] = auth()->user()->Username;
