@@ -31,17 +31,17 @@
                               </div>
                          </div> --}}
                          {{-- Start Date --}}
-                         <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
+                         <div class="col-6 col-md-4 col-xl-2 col-xxl-2 mb-2">
                               <label for="startedDate" class="form-label cust-label">Start Date</label>
                               <input type="date" class="form-control cust-input-box" id="startedDate" value="{{request('startDate')}}" name="startDate">
                          </div>
                          {{-- End Date --}}
-                         <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
+                         <div class="col-6 col-md-4 col-xl-2 col-xxl-2 mb-2">
                               <label for="endDate" class="form-label cust-label">End Date</label>
                               <input type="date" class="form-control cust-input-box" id="endDate" value="{{request('endDate')}}" name="endDate">
                          </div>
                          {{-- Payment Status --}}
-                         <div class="col-12 col-md-6 col-xl-3 col-xxl-1">
+                         <div class="col-3 col-md-4 col-xl-2 col-xxl-1">
                               <div class="form-check">
                                    <input class="form-check-input col-4" type="radio" name="PaymentStatus" id="all" value="all" @if (request('PaymentStatus') === "all") checked = "checked" @endif>
                                    <label class="form-check-label col-5" for="all">
@@ -62,7 +62,7 @@
                               </div>
                          </div>
                          {{-- Filter Button --}}
-                         <div class="col-12 col-md-6 col-xl-4 col-xxl-4 mb-2 pt-2">
+                         <div class="col-9 col-md-9 col-xl-5 col-xxl-4 mb-2 pt-2">
                               <div class="d-flex justify-content-center align-items-center mt-2" style="height: 100%">
                                    <button class="btn filter-btn py-1 px-3"><span class="me-1"><i class="bi bi-funnel"></i></span>Filter</button>
                                    <a type="button" href="/purchaseinvoices/index" class="btn btn-light ms-2 py-1 px-3" id="filterCancel">
