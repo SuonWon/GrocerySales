@@ -28,11 +28,11 @@
                             @if ($companyinformation->CompanyLogo == '')
                             <input type="file" accept="image/*" class="inputImage shadow-sm d-none" name="CompanyLogo" id="file" onchange="loadFile(event)">
                             <label for="file" class="inputImageLabel"><i class="fa-regular fa-beat fa-image sizeImg"></i></label>
-                                <img class="uploadImageDisplayEdit border-0" id="output"  />
+                                <img class="uploadImageDisplayEdit img-fluid border-0" id="output"  />
                             @else
                             <input type="file" accept="image/*" class="inputImage shadow-sm" name="CompanyLogo" id="file" onchange="loadFile(event)">
                             <label for="file" class="inputImageLabel border-0"></label>
-                                <img class="uploadImageDisplayEdit" id="output"  src='{{asset($companyinformation->CompanyLogo) }}'/>
+                                <img class="uploadImageDisplayEdit img-fluid" id="output"  src='{{asset($companyinformation->CompanyLogo) }}'/>
                             @endif
                         </div>
                     </div>
