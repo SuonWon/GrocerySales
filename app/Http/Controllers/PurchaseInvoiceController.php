@@ -31,7 +31,7 @@ class PurchaseInvoiceController extends Controller
     public function index(Request $request)
     {
 
-        $query = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
+        $query = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
             ->where(function ($query) {
@@ -39,12 +39,12 @@ class PurchaseInvoiceController extends Controller
                     
             });
 
-        $deletequery = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
+        $deletequery = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
         ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
         ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
         ->where(function($delquery){
-            $delquery->where('purchase_invoices.Status', "=", "D")
-                            ->orWhere('purchase_invoices.Status','=','V');
+            $delquery->where('purchase_invoices.Status', "=", "D");
+                            
         });
 
        
@@ -456,14 +456,22 @@ class PurchaseInvoiceController extends Controller
     public function purchaseinvoicesreports(Request $request)
     {
 
-        $query = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
+        $query = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->join('item_arrivals', 'purchase_invoices.ArrivalCode', '=', 'item_arrivals.ArrivalCode')
             ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName', 'item_arrivals.ArrivalCode', 'item_arrivals.PlateNo')
             ->where(function ($query) {
-                $query->where('purchase_invoices.Status', 'O')
-                    ->orWhere('purchase_invoices.Status', 'V');
+                $query->where('purchase_invoices.Status', 'O');
+                 
             });
+
+            $deletepurchaseinvoicesquery = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
+        ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
+        ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+        ->where(function($delpurchasequery){
+            $delpurchasequery->where('purchase_invoices.Status', "=", "D");
+                            
+        });
 
         // Add the "paidornot" condition
         $paidOrNot = $request->input('PaymentStatus');
@@ -476,19 +484,31 @@ class PurchaseInvoiceController extends Controller
         if ($request->input('startDate') !== null && $request->input('endDate') !== null) {
             $startDate = $request->input('startDate');
             $endDate = $request->input('endDate');
+
+            if($endDate < $startDate){
+                return back()->with('warning','start date must be lower than end date');
+            }
+
+
             $query->whereBetween('purchase_invoices.PurchaseDate', [$startDate, $endDate]);
+            $deletepurchaseinvoicesquery->whereBetween('purchase_invoices.PurchaseDate', [$startDate, $endDate]);
         } else if ($request->input('startDate') !== null && $request->input('endDate') == null) {
             $query->where('purchase_invoices.PurchaseDate', '>=', $request->input('startDate'));
+            $deletepurchaseinvoicesquery->where('purchase_invoices.PurchaseDate', '>=', $request->input('startDate'));
         } else if ($request->input('startDate') == null && $request->input('endDate') !== null) {
             $query->where('purchase_invoices.PurchaseDate', '<=', $request->input('endDate'));
+            $deletepurchaseinvoicesquery->where('purchase_invoices.PurchaseDate', '<=', $request->input('endDate'));
+        }else{
+            $query->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
+                  ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
+
+            $deletepurchaseinvoicesquery->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
+            ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
         }
 
         $purchaseinvoices = $query->get();
-
-        $deletepurchaseinvoices = PurchaseInvoice::orderBy('purchase_invoices.CreatedDate', 'desc')
-            ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
-            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
-            ->where('purchase_invoices.Status', "=", "D")->get();
+        $deletepurchaseinvoices = $deletepurchaseinvoicesquery->get();
+        
 
         $companyinfo = CompanyInformation::first();
 
