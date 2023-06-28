@@ -71,12 +71,12 @@ a:focus {
 }
 
 #sidebar.active .logout {
-    position: relative;
+    position: absolute;
     font-size: 1.5em;
-    left: 0;
+    left: 30px;
     text-align: center;
     padding: 5px 5px;
-    bottom: 0;
+    bottom: 15px;
 }
 
 #sidebar.active .sidebar-header {
@@ -106,6 +106,15 @@ a:focus {
     padding: 10px 20px;
     border-top: 1px solid gray;
     background-color: #fff;
+}
+
+#sidebar .sidebar-footer p {
+    font-size: 0.75rem;
+}
+
+#sidebar .sidebar-footer p a {
+    font-size: 0.8rem;
+    color: blue;
 }
 
 #sidebar.active ul li a {
@@ -175,7 +184,7 @@ a:focus {
 
 #sidebar ul.components {
     padding: 20px 0;
-    height: 600px;
+    height: 85%;
     overflow-y: auto;
 }
 
@@ -757,7 +766,7 @@ input[type="number"] {
 }
 
 .dataTables_scrollBody {
-    height: 500px;
+    height: 410px;
 }
 
 
@@ -765,12 +774,12 @@ input[type="number"] {
     MEDIAQUERIES
 ----------------------------------------------------- */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     #sidebar {
         min-width: 90px;
         max-width: 90px;
         text-align: center;
-        margin-left: -100px !important;
+        margin-left: -200px !important;
     }
     #content {
         width: 100%;
@@ -817,34 +826,97 @@ input[type="number"] {
     #sidebarCollapse span {
         display: none;
     }
-
-    .dataTables_scrollBody {
-        height: 300px;
-    }
     
 }
 
-@media (max-width: 1200px) {
+@media screen and (min-height: 700px) {
     .dataTables_scrollBody {
-        height: 360px;
+        height: 400px;
     }
 }
 
-@media (min-width: 1300px) {
+@media screen and (min-height: 800px) {
     .dataTables_scrollBody {
-        height: 410px;
+        height: 490px;
     }
 }
 
-@media (min-width: 1550px) {
-    .dataTables_scrollBody {
-        height: 430px;
+@media (min-height: 800px) {
+    #sidebar ul.components {
+        height: 85%;
     }
 }
 
-@media (min-width: 1800px) {
+@media (min-height: 900px) {
+    #sidebar ul.components {
+        height: 85%;
+    }
+
+}
+
+@media (min-height: 1000px) {
+    #sidebar ul.components {
+        height: 88%;
+    }
+
+}
+
+@media (min-width: 1366px) and (min-height: 768px) {
     .dataTables_scrollBody {
-        height: 480px;
+        height: 380px;
     }
 }
 
+@media (min-width: 1500px) and (min-height: 800px) {
+    .dataTables_scrollBody {
+        height: 490px;
+    }
+}
+
+@media (min-width: 712px) and (min-height: 1138px) {
+    .dataTables_scrollBody {
+        height: 680px;
+    }
+}
+
+@media (min-width: 768px) and (min-height: 1024px) {
+    .dataTables_scrollBody {
+        height: 610px;
+    }
+}
+
+@media (min-width: 820px) and (min-height: 1180px) {
+    .dataTables_scrollBody {
+        height: 770px;
+    }
+}
+
+@media (min-width: 1024px) and (min-height: 1366px) {
+    .dataTables_scrollBody {
+         height: 960px;
+    }
+}
+
+@media (min-height: 1400px) {
+    #sidebar ul.components {
+        height: 90%;
+    }
+}
+
+@media (min-height: 1600px) {
+    #sidebar ul.components {
+        height: 93%;
+    }
+}
+
+@media (min-width: 1600px) and (min-height: 2560px) {
+    .dataTables_scrollBody {
+        height: 2200px;
+    }
+}
+
+@media (min-height: 1800px) {
+    #sidebar ul.components {
+        height: 95%;
+    }
+}
