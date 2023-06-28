@@ -189,7 +189,6 @@
                     </div>
                 </div>
             </nav>
-    
             <x-error name="error"></x-error>
 
             {{-- @if (session('success'))

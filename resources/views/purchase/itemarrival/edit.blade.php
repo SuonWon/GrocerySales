@@ -108,15 +108,15 @@
             </div>
             <div class="row px-0">
                 <div class="col-12 px-0 text-end">
+                    {{-- Save Button --}}
+                    <button type="submit" class="btn btn-success me-2">
+                        <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
+                    </button>
                     {{-- Delete Button --}}
-                    <button type="button" class="btn delete-btn me-2" id="{{ $itemarrival->ArrivalCode }}"
+                    <button type="button" class="btn delete-btn" id="{{ $itemarrival->ArrivalCode }}"
                         onclick="PassItemArrivalCode(this.id);" data-bs-toggle="modal"
                         data-bs-target="#itemArrivalDeleteModal">
                         <span class="me-2"><i class="bi bi-trash-fill"></i></span> Delete
-                    </button>
-                    {{-- Save Button --}}
-                    <button type="submit" class="btn btn-success">
-                        <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
                     </button>
                 </div>
             </div>
