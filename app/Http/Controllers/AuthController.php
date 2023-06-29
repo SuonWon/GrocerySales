@@ -54,11 +54,15 @@ class AuthController extends Controller
 
 
             if ($user->IsActive == 0) {
+
+
+
+
                 return redirect('/');
             } else {
                 if ($user->systemrole->RoleDesc == "admin") {
-                    return redirect('dashboard');
-                } else {
+                    return redirect('/user/index');
+                } else if ($user->systemrole->RoleDesc == "user") {
                     return redirect('/salesinvoices/index');
                 }
             }
