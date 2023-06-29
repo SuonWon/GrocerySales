@@ -72,7 +72,7 @@
         
         <div class="row justify-content-between">
             {{-- Title --}}
-            <div class="col-6 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">Sales Invoice</h3>
             </div>
             {{-- Back Button --}}

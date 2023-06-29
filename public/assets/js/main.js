@@ -254,7 +254,7 @@ function CheckNumber(event) {
 
 }
 
-// Auto seclect value function 
+// Auto seclect value function
 
 function AutoSelectValue(event) {
     event.target.select();
@@ -302,9 +302,10 @@ Array.from(forms).forEach((form) => {
 });
 
 var loadFile = function (event) {
+    console.log('hello');
     var image = document.getElementById("output");
     image.style.zIndex = 1;
-    document.querySelector("#file").style.zIndex = 2;
+    document.querySelector("#file").style.zIndex = 200;
     document.querySelector(".inputImageLabel").style.opacity = "0";
     document.querySelector(".inputImageUpload").style.borderRadius = "10px";
     image.src = URL.createObjectURL(event.target.files[0]);

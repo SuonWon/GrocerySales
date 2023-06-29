@@ -35,10 +35,8 @@
         .cardSection{
             display: flex;
             flex-direction: row;
-            justify-content: center;
             align-items: center;
             box-sizing: border-box;
-            padding: 0;
         }
 
         .dashboardCard{
@@ -136,10 +134,10 @@
     <div class="container-fluid mt-3">
 
         {{-- Cards Section  --}}
-        <div class="cardSection row">
+        <div class="cardSection row px-1">
 
             {{-- Total Sale Invoice & Total Sale Amount --}}
-            <div class=" col-12 col-lg-6 col-xxl-3 p-2">
+            <div class=" col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard firstCardShadow shadow-sm">
                     <div class="dashboardCard-body d-flex justify-content-between align-items-start">
                         <div>
@@ -148,9 +146,9 @@
                             </div>
                         </div>
                         <div class="cardContent mx-2 text-end">
-                            <span class="text-muted fs-5">Sale Invoice</span>
+                            <span class="text-muted fs-6">Sale Invoice</span>
                             <span class="fs-5 fw-bold mb-2">{{ $totalsaleinvoice }}</span>
-                            <span class="text-muted fs-5">Sale Amount</span>
+                            <span class="text-muted fs-6">Sale Amount</span>
                             <span class="fs-5 fw-bold">{{ number_format($totalsaleamount) }}</span>
                         </div>
                     </div>
@@ -158,7 +156,7 @@
             </div>
 
             {{-- Total Purchase Invoice & Total Purchase Amount --}}
-            <div class="col-12 col-lg-6 col-xxl-3 p-2">
+            <div class="col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard secondCardShadow shadow-sm">
                     <div class="dashboardCard-body d-flex justify-content-between align-items-start">
                         <div>
@@ -167,9 +165,9 @@
                             </div>
                         </div>
                         <div class="cardContent mx-2 text-end">
-                            <span class="text-muted fs-5">Purchase Invoice</span>
+                            <span class="text-muted fs-6">Purchase Invoice</span>
                             <span class="fs-5 fw-bold mb-2">{{ $totalpurchaseinvoice }}</span>
-                            <span class="text-muted fs-5">Purchase Amt.</span>
+                            <span class="text-muted fs-6">Purchase Amount</span>
                             <span class="fs-5 fw-bold">{{ number_format($totalpurchaseamount) }}</span>
                         </div>
                     </div>
@@ -177,7 +175,7 @@
             </div>
 
             {{-- Total Credit Sale Invoice & Total Credit Sale Amount --}}
-            <div class="col-12 col-lg-6 col-xxl-3 p-2">
+            <div class="col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard thirdCardShadow shadow-sm">
                     <div class="dashboardCard-body d-flex justify-content-between align-items-start">
                         <div>
@@ -187,9 +185,9 @@
                             <div class="text-danger mx-2 mt-3">(Credit)</div>
                         </div>
                         <div class="cardContent mx-2 text-end">
-                            <span class="text-muted fs-5">Sale Invoice</span>
+                            <span class="text-muted fs-6">Sale Invoice</span>
                             <span class="fs-5 fw-bold mb-2">{{ $totalsalecreditinvoice }}</span>
-                            <span class="text-muted fs-5">Sale Amount</span>
+                            <span class="text-muted fs-6">Sale Amount</span>
                             <span class="fs-5 fw-bold">{{ number_format($totalsalecreditamount) }}</span>
                         </div>
                     </div>
@@ -197,7 +195,7 @@
             </div>
 
             {{-- Total Credit Purchase Invoice & Total Credit Purchase Amount --}}
-            <div class="col-12 col-lg-6 col-xxl-3 p-2">
+            <div class="col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard fourthCardShadow shadow-sm">
                     <div class="dashboardCard-body d-flex justify-content-between align-items-start">
                         <div>
@@ -207,9 +205,9 @@
                             <div class="text-danger mt-3">(Credit)</div>
                         </div>
                         <div class="cardContent mx-2 text-end">
-                            <span class="text-muted fs-5">Purchase Invoice</span>
+                            <span class="text-muted fs-6">Purchase Invoice</span>
                             <span class="fs-5 fw-bold mb-2">{{ $totalpurchasecreditinvoice }}</span>
-                            <span class="text-muted fs-5">Purchase Amt.</span>
+                            <span class="text-muted fs-6">Purchase Amount</span>
                             <span class="fs-5 fw-bold">{{ number_format($totalpurchasecreditamount) }}</span>
                         </div>
                     </div>
@@ -299,7 +297,7 @@
                                     <th scope="col" class="text-muted text-center">Supplier</th>
                                     <th scope="col" class="text-muted text-end">Paid Date</th>
                                     <th scope="col" class="text-muted text-end">Amount</th>
-                                    <th scope="col" class="text-muted text-end">Status</th>
+                                    <th scope="col" class="text-muted text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -310,7 +308,7 @@
                                         <td class="text-center">{{ $recentPurchase->SupplierName }}</td>
                                         <td class="text-end">{{ $recentPurchase->PaidDate }} </td>
                                         <td class="text-end">{{ number_format($recentPurchase->GrandTotal) }}</td>
-                                        <td class="text-end">
+                                        <td class="text-center">
                                             <span class="@if ($recentPurchase->PaidDate  == null) creditColor @else debitColor @endif rounded-4">
                                                 {{ $recentPurchase->PaidDate  == null ? "Credit" : "Debit" }}
                                             </span>
@@ -336,7 +334,7 @@
                                     <th scope="col" class="text-muted text-center">Customer</th>
                                     <th scope="col" class="text-muted text-end">Paid Date</th>
                                     <th scope="col" class="text-muted text-end">Amount</th>
-                                    <th scope="col" class="text-muted text-end">Status</th>
+                                    <th scope="col" class="text-muted text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -347,7 +345,7 @@
                                         <td class="text-center">{{ $recentSale->CustomerName }}</td>
                                         <td class="text-end">{{ $recentSale->PaidDate }}</td>
                                         <td class="text-end class="text-end">{{ number_format($recentSale->GrandTotal) }}</td>
-                                        <td class="text-end">
+                                        <td class="text-center">
                                             <span class="@if ($recentSale->PaidDate == null) creditColor @else debitColor @endif rounded-4">
                                                 {{ $recentSale->PaidDate == null ? "Credit" : "Debit" }}
                                             </span>
