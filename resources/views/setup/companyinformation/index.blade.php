@@ -47,7 +47,7 @@
                               <tr>
                                    <td>{{$company->CompanyCode}}</td>
                                    <td>
-                                   <img src='{{ asset($company->CompanyLogo) }}' alt="" style="width:100px;height:100px;"/>
+                                   <img src='{{ asset($company->CompanyLogo) }}' class="rounded-3" alt="" style="width:100px;height:100px;"/>
                                    </td>
                                    <td>{{$company->CompanyName}}</td>
                                    <td>{{$company->Street}}</td>
@@ -99,5 +99,5 @@
 
  </x-layout>
 
- 
+
 
