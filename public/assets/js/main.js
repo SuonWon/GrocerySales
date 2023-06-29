@@ -16,6 +16,7 @@ $(document).ready(function () {
 
     $("#itemCategoryList").DataTable({
         order: [],
+        scrollX: true,
         fixedColumns: {
             right: 1,
         },
