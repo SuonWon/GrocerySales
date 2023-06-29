@@ -5,7 +5,7 @@
         {{-- Section Title --}}
 
         <div class="row justify-content-between">
-            <div class="col-5 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">User  Lists</h3>
             </div>
 

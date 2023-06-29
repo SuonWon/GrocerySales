@@ -6,11 +6,11 @@
         
         <div class="row justify-content-between">
             {{-- Title --}}
-            <div class="col-8 p-0">
+            <div class="col-7 col-md-6 p-0">
                 <h3 class="section-title">Purchase Invoice Details</h3>
             </div>
             {{-- Button --}}
-            <div class="col-4 col-xxl-2 p-0 text-end">
+            <div class="col-5 col-xxl-2 p-0 text-end">
                 <a href="/purchaseinvoices/pudetailspreview/{{$purchaseinvoice->InvoiceNo}}" class="btn btn-primary me-2">
                     <span class="me-1"><i class="fa fa-print"></i></span>Preview
                 </a>

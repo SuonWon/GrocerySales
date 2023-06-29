@@ -51,8 +51,8 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 class="mb-0">Grocery Sales</h3>
-                <strong>GS</strong>
+                <h3 class="mb-0">HZN Sales</h3>
+                <strong>HZN</strong>
             </div>
 
             <ul class="list-unstyled components">
