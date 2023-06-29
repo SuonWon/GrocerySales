@@ -69,13 +69,7 @@
                     <button type="button" id="loginSubmit">Login</button>
                 </div>
             </form>
-            @if (Session::has('danger'))
-                <div class="alert alert-danger alert-dismissible fade show" style="font-size: 0.9rem;" role="alert">
-                    {{ session('danger') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                        style="font-size: 0.9rem;"></button>
-                </div>
-            @endif
+            
             <div class="versionSection text-muted">
                 <div class="row">
                     <div class="col-8">
@@ -115,6 +109,8 @@
             toastr.success('{{ Session::get('success') }}');
         @elseif (Session::has('warning'))
             toastr.warning('{{ Session::get('warning') }}');
+        @elseif (Session::has('danger'))
+        toastr.error('{{ Session::get('danger') }}');
         @endif
     </script>
 

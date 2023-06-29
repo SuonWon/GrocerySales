@@ -42,7 +42,7 @@ Route::get('/', function (Request $request) {
 
             $request->session()->regenerateToken();
 
-            return redirect()->route('login')->with('danger', "Your account is disabled so you can't login!");
+            return redirect()->route('login')->with('warning', "Your account is disabled so you can't login!");
         }
 
         if($user->systemrole->RoleDesc == "admin"){
@@ -53,8 +53,18 @@ Route::get('/', function (Request $request) {
 
         return redirect()->route('saleinvoices');
     } else {
-        return redirect()->route('login');
+        return redirect()->route('login')->with('warning','you must login to access this page');
     }
+});
+
+Route::get('/home',function(){
+
+    if(auth()->check()){
+        return view('home');
+    }else{
+        return redirect()->route('login')->with('warning','you must login to aa aa aa');
+    }
+   
 });
 
 
