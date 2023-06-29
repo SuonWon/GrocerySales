@@ -59,13 +59,16 @@ class AuthController extends Controller
 
 
                 return redirect('/');
-            } else {
-                if ($user->systemrole->RoleDesc == "admin") {
+                } else {
+                  if ($user->systemrole->RoleDesc == "admin") {
+
                     return redirect()->route('dashboard');
-                } 
+                  } 
                     
-                return redirect('/home');
-                
+                  return redirect('/home');
+
+                } 
+
             }
         } else {
             $user = User::where('Username', $formData['Username'])->first();

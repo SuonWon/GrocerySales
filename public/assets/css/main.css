@@ -217,7 +217,7 @@ a:focus {
 }
 
 #sidebar ul.components::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
 }
 
 #sidebar ul.components::-webkit-scrollbar-track {
@@ -226,7 +226,7 @@ a:focus {
 }
 
 #sidebar ul.components::-webkit-scrollbar-thumb{
-    background-color: #ddd;
+    background-color: #3a7081;
     border-radius: 10px;
 }
 

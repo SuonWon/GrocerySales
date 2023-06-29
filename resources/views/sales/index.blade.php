@@ -23,7 +23,7 @@
 
           <div class="row mt-1">
                <div class="filter-box">
-                    <form action="" method="GET" class="row justify-content-center">
+                    <form action="" method="GET" class="row justify-content-left">
                          @csrf
                          {{-- <div class="col-12 col-md-6 col-xl-4 col-xxl-1 mb-2">
                               <div class="d-flex justify-content-center align-items-center" style="height: 100%">
@@ -41,7 +41,7 @@
                               <input type="date" class="form-control cust-input-box" id="saleEndDate" value="{{request('saleEndDate')}}" name="saleEndDate">
                          </div>
                          {{-- Payment Status --}}
-                         <div class="col-3 col-md-4 col-xl-2 col-xxl-1">
+                         <div class="col-2 col-md-4 col-xl-2 col-xxl-1">
                               <div class="form-check">
                                    <input class="form-check-input col-4" type="radio" name="PaymentStatus" id="all" value="all" @if (request('PaymentStatus') === "all") checked = "checked" @endif>
                                    <label class="form-check-label col-5" for="all">
@@ -62,11 +62,14 @@
                               </div>
                          </div>
                          {{-- Filter Button --}}
-                         <div class="col-9 col-md-9 col-xl-6 col-xxl-4 mb-2 pt-2">
+                         <div class="col-10 col-md-9 col-xl-6 col-xxl-4 mb-2 pt-2">
                               <div class="d-flex justify-content-center align-items-center mt-2" style="height: 100%">
-                                   <button class="btn filter-btn py-1 px-3" id="filterBtn" ><span class="me-1"><i class="bi bi-funnel"></i></span>Filter</button>
-                                   <a href="/salesinvoices/index" type="button" class="btn btn-light ms-2 py-1 px-3" id="filterCancel"><span class="me-1"><i class="bi bi-x-circle"></i></span>Cancel</a>
-                                   <button type="button" class="btn deleted-invoice py-1 px-3 ms-2 position-relative" data-bs-toggle="modal" data-bs-target="#deletedSalesInvoices">
+                                   {{-- Filter Button --}}
+                                   <button class="btn filter-btn py-1 px-2 px-sm-3" id="filterBtn" ><span class="me-1"><i class="bi bi-funnel"></i></span>Filter</button>
+                                   {{-- Cancel Button --}}
+                                   <a href="/salesinvoices/index" type="button" class="btn btn-light ms-1 ms-sm-2 py-1 px-2 px-sm-3" id="filterCancel"><span class="me-1"><i class="bi bi-x-circle"></i></span>Cancel</a>
+                                   {{-- Deleted Invoice Button --}}
+                                   <button type="button" class="btn deleted-invoice py-1 px-2 px-sm-3 ms-1 ms-sm-2 position-relative" data-bs-toggle="modal" data-bs-target="#deletedSalesInvoices">
                                         <span class="me-1"><i class="bi bi-list-ul"></i></span>Deleted Invoice 
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #ff0000;">{{count($deletesalesinvoices)}}</span>
                                    </button>
