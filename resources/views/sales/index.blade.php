@@ -23,7 +23,7 @@
 
           <div class="row mt-1">
                <div class="filter-box">
-                    <form action="" method="GET" class="row justify-content-center">
+                    <form action="" method="GET" class="row justify-content-left">
                          @csrf
                          {{-- <div class="col-12 col-md-6 col-xl-4 col-xxl-1 mb-2">
                               <div class="d-flex justify-content-center align-items-center" style="height: 100%">
