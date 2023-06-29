@@ -44,7 +44,13 @@ Route::get('/', function (Request $request) {
 
             return redirect()->route('login')->with('danger', "Your account is disabled so you can't login!");
         }
-        // check for user and admin
+
+        if($user->systemrole->RoleDesc == "admin"){
+            return redirect()->route('dashboard');
+        }
+
+
+
         return redirect()->route('saleinvoices');
     } else {
         return redirect()->route('login');
@@ -56,7 +62,7 @@ Route::get('/', function (Request $request) {
 Route::get('/login', [AuthController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/login', [AuthController::class, 'postLogin'])->middleware('guest');
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('mymiddleware:dashboard')->name('dashboard');
 
 //Report Route 
 Route::middleware('mymiddleware:report')->group(function () {

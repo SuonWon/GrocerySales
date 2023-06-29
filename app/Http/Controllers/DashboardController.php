@@ -15,39 +15,52 @@ class DashboardController extends Controller
 {
 
     protected $datetime;
+    protected $currentMonth;
 
     public function __construct()
     {
 
 
         $this->datetime = Date('Y-m-d H:i:s');
+        $this->currentMonth = date('Y-m');
+
     }
 
     public function index()
     {
 
         // Sale
-        $saleInvoices = Saleinvoice::all();
+        $startDate = $this->currentMonth . "-01";
+        $endDate = $this->currentMonth . "-31";
+        $saleInvoices = Saleinvoice::whereBetween('SalesDate', [$startDate, $endDate])->whereStatus('O')->get();
+
+      
 
         $totalsaleinvoice = $saleInvoices->count();
         $totalsaleamount = $saleInvoices->sum('GrandTotal');
-        $salecredit = SaleInvoice::where('IsPaid', 0)->get();
+
+        $salecredit = SaleInvoice::whereBetween('SalesDate', [$startDate, $endDate])->whereStatus('O')->where('IsPaid', 0)->get();
         $salecreditamount = $salecredit->sum('GrandTotal');
         $salecreditinvoice = $salecredit->count();
+
         $recentsaleinvoice = SaleInvoice::orderBy('SalesDate', 'desc')->join('customers', 'sale_invoices.CustomerCode', '=', 'customers.CustomerCode')
             ->select('sale_invoices.*', 'customers.CustomerCode', 'customers.CustomerName')
             ->limit(10)->where('sale_invoices.Status', 'O')->get();
 
         // Purchase
-        $purchaseinvoices = PurchaseInvoice::all();
+        $purchaseinvoices = PurchaseInvoice::whereBetween('PurchaseDate', [$startDate, $endDate])->whereStatus('O')->get();
 
 
 
         $totalpurchaseinvoice = $purchaseinvoices->count();
         $totalpurchaseamount = $purchaseinvoices->sum('GrandTotal');
-        $purchasecredit = PurchaseInvoice::where('IsPaid', 0)->get();
+        $purchasecredit = PurchaseInvoice::whereBetween('PurchaseDate', [$startDate, $endDate])
+                                    ->whereStatus('O')
+                                    ->where('IsPaid', 0)
+                                    ->get();
         $purchasecreditinvoice = $purchasecredit->count();
         $purchasecreditamount = $purchasecredit->sum('GrandTotal');
+        
         $recentpurchaseinvoice = PurchaseInvoice::orderBy('PurchaseDate', 'desc')->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
             ->limit(10)->where('purchase_invoices.Status', 'O')->get();

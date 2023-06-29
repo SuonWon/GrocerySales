@@ -3,6 +3,7 @@ import("./dselect.js");
 $(document).ready(function () {
     var windowHeight = window.innerHeight;
     var windowWidth = window.innerWidth;
+
     var tableHeight = 380;
 
     if (windowWidth <= 766) {
@@ -120,6 +121,7 @@ $(document).ready(function () {
 
     $("#purchaseList").DataTable({
         dom: '<"toolbar">frtip',
+        "lengthMenu": [20,30,50,75,100],
         scrollX: true,
         order: [],
         fixedColumns: {
@@ -129,6 +131,7 @@ $(document).ready(function () {
 
     $("#salesList").DataTable({
         scrollX: true,
+        "lengthMenu": [20,30,50,75,100],
         order: [],
         fixedColumns: {
             right: 1,
