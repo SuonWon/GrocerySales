@@ -6,7 +6,7 @@
         {{-- Section Title --}}
 
         <div class="row justify-content-between">
-            <div class="col-3 p-0">
+            <div class="col-8 col-md-3 p-0">
                 <h3 class="section-title">Update System Role</h3>
             </div>
             <div class="col-4 p-0 text-end">
@@ -22,7 +22,7 @@
 
         <form action="/systemrole/update/{{$systemrole->RoleId}}" method="post" enctype="multipart/form-data" class="row form-card mt-3 needs-validation" novalidate>
             @csrf
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-7 col-xl-6">
                 <div class="row">
                     <div class="col-6 mb-3">
                         <label for="RoleId" class="form-label cust-label">Role Id</label>
@@ -41,17 +41,14 @@
                     <div class="col-12 mb-3">
                         <label for="RolePermissions" class="form-label cust-label">Role Permission</label>
                         <div class="row px-3">
-
-                           
-
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" name="rolepermissions[]"  {{ in_array('dashboard', $systemrole->RolePermissions) ? 'checked' : '' }} value="dashboard" type="checkbox" id="dashboard">
                                 <label class="cust-label" for="dashboard">
                                     Dashboard
                                 </label>
                             </div>
 
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" name="rolepermissions[]"  {{ in_array('setup', $systemrole->RolePermissions) ? 'checked' : '' }} value="setup" type="checkbox" id="setup">
                                 <label class="cust-label" for="setup">
                                     Setup
@@ -59,25 +56,25 @@
                             </div>
                           
                             
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" type="checkbox" id="system" name="rolepermissions[]" value="system" {{ in_array('system', $systemrole->RolePermissions) ? 'checked' : '' }}>
                                 <label class="cust-label" for="system">
                                     System
                                 </label>
                             </div>
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" type="checkbox" id="purchase" name="rolepermissions[]" value="purchase" {{ in_array('purchase', $systemrole->RolePermissions) ? 'checked' : '' }}>
                                 <label class="cust-label" for="purchase">
                                     Purchase
                                 </label>
                             </div>
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" type="checkbox" id="sales" name="rolepermissions[]" value="sales" {{ in_array('sales', $systemrole->RolePermissions) ? 'checked' : '' }}>
                                 <label class="cust-label" for="sales">
                                     Sales
                                 </label>
                             </div>
-                            <div class="d-flex col-3 mt-1">
+                            <div class="d-flex col-4 col-md-3 col-lg-4 mt-1">
                                 <input class="form-check-input cust-form-check me-2" type="checkbox" value="report" name="rolepermissions[]" id="report" {{ in_array('report', $systemrole->RolePermissions) ? 'checked' : '' }}>
                                 <label class="cust-label" for="report">
                                     Report

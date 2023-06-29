@@ -5,14 +5,14 @@
         {{-- Section Title --}}
 
         <div class="row justify-content-between">
-            <div class="col-5 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">User  Lists</h3>
             </div>
 
             {{-- Create New Button --}}
             <div class="col-4 p-0 text-end">
                 <a href="/user/add" class="btn main-btn" type="button">
-                    <span class="me-1"><i class="bi bi-plus-circle"></i></span>Add
+                    <span class="me-1"><i class="bi bi-plus-circle"></i></span>New
                 </a>
             </div>
         </div>

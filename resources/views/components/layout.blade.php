@@ -51,8 +51,8 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 class="mb-0">Grocery Sales</h3>
-                <strong>GS</strong>
+                <h3 class="mb-0">HZN Sales</h3>
+                <strong>HZN</strong>
             </div>
 
             <ul class="list-unstyled components">
@@ -169,6 +169,10 @@
             <div class="sidebar-footer">
                 {{-- <p class="text-muted mb-0">Copyright Hein Zarni &copy; 2023</p> --}}
                 <p class="text-muted mb-0">Powered by <a href="https://www.facebook.com/utcmandalay" target="_blank">Universal Technology</a></p>
+                <strong>
+                    <span>Powered by</span> <br>
+                    <a href="https://www.facebook.com/utcmandalay" target="_blank">UTC</a>
+                </strong>
             </div>
         </nav>
 
