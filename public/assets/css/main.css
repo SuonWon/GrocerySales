@@ -59,34 +59,6 @@ a:focus {
     overflow-y: auto;
 }
 
-#sidebar.active {
-    width: 90px;
-    text-align: center;
-}
-
-#sidebar.active .sidebar-footer,
-#sidebar.active .logout span,
-#sidebar.active .sidebar-header h3 {
-    display: none;
-}
-
-#sidebar.active .logout {
-    position: absolute;
-    font-size: 1.5em;
-    left: 30px;
-    text-align: center;
-    padding: 5px 5px;
-    bottom: 15px;
-}
-
-#sidebar.active .sidebar-header {
-    padding: 3px 4px;
-}
-
-#sidebar.active .sidebar-header strong {
-    display: block;
-}
-
 #sidebar .logout {
     position: absolute;
     display: block;
@@ -115,6 +87,62 @@ a:focus {
 #sidebar .sidebar-footer p a {
     font-size: 0.8rem;
     color: blue;
+}
+
+#sidebar.active {
+    width: 90px;
+    text-align: center;
+}
+
+#sidebar .sidebar-footer strong {
+    font-size: 0.75rem;
+    display: none;
+}
+
+#sidebar .sidebar-footer strong a {
+    color: blue;
+}
+
+#sidebar .sidebar-footer strong span {
+    font-size: 0.6rem;
+    font-weight: lighter;
+}
+
+#sidebar.active .sidebar-footer p,
+#sidebar.active .logout span,
+#sidebar.active .sidebar-header h3 {
+    display: none;
+}
+
+#sidebar.active .logout {
+    position: absolute;
+    display: block;
+    font-size: 1.5em;
+    background-color: white;
+    text-align: center;
+    padding: 5px 5px;
+    bottom: 45px;
+}
+#sidebar.active .logout a {
+    margin-left: 20px;
+    text-align: center;
+}
+
+#sidebar.active .sidebar-header {
+    padding: 3px 4px;
+}
+
+#sidebar.active .sidebar-footer {
+    padding: 5px 10px;
+}
+
+#sidebar.active #sidebar ul.components {
+    height: 70%;
+}
+
+#sidebar.active .sidebar-header strong,
+#sidebar.active .sidebar-footer strong {
+    display: block;
 }
 
 #sidebar.active ul li a {
@@ -184,7 +212,7 @@ a:focus {
 
 #sidebar ul.components {
     padding: 20px 0;
-    height: 85%;
+    height: 80%;
     overflow-y: auto;
 }
 
