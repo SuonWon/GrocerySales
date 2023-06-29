@@ -58,21 +58,19 @@ class AuthController extends Controller
             } else {
                 if ($user->systemrole->RoleDesc == "admin") {
                     return redirect('dashboard');
-                } else {
-                    return redirect('/salesinvoices/index');
-                }
+                } return;
             }
         } else {
             $user = User::where('Username', $formData['Username'])->first();
 
             if (!$user) {
                 return back()->with([
-                    'Username' => 'The provided username is incorrect.',
+                    'warning' => 'The provided username is incorrect.',
                 ]);
             }
 
             return back()->with([
-                'password' => 'The provided password is incorrect.',
+                'warning' => 'The provided password is incorrect.',
             ]);
         }
     }
