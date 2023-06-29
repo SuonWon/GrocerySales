@@ -54,11 +54,21 @@ class AuthController extends Controller
 
 
             if ($user->IsActive == 0) {
+
+
+
+
                 return redirect('/');
-            } else {
-                if ($user->systemrole->RoleDesc == "admin") {
-                    return redirect('dashboard');
-                } return;
+                } else {
+                  if ($user->systemrole->RoleDesc == "admin") {
+
+                    return redirect()->route('dashboard');
+                  } 
+                    
+                  return redirect('/home');
+
+                } 
+
             }
         } else {
             $user = User::where('Username', $formData['Username'])->first();
@@ -86,7 +96,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Good bye');
+        return redirect()->route('login')->with('success', 'Good bye');
     }
 
 
