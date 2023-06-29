@@ -61,22 +61,23 @@ class AuthController extends Controller
                 return redirect('/');
             } else {
                 if ($user->systemrole->RoleDesc == "admin") {
-                    return redirect('/user/index');
-                } else if ($user->systemrole->RoleDesc == "user") {
-                    return redirect('/salesinvoices/index');
-                }
+                    return redirect()->route('dashboard');
+                } 
+                    
+                return redirect('/home');
+                
             }
         } else {
             $user = User::where('Username', $formData['Username'])->first();
 
             if (!$user) {
                 return back()->with([
-                    'Username' => 'The provided username is incorrect.',
+                    'warning' => 'The provided username is incorrect.',
                 ]);
             }
 
             return back()->with([
-                'password' => 'The provided password is incorrect.',
+                'warning' => 'The provided password is incorrect.',
             ]);
         }
     }
@@ -92,7 +93,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Good bye');
+        return redirect()->route('login')->with('success', 'Good bye');
     }
 
 
