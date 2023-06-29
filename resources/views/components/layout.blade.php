@@ -185,7 +185,7 @@
                     <button type="button" id="sidebarCollapse" class="btn main-btn">
                         <i class="fas fa-align-left"></i>
                     </button>
-                    <span class="version">v 0.0.1</span>
+                    <span class="version">v 1.0.1</span>
                     <div class="ms-auto">
                         <p class="nav-link mb-0">
                             <span class="me-2"><i class="bi bi-person-circle"></i></span>{{auth()->user()->Fullname}}
@@ -205,8 +205,6 @@
             
             {{$slot}}
 
-           
-<div></div>
         </div>
 
     </div>
