@@ -7,6 +7,7 @@ use App\Models\GenerateId;
 use App\Models\ItemArrival;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ItemArrivalController extends Controller
 {
@@ -29,7 +30,10 @@ class ItemArrivalController extends Controller
     }
 
     public function create(){
-        return view('purchase.itemarrival.add');
+        $todayDate = Carbon::now()->format('Y-m-d');
+        return view('purchase.itemarrival.add', [
+            'todayDate' => $todayDate
+        ]);
     }
 
     public function store(){
@@ -80,16 +84,16 @@ class ItemArrivalController extends Controller
             'Remark' => ['nullable']
        ]);
 
-       $formData['ModifiedDate'] = $this->datetime;
-       $formData['ModifiedBy'] = auth()->user()->Username;
+        $formData['ModifiedDate'] = $this->datetime;
+        $formData['ModifiedBy'] = auth()->user()->Username;
 
-       try{
+        try{
             $updateitemarrival = ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->update($formData);
 
             return redirect()->route('itemarrivals')->with('success','Update Item Arrival Successfully');
-       }catch(QueryException $e){
+        }catch(QueryException $e){
             return back()->with(['error' => $e->getMessage()]);
-       }
+        }
 
     }
 
@@ -110,6 +114,7 @@ class ItemArrivalController extends Controller
             ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->update($data);
 
             return redirect()->route('itemarrivals')->with('success','Delete ItemArrival Successfully');
+
         }catch(QueryException $e){
             if ($e->errorInfo[1] == 1451) {
                 return back()->with(['error' => 'Cannot delete this record because it is referenced by another table.']);
