@@ -135,7 +135,6 @@
 
         {{-- Cards Section  --}}
         <div class="cardSection row px-1">
-
             {{-- Total Sale Invoice & Total Sale Amount --}}
             <div class=" col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard firstCardShadow shadow-sm">
