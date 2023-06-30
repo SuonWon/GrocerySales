@@ -198,7 +198,7 @@
                         <table class="table" id="purchaseProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
-                                    <th style="width: 50px;">No</th>
+                                    {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Code</th>
                                     <th style="width: 200px;">Warehouse Code</th>
                                     <th style="width: 120px;">Quantity</th>
@@ -217,9 +217,9 @@
                                 @foreach ( $purchaseinvoice->purchaseinvoicedetails  as $key => $purchaseinvoicedetail )
 
                                     <tr id="{{$key + 1}}">
-                                        <td class="px-0 py-0">
+                                        {{-- <td class="px-0 py-0">
                                             <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
-                                        </td>
+                                        </td> --}}
                                         <td class="px-0 py-0" id="row_{{$key + 1}}">
                                             <select name="" id="{{$key + 1}}" class="itemCodeList_{{$key + 1}}" onchange="AddProduct(this.id,this.value)">
                                                 @if(isset($items) && is_object($items) && count($items) > 0)
@@ -275,7 +275,7 @@
                                             <input type="number" class="puviss_{{$key + 1}} text-end" name="" id="{{$key + 1}}" value="{{$purchaseinvoicedetail->TotalViss}}" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event)">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" name="" id="itemAmount" value="{{$purchaseinvoicedetail->Amount}}" disabled>
+                                            <input type="text" class="tableInput text-end" name="" id="itemAmount" value="{{number_format($purchaseinvoicedetail->Amount)}}" disabled>
                                         </td>
                                         <td class="px-0 py-0">
                                             <input type="number" class="tableInput" name="" id="{{$key + 1}}" value="{{$purchaseinvoicedetail->LineDisPer }}" onblur="AddDiscountRate(this.id, this.value);" onfocus="PEditFocus(event)">
@@ -457,9 +457,7 @@
 
         newRow.setAttribute("id", rowNo);
 
-        newRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ rowNo +`" disabled>
-                            </td>
+        newRow.innerHTML = `
                             <td class="px-0 py-0" id="row_`+ rowNo +`">
                                 <select name="" id="`+ rowNo +`" class="itemCodeList_`+ rowNo +`" onchange="AddProduct(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -869,7 +867,7 @@
 
     // ========= Row Replace Function ========== //
 
-    function RowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+    function RowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus = "") {
 
         let checkFoc = "";
 
@@ -905,9 +903,7 @@
 
             if( rowId == refNo) {
 
-                mainTable.rows[i].innerHTML = `<td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="referenceNo" value="`+ refNo +`" disabled>
-                                    </td>
+                mainTable.rows[i].innerHTML = `
                                     <td class="px-0 py-0" id="row_`+ refNo +`">
                                         <select name="" id="`+ refNo +`" class="itemCodeList_`+ refNo +`" onchange="AddProduct(this.id,this.value)">
                                             <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>
@@ -991,8 +987,6 @@
     // ========= Delete Row Function ===========//
     
     function DeletePurInvoiceRow(refNo) {
-
-        alert(refNo);
 
         let mainTable = document.getElementById("purchaseProdList");
 
