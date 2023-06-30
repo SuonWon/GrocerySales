@@ -282,7 +282,7 @@ function DisplayBlock(event) {
     document.getElementById(displayId).style.display = "block";
 }
 
-const config = { search: true };
+const config = { search: true, maxHeight: '150px'};
 
 const forms = document.querySelectorAll(".needs-validation");
 
