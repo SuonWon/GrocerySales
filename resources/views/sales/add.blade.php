@@ -156,7 +156,7 @@
                         <table class="table" id="saleProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
-                                    <th style="width: 50px;">No</th>
+                                    {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Code</th>
                                     <th style="width: 200px;">Warehouse Code</th>
                                     <th style="width: 120px;">Quantity</th>
@@ -292,9 +292,7 @@
 
         tableRow.setAttribute("id", saleRowNo);
 
-        tableRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ saleRowNo +`" disabled>
-                            </td>
+        tableRow.innerHTML = `
                             <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
                                 <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -393,9 +391,7 @@
 
         newRow.setAttribute("id", saleRowNo);
 
-        newRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ saleRowNo +`" disabled>
-                            </td>
+        newRow.innerHTML = `
                             <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
                                 <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -838,9 +834,7 @@
 
             if( rowId == refNo) {
 
-                mainTable.rows[i].innerHTML = `<td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="referenceNo" value="`+ refNo +`" disabled>
-                                    </td>
+                mainTable.rows[i].innerHTML = `
                                     <td class="px-0 py-0" id="row_`+ refNo +`">
                                         <select name="" id="`+ refNo +`" class="saleItemList_`+ refNo +`" onchange="AddSaleItem(this.id,this.value)">
                                             <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>
