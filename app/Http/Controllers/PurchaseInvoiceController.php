@@ -93,14 +93,9 @@ class PurchaseInvoiceController extends Controller
         }
         
 
-        $purchaseinvoices = $query->get();
-
-            
-          
+        $purchaseinvoices = $query->get();   
         
-           
-            $deletepurchaseinvoices = $deletequery->get();
-
+        $deletepurchaseinvoices = $deletequery->get();
    
 
         return view('purchase.purchaseinvoice.index', [
