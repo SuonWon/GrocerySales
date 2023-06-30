@@ -23,8 +23,8 @@
         }
 
         .creditColor {
-            color: var(--red-500);
-            background-color: var(--red-100);
+            color: var(--orange-500);
+            background-color: var(--orange-100);
         }
 
         .debitColor {
@@ -182,7 +182,7 @@
                             <div class="cardImg rounded thirdCardColor">
                                 <i class="fa-solid fa-money-bill-1-wave fa-xl"></i>
                             </div>
-                            <div class="text-danger mx-2 mt-3">(Credit)</div>
+                            <div class="text-danger mx-2 mt-3">(Due)</div>
                         </div>
                         <div class="cardContent mx-2 text-end">
                             <span class="text-muted fs-6">Sale Invoice</span>
@@ -202,7 +202,7 @@
                             <div class="cardImg rounded fourthCardColor">
                                 <i class="fa-solid fa-money-bill-1-wave fa-xl"></i>
                             </div>
-                            <div class="text-danger mt-3">(Credit)</div>
+                            <div class="text-danger mt-3">(Due)</div>
                         </div>
                         <div class="cardContent mx-2 text-end">
                             <span class="text-muted fs-6">Purchase Invoice</span>
@@ -310,7 +310,7 @@
                                         <td class="text-end">{{ number_format($recentPurchase->GrandTotal) }}</td>
                                         <td class="text-center">
                                             <span class="@if ($recentPurchase->PaidDate  == null) creditColor @else debitColor @endif rounded-4">
-                                                {{ $recentPurchase->PaidDate  == null ? "Credit" : "Debit" }}
+                                                {{ $recentPurchase->PaidDate  == null ? "Due" : "Paid" }}
                                             </span>
                                         </td>
                                     </tr>
@@ -344,10 +344,10 @@
                                         <td class="text-center">{{ $recentSale->SalesDate }}</td>
                                         <td class="text-center">{{ $recentSale->CustomerName }}</td>
                                         <td class="text-end">{{ $recentSale->PaidDate }}</td>
-                                        <td class="text-end class="text-end">{{ number_format($recentSale->GrandTotal) }}</td>
+                                        <td class="text-end" class="text-end">{{ number_format($recentSale->GrandTotal) }}</td>
                                         <td class="text-center">
                                             <span class="@if ($recentSale->PaidDate == null) creditColor @else debitColor @endif rounded-4">
-                                                {{ $recentSale->PaidDate == null ? "Credit" : "Debit" }}
+                                                {{ $recentSale->PaidDate == null ? "Due" : "Paid" }}
                                             </span>
                                         </td>
                                     </tr>

@@ -76,7 +76,7 @@
                         <h6>HEIN ZARNI <span id="UpdateYear"></span></h6>
                     </div>
                     <div class="col-4 text-end">
-                        <h6>v 0.0.1</h6>
+                        <h6>v {{ env('VERSION') }}</h6>
                     </div>
                 </div>
             </div>

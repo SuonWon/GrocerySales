@@ -51,7 +51,7 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 class="mb-0">HZN Sales</h3>
+                <h3 class="mb-0">Hein Zarni POS</h3>
                 <strong>HZN</strong>
             </div>
 
@@ -211,7 +211,7 @@
                     <button type="button" id="sidebarCollapse" class="btn main-btn">
                         <i class="fas fa-align-left"></i>
                     </button>
-                    <span class="version">v 1.0.1</span>
+                    <span class="version">v{{ env('VERSION') }}</span>
                     <div class="ms-auto">
                         <p class="nav-link mb-0">
                             <span class="me-2"><i class="bi bi-person-circle"></i></span>{{auth()->user()->Fullname}}
