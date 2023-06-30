@@ -214,7 +214,7 @@
                         <div class="row justify-content-end mt-2">
                             <label for="saleSubTotal" class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Sub Total :</label>
                             <div class="col-5 col-xl-5 col-xxl-4 mb-2">
-                                <input type="number" class="form-control cust-input-box" id="saleSubTotal" name="SubTotal" value="0" disabled>
+                                <input type="text" class="form-control cust-input-box text-end" id="saleSubTotal" name="SubTotal" value="0" disabled>
                             </div>
                         </div>
                         {{-- Total Charges --}}
@@ -881,7 +881,7 @@
                                         <input type="number" class="saleviss_`+ refNo +` text-end" value="`+ TotalViss +`" id="`+ refNo +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="tableInput" name="" id="itemAmount" value="`+ UnitPrice * Quantity +`" disabled>
+                                        <input type="text" class="tableInput" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddSaleDisRate(this.id, this.value);"`+ checkDisRate + ` onfocus="SAddFocusValue(event)">
@@ -963,7 +963,7 @@
 
         });    
         
-        document.getElementById("saleSubTotal").value = subTotal;
+        document.getElementById("saleSubTotal").value = subTotal.toLocaleString();
 
     }
 
