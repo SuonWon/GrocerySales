@@ -261,7 +261,7 @@
                                 <th scope="col" class="text-muted">Code</th>
                                 <th scope="col" class="text-muted">Name</th>
                                 <th scope="col" class="text-muted">Unit</th>
-                                <th scope="col" class="text-muted">Qty</th>
+                                <th scope="col" class="text-muted text-end">Qty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -270,7 +270,7 @@
                                     <td>{{$item->ItemCode}}</td>
                                     <td>{{$item->ItemName}}</td>
                                     <td>{{$item->UnitDesc}}</td>
-                                    <td>{{$item->Quantity}}</td>
+                                    <td class="text-end">{{number_format($item->Quantity)}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -293,7 +293,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col" class="text-muted text-center">Invoice No</th>
-                                    <th scope="col" class="text-muted text-center class="text-center"">Date</th>
+                                    <th scope="col" class="text-muted text-center" class="text-center">Date</th>
                                     <th scope="col" class="text-muted text-center">Supplier</th>
                                     <th scope="col" class="text-muted text-end">Paid Date</th>
                                     <th scope="col" class="text-muted text-end">Amount</th>
