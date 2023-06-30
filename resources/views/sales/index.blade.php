@@ -67,7 +67,7 @@
                                    {{-- Filter Button --}}
                                    <button class="btn filter-btn py-1 px-2 px-sm-3" id="filterBtn" ><span class="me-1"><i class="bi bi-funnel"></i></span>Filter</button>
                                    {{-- Cancel Button --}}
-                                   <a href="/salesinvoices/index" type="button" class="btn btn-light ms-1 ms-sm-2 py-1 px-2 px-sm-3" id="filterCancel"><span class="me-1"><i class="bi bi-x-circle"></i></span>Cancel</a>
+                                   <a href="/salesinvoices/index" type="button" class="btn btn-light ms-1 ms-sm-2 py-1 px-2 px-sm-3" id="filterCancel"><span class="me-1"><i class="bi bi-x-circle"></i></span>Reset</a>
                                    {{-- Deleted Invoice Button --}}
                                    <button type="button" class="btn deleted-invoice py-1 px-2 px-sm-3 ms-1 ms-sm-2 position-relative" data-bs-toggle="modal" data-bs-target="#deletedSalesInvoices">
                                         <span class="me-1"><i class="bi bi-list-ul"></i></span>Deleted Invoice 

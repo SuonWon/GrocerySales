@@ -68,7 +68,7 @@
                                    <button class="btn filter-btn py-1 px-2 px-sm-3"><span class="me-1"><i class="bi bi-funnel"></i></span>Filter</button>
                                    {{-- Cancel Button --}}
                                    <a type="button" href="/purchaseinvoices/index" class="btn btn-light ms-1 ms-sm-3 py-1 px-2 px-sm-3" id="filterCancel">
-                                        <span class="me-1"><i class="bi bi-x-circle"></i></span>Cancel
+                                        <span class="me-1"><i class="bi bi-x-circle"></i></span>Reset
                                    </a>
                                    {{-- Deleted Invoice Button --}}
                                    <button type="button" class="btn deleted-invoice py-1 px-2 px-sm-3 ms-1 ms-sm-3 position-relative" data-bs-toggle="modal" data-bs-target="#deletedInvoiceModal">

@@ -476,10 +476,10 @@ class SaleInvoiceController extends Controller
             $query->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
             $deletesalesinvoicesquery->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
         }else{
-            $query->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-                  ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
-            $deletesalesinvoicesquery->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-            ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
+            $query->where('sale_invoices.SalesDate', '>=', Carbon::now()->startOfMonth()->toDateString())
+                  ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+            $deletesalesinvoicesquery->where('sale_invoices.SalesDate', '>=', Carbon::now()->startOfMonth()->toDateString())
+            ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
         }
 
     
