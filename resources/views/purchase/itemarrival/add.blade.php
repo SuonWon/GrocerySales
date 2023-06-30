@@ -57,7 +57,7 @@
                     {{-- Arrival Date --}}
                     <div class="col-12 col-md-6 mb-3">
                         <label for="ArrivalDate" class="form-label cust-label">Arrival Date</label>
-                        <input type="date" class="form-control cust-input-box" id="ArrivalDate" name="ArrivalDate" value="{{ old('ArrivalDate') }}" required>
+                        <input type="date" class="form-control cust-input-box" id="ArrivalDate" name="ArrivalDate" value="{{ $todayDate }}" required>
                         <div class="invalid-feedback">
                             Please fill Arrival Date.
                         </div>

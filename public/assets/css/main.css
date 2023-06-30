@@ -201,6 +201,7 @@ a:focus {
     color: #fff;
     padding: 3px 10px;
     border-radius: 10px;
+    text-align: center;
 }
 
 #sidebar .sidebar-header strong {

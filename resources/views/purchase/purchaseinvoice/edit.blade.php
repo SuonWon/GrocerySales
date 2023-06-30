@@ -284,7 +284,7 @@
                                             <input type="text" class="text-end" name="" id="{{$key + 1}}" value="{{number_format($purchaseinvoicedetail->LineDisAmt)}}" onblur="AddDiscountAmount(this.id, this.value);" onfocus="PEditFocus(event)">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" id="totalAmt" value="{{$purchaseinvoicedetail->LineTotalAmt}}" disabled>
+                                            <input type="text" class="text-end" id="totalAmt" value="{{number_format($purchaseinvoicedetail->LineTotalAmt)}}" disabled>
                                         </td>
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2" id="{{$key + 1}}" {{$purchaseinvoicedetail->IsFOC == 1? "checked" : ""}}  onchange="AddFoc(event, this.id)" >
@@ -944,7 +944,7 @@
                                         <input type="number" class="puviss_`+ refNo +`" name="" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PEditFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddDiscountRate(this.id, this.value);"`+ checkDisRate + ` onfocus="PEditFocus(event);">
