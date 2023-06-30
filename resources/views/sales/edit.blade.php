@@ -257,7 +257,7 @@
                                             <input type="text" class="text-end" id="{{$key + 1}}" onblur="AddSaleDisAmt(this.id, this.value);" value="{{number_format($saleinvoicedetail->LineDisAmt)}}" onfocus="FocusValue(event);">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" name="" id="totalAmt" value="{{$saleinvoicedetail->LineTotalAmt}}" disabled>
+                                            <input type="text" class="tableInput" name="" id="totalAmt" value="{{number_format($saleinvoicedetail->LineTotalAmt)}}" disabled>
                                         </td>
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2" id="{{$key + 1}}" {{$saleinvoicedetail->IsFOC == 1 ? "checked" : ""}} onchange="AddSaleFoc(event, this.id)">
@@ -797,7 +797,7 @@
 
                     e.LineTotalAmt = 0;
 
-                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC);
+                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, );
 
                 } else {
 
@@ -839,7 +839,7 @@
 
     // ========= Row Replace Function ========== //
     
-    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus = "") {
 
         let checkFoc = "";
 
