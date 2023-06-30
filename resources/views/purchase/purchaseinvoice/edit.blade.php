@@ -409,8 +409,6 @@
     dselect(document.querySelector("#supplierCodeList"), config);
     
 
-    let rowNo = 1;
-
     let itemArray = @json($itemArray);
 
     let warehouseList = @json($warehouseList);
@@ -418,6 +416,8 @@
     let unitList = @json($unitList);
 
     let purchaseProductDataList = @json($purchaseProductDataList);
+
+    let rowNo = purchaseProductDataList.length + 1;
 
     $(document).ready(function() {
 
@@ -991,6 +991,8 @@
     // ========= Delete Row Function ===========//
     
     function DeletePurInvoiceRow(refNo) {
+
+        alert(refNo);
 
         let mainTable = document.getElementById("purchaseProdList");
 
