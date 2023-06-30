@@ -257,7 +257,7 @@
                                             <input type="text" class="text-end" id="{{$key + 1}}" onblur="AddSaleDisAmt(this.id, this.value);" value="{{number_format($saleinvoicedetail->LineDisAmt)}}" onfocus="FocusValue(event);">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" name="" id="totalAmt" value="{{$saleinvoicedetail->LineTotalAmt}}" disabled>
+                                            <input type="text" class="tableInput" name="" id="totalAmt" value="{{number_format($saleinvoicedetail->LineTotalAmt)}}" disabled>
                                         </td>
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2" id="{{$key + 1}}" {{$saleinvoicedetail->IsFOC == 1 ? "checked" : ""}} onchange="AddSaleFoc(event, this.id)">
