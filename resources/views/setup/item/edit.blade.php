@@ -1,4 +1,4 @@
-<x-layout title="Create Item">
+<x-layout title="Update Item">
 
      <div class="container-fluid content-body mt-3">
  
@@ -7,7 +7,7 @@
          <div class="row justify-content-between">
                {{-- Title --}}
                <div class="col-8 col-md-6 p-0">
-                    <h3 class="section-title">Create Item</h3>
+                    <h3 class="section-title">Update Item</h3>
                </div>
                {{-- Back Button --}}
                <div class="col-4 p-0 text-end">
@@ -70,7 +70,7 @@
                     <div class="row">
                          {{-- Base Unit --}}
                          <div class="col-6 mb-3">
-                              <label for="custNRC" class="form-label cust-label">Base Unit</label>
+                              <label for="baseUnit" class="form-label cust-label">Base Unit</label>
                               <select class="mb-3 form-select" id="selectUnit" name="BaseUnit" required>
                                    @forelse ($units as $unit)
                
@@ -148,7 +148,7 @@
                          </div>
                          {{-- Last Purchase Unit --}}
                          <div class="col-6 mb-3">
-                              <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Unit</label>
+                              <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
                               <input type="number" class="form-control cust-input-box" id="lastPurchaseUnit" name="LastPurPrice" value="{{$item->LastPurPrice}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                               <div class="invalid-feedback">
                                    Please fill last purchase price.
