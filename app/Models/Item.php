@@ -16,6 +16,7 @@ class Item extends Model
         'ItemName',
         'ItemCategoryCode',
         'BaseUnit',
+        'WeightByPrice',
         'UnitPrice',
         'DefSalesUnit',
         'DefPurUnit',
