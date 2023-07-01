@@ -102,6 +102,17 @@
                             Please fill unit price.
                         </div>
                     </div>
+                    {{-- Weight By Price --}}
+                    <div class="col-6 mb-3">
+                        <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
+                        <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="1" required>
+                        <div class="invalid-feedback">
+                            Please fill weight by price.
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
                     {{-- Last Purchase Unit --}}
                     <div class="col-6 mb-3">
                         <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
@@ -110,8 +121,6 @@
                             Please fill last purchase price.
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     {{-- Default Sale Unit --}}
                     <div class="col-6 col-lg-6 mb-3">
                         <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales Unit</label>

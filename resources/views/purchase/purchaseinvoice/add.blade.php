@@ -14,6 +14,7 @@
                 'itemId' => $item->ItemCode,
                 'itemName' => $item->ItemName,
                 'itemPrice' => $item->UnitPrice,
+                'weightByPrice' => $item->WeightByPrice,
             ]
         @endphp
 
@@ -314,6 +315,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -415,6 +417,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -526,7 +529,9 @@
 
                         e.ItemName = element.itemName;
 
-                        e.Amount = e.Quantity * e.UnitPrice;
+                        e.WeightPrice = element.weightByPrice;
+
+                        //e.Amount = e.Quantity * e.UnitPrice;
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -630,7 +635,7 @@
 
                 }
                 
-                e.Amount = e.UnitPrice *  e.Quantity;
+                // e.Amount = e.UnitPrice *  e.Quantity;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -668,7 +673,7 @@
 
                 }
                 
-                e.Amount = e.Quantity *  inputValue;
+                //e.Amount = e.Quantity *  inputValue;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -697,6 +702,22 @@
                 if (inputValue > 0) {
 
                     e.TotalViss = inputValue;
+
+                    if (e.TotalViss < e.WeightPrice) {
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                    } else if (e.TotalViss > e.WeightPrice) {
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                    } else {
+
+                        e.Amount = e.UnitPrice;
+
+                    }
+
+                    e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
                 } else {
 
@@ -806,7 +827,9 @@
 
                     e.IsFOC = 0;
 
-                    let unitTotalAmt = e.UnitPrice * e.Quantity;
+                    //let unitTotalAmt = e.UnitPrice * e.Quantity;
+
+                    let unitTotalAmt = e.Amount
 
                     if (e.LineDisAmt != 0) {
 
@@ -918,7 +941,7 @@
                                         <input type="number" class="puviss_`+ rowNo +`" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PAddFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddDiscountRate(this.id, this.value);"`+ checkDisRate + ` onfocus="PAddFocus(event);">

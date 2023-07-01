@@ -32,6 +32,7 @@
                             <th style="width: 150px;">Category Code</th>
                             <th class="text-center" style="width: 150px;">Base Unit</th>
                             <th class="text-end" style="width: 150px;">Unit Price</th>
+                            <th class="text-end" style="width: 150px;">Weight By Price</th>
                             <th class="text-center" style="width: 150px;">Sales Unit</th>
                             <th class="text-center" style="width: 150px;">Purchase Unit</th>
                             <th class="text-end" style="width: 150px;">Purchase Price</th>
@@ -57,6 +58,7 @@
                                 <td>{{$item->ItemCategoryCode}}</td>
                                 <td class="text-center">{{$item->UnitDesc}}</td>
                                 <td class="text-end">{{number_format($item->UnitPrice)}}</td>
+                                <td class="text-end">{{$item->WeightByPrice}}</td>
                                 <td class="text-center">{{$item->DefSalesUnit}}</td>
                                 <td class="text-center">{{$item->DefPurUnit}}</td>
                                 <td class="text-end">{{number_format($item->LastPurPrice)}}</td>
