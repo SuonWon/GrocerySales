@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('BaseUnit',20);
             $table->foreign('BaseUnit')->references('UnitCode')->on('unit_measurements');
             $table->decimal('UnitPrice',10,2);
+            $table->float('WeightByPrice');
             $table->string('DefSalesUnit',20);
             $table->foreign('DefSalesUnit')->references('UnitCode')->on('unit_measurements');
             $table->string('DefPurUnit',20);
