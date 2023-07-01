@@ -53,7 +53,7 @@ Route::get('/', function (Request $request) {
 
         return redirect()->route('saleinvoices');
     } else {
-        return redirect()->route('login')->with('warning','you must login to access this page');
+        return redirect()->route('login');
     }
 });
 
@@ -62,7 +62,7 @@ Route::get('/home',function(){
     if(auth()->check()){
         return view('home');
     }else{
-        return redirect()->route('login')->with('warning','you must login to aa aa aa');
+        return redirect()->route('login')->with('warning','you must login to access this page');
     }
    
 });
