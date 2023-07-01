@@ -88,24 +88,6 @@
                                    Please fill base unit.
                               </div>
                          </div>
-                         {{-- Unit Price --}}
-                         <div class="col-6 mb-3">
-                              <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                              <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
-                              <div class="invalid-feedback">
-                              Please fill unit price.
-                              </div>
-                         </div>
-                    </div>
-                    <div class="row">
-                         {{-- Weight By Price --}}
-                         <div class="col-6 mb-3">
-                              <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
-                              <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="{{$item->WeightByPrice}}" required>
-                              <div class="invalid-feedback">
-                              Please fill weight by price.
-                              </div>
-                         </div>
                          {{-- Default Sales Unit --}}
                          <div class="col-6 col-lg-6 mb-3">
                               <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales Unit</label>
@@ -146,10 +128,24 @@
                                    Please fill default purchase unit.
                               </div>
                          </div>
+                         {{-- Unit Price --}}
+                         <div class="col-6 mb-3">
+                              <label for="unitPrice" class="form-label cust-label">Unit Price</label>
+                              <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                              <div class="invalid-feedback">
+                              Please fill unit price.
+                              </div>
+                         </div>
                     </div>
-               </div>
-               <div class="col-12 col-lg-6">
                     <div class="row">
+                         {{-- Weight By Price --}}
+                         <div class="col-6 mb-3">
+                              <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
+                              <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="{{$item->WeightByPrice}}" required>
+                              <div class="invalid-feedback">
+                              Please fill weight by price.
+                              </div>
+                         </div>
                          {{-- Last Purchase Unit --}}
                          <div class="col-6 mb-3">
                               <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Unit</label>
@@ -158,7 +154,10 @@
                                    Please fill last purchase price.
                               </div>
                          </div>
+                         
                     </div>
+               </div>
+               <div class="col-12 col-lg-6">
                     <div class="row">
                          {{-- Remark --}}
                          <div class="col-12 mb-3">

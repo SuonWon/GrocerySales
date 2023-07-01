@@ -703,19 +703,21 @@
 
                     e.TotalViss = inputValue;
 
-                    if (e.TotalViss < e.WeightPrice) {
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                    // if (e.TotalViss < e.WeightPrice) {
 
-                    } else if (e.TotalViss > e.WeightPrice) {
+                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                    // } else if (e.TotalViss > e.WeightPrice) {
 
-                    } else {
+                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice;
+                    // } else {
 
-                    }
+                    //     e.Amount = e.UnitPrice;
+
+                    // }
 
                     e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
