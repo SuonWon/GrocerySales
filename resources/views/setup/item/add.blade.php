@@ -113,7 +113,7 @@
                     
                 </div>
                 <div class="row">
-                    {{-- Last Purchase Unit --}}
+                    {{-- Last Purchase Price --}}
                     <div class="col-6 mb-3">
                         <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
                         <input type="number" class="form-control cust-input-box" id="lastPurchasePrice" name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
