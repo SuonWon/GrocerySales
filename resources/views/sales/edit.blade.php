@@ -17,6 +17,7 @@
                 'WarehouseName' => $saleinvoicedetail->WarehouseName,
                 'ItemCode' => $saleinvoicedetail->ItemCode,
                 'ItemName' => $saleinvoicedetail->ItemName,
+                'WeightPrice' => $saleinvoicedetail->WeightByPrice,
                 'Quantity' => $saleinvoicedetail->Quantity,
                 'PackedUnit' => $saleinvoicedetail->PackedUnit,
                 'UnitName' => $saleinvoicedetail->UnitDesc,
@@ -245,7 +246,7 @@
                                             <input type="text" class="saleprice_{{$key + 1}}  text-end" value="{{number_format($saleinvoicedetail->UnitPrice)}}" id="{{$key + 1}}" nextfocus="viss_{{$key + 1}}" onfocus="FocusValue(event);" onblur="AddSalePrice(event,this.id,this.value);">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="viss_{{$key + 1}} text-end" id="{{$key + 1}}" onblur="AddSaleTotalViss(this.id,this.value)" value="{{$saleinvoicedetail->TotalViss}}" onfocus="FocusValue(event);">
+                                            <input type="number" class="viss_{{$key + 1}} text-end" id="{{$key + 1}}" onblur="AddSaleTotalViss(event,this.id,this.value)" value="{{$saleinvoicedetail->TotalViss}}" onfocus="FocusValue(event);">
                                         </td>
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name="" id="itemAmount" value="{{number_format($saleinvoicedetail->Amount)}}" disabled>
@@ -411,6 +412,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -520,7 +522,9 @@
 
                         e.ItemName = element.itemName;
 
-                        e.Amount = e.Quantity * e.UnitPrice;
+                        //e.Amount = e.Quantity * e.UnitPrice;
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                         e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -624,7 +628,7 @@
 
                 }
                 
-                e.Amount = e.UnitPrice *  e.Quantity;
+                //e.Amount = e.UnitPrice *  e.Quantity;
 
                 e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -662,7 +666,9 @@
 
                 }
 
-                e.Amount = e.Quantity *  e.UnitPrice;
+                //e.Amount = e.Quantity *  e.UnitPrice;
+
+                e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                 e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -682,7 +688,7 @@
 
     // ========= Add Total Viss Function =========== //
 
-    function AddSaleTotalViss(refNo, inputValue) {
+    function AddSaleTotalViss(event, refNo, inputValue) {
 
         saleProductDataList.forEach(e => {
 
@@ -697,6 +703,10 @@
                     e.TotalViss = 0;
 
                 }
+
+                e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
@@ -801,7 +811,9 @@
 
                     e.IsFOC = 0;
 
-                    let unitTotalAmt = e.UnitPrice * e.Quantity;
+                    let unitTotalAmt = e.Amount;
+
+                    //let unitTotalAmt = e.UnitPrice * e.Quantity;
 
                     if (e.LineDisAmt != 0) {
 
@@ -911,10 +923,10 @@
                                         <input type="text" class="saleprice_`+ refNo +` text-end" name="" value="`+ Number(UnitPrice).toLocaleString() +`" id="`+ refNo +`" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_`+ refNo +`" onfocus="FocusValue(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="viss_`+ refNo +` text-end" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddSaleTotalViss(this.id,this.value)" onfocus="FocusValue(event)">
+                                        <input type="number" class="viss_`+ refNo +` text-end" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event)">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddSaleDisRate(this.id, this.value);"`+ checkDisRate + ` onfocus="FocusValue(event);">
@@ -1237,7 +1249,7 @@
 
             let year = date.getFullYear();
 
-            let day = date.getDate();
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
             document.getElementById("salePaidDate").value = year + "-" + month + "-" + day;
 

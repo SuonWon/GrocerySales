@@ -17,6 +17,7 @@
                 'WarehouseName' => $purchaseinvoicedetail->WarehouseName,
                 'ItemCode' => $purchaseinvoicedetail->ItemCode,
                 'ItemName' => $purchaseinvoicedetail->ItemName,
+                'WeightPrice' => $purchaseinvoicedetail->WeightByPrice,
                 'Quantity' => $purchaseinvoicedetail->Quantity,
                 'PackedUnit' => $purchaseinvoicedetail->PackedUnit,
                 'UnitName' => $purchaseinvoicedetail->UnitDesc,
@@ -39,6 +40,7 @@
                 'itemId' => $item->ItemCode,
                 'itemName' => $item->ItemName,
                 'itemPrice' => $item->UnitPrice,
+                'weightPrice' => $item->WeightByPrice,
             ]
         @endphp
 
@@ -441,6 +443,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -552,7 +555,11 @@
 
                         e.ItemName = element.itemName;
 
-                        e.Amount = e.Quantity * e.UnitPrice;
+                        e.WeightPrice = element.weightPrice;
+
+                        //e.Amount = e.Quantity * e.UnitPrice;
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -656,7 +663,7 @@
 
                 }
                 
-                e.Amount = e.UnitPrice *  e.Quantity;
+                //e.Amount = e.UnitPrice *  e.Quantity;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -686,15 +693,19 @@
 
                 if (inputValue > 0) {
 
-                    e.UnitPrice = inputValue;
+                    e.UnitPrice = Number(inputValue.replace(/,/g, ''));
+
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                 } else {
 
-                    e.UnitName = 0;
+                    e.UnitPrice = 0;
+
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                 }
 
-                e.Amount = e.Quantity *  e.UnitPrice;
+                // e.Amount = e.Quantity *  e.UnitPrice;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -729,6 +740,10 @@
                     e.TotalViss = 0;
 
                 }
+
+                e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
                 RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
@@ -832,7 +847,9 @@
 
                     e.IsFOC = 0;
 
-                    let unitTotalAmt = e.UnitPrice * e.Quantity;
+                    //let unitTotalAmt = e.UnitPrice * e.Quantity;
+
+                    unitTotalAmt = e.Amount;
 
                     if (e.LineDisAmt != 0) {
 
@@ -941,10 +958,10 @@
                                         <input type="text" class="puprice_`+ refNo +` text-end" id="`+ refNo +`"  value="`+ UnitPrice +`" onblur="AddUnitPrice(event,this.id, this.value)" onfocus="PEditFocus(event);" nextfocus="puviss_`+ refNo +`">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="puviss_`+ refNo +`" name="" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PEditFocus(event);">
+                                        <input type="number" class="puviss_`+ refNo +`" name="" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddDiscountRate(this.id, this.value);"`+ checkDisRate + ` onfocus="PEditFocus(event);">
@@ -1273,7 +1290,7 @@
 
             let year = date.getFullYear();
 
-            let day = date.getDate();
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
             document.getElementById("paidDate").value = year + "-" + month + "-" + day;
 
