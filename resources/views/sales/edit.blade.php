@@ -949,9 +949,9 @@
 
         }
 
-        if (nextFocus != "") {
-            document.querySelector("."+nextFocus).focus();
-        }
+        // if (nextFocus != "") {
+        //     document.querySelector("."+nextFocus).focus();
+        // }
 
         dselect(document.querySelector(".saleWhList_"+ refNo), config);
 

@@ -913,11 +913,11 @@
 
         }
 
-        if (nextFocus != "") {
+        // if (nextFocus != "") {
 
-            document.querySelector("."+nextFocus).focus();
+        //     document.querySelector("."+nextFocus).focus();
 
-        }
+        // }
 
         dselect(document.querySelector(".saleWhList_"+ refNo), config);
 

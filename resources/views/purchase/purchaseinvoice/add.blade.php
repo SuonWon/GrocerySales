@@ -968,9 +968,9 @@
 
         }
 
-        if (nextFocus != "") {
-            document.querySelector("."+nextFocus).focus();
-        }
+        // if (nextFocus != "") {
+        //     document.querySelector("."+nextFocus).focus();
+        // }
 
         dselect(document.querySelector(".warehouseList_"+ refNo), config);
 
