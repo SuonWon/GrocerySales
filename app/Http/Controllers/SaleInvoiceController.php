@@ -218,7 +218,7 @@ class SaleInvoiceController extends Controller
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
-            ->select('sale_invoice_details.*', 'warehouses.WarehouseCode', 'warehouses.WarehouseName', 'items.ItemCode', 'items.ItemName', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
+            ->select('sale_invoice_details.*', 'warehouses.WarehouseCode', 'warehouses.WarehouseName', 'items.ItemCode', 'items.ItemName', 'items.WeightByPrice', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
             ->get();
 
         $saleinvoice->saleinvoicedetails = $saleinvoicedetails;
