@@ -725,6 +725,8 @@
 
                     e.TotalViss = 0;
 
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
                 }
 
                 RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
@@ -966,9 +968,9 @@
 
         }
 
-        if (nextFocus != "") {
-            document.querySelector("."+nextFocus).focus();
-        }
+        // if (nextFocus != "") {
+        //     document.querySelector("."+nextFocus).focus();
+        // }
 
         dselect(document.querySelector(".warehouseList_"+ refNo), config);
 
@@ -1269,7 +1271,7 @@
 
             let year = date.getFullYear();
 
-            let day = date.getDate();
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
             document.getElementById("paidDate").value = year + "-" + month + "-" + day;
 
