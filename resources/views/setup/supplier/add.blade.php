@@ -69,7 +69,7 @@
                     {{-- Contact No --}}
                     <div class="col-6 mb-3">
                         <label for="supplierContactNo" class="form-label cust-label">Contact No</label>
-                        <input type="tel" class="form-control cust-input-box" id="supplierContactNo" name="ContactNo" value="" required>
+                        <input type="tel" class="form-control cust-input-box" id="supplierContactNo" name="ContactNo" value="">
                         <div class="invalid-feedback">
                             Please fill supplier's contact no.
                         </div>
