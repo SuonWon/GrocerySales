@@ -31,6 +31,7 @@
                             <th style="width: 120px;">Supplier Code</th>
                             <th style="width: 200px;">Supplier Name</th>
                             <th style="width: 200px;">Contact Name</th>
+                            <th class="text-end" style="width: 150px">Profit</th>
                             <th style="width: 150px;">Contact No</th>
                             <th style="width: 150px;">Office No</th>
                             <th style="width: 200px;">Street</th>
@@ -56,6 +57,7 @@
                                 </td>
                                 <td>{{$supplier->SupplierName}}</td>
                                 <td>{{$supplier->ContactName}}</td>
+                                <td class="text-end">{{$supplier->Profit}}</td>
                                 <td>{{$supplier->ContactNo}}</td>
                                 <td>{{$supplier->OfficeNo}}</td>
                                 <td>{{$supplier->Street}}</td>

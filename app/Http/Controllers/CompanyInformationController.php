@@ -131,7 +131,7 @@ class CompanyInformationController extends Controller
 
                 $updatecompanyinformation = CompanyInformation::where('CompanyCode',$company->CompanyCode)->update($formData);
 
-                return redirect()->route('companyinformation')->with('success','company information update successful');
+                return redirect()->route('companyinformation.edit', $company->CompanyCode)->with('success','company information update successful');
 
             }catch(QueryException $e) {
 
