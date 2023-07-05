@@ -7,7 +7,7 @@ $(document).ready(function () {
     var tableHeight = 380;
 
     if (windowWidth <= 766) {
-        tableHeight = 320;
+        tableHeight = 330;
     } else {
         tableHeight = 450;
     }
