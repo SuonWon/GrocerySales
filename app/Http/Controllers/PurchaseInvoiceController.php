@@ -149,7 +149,15 @@ class PurchaseInvoiceController extends Controller
             'PaidDate' => ['nullable'],
             'Remark' => ['nullable'],
             'purchaseInvoiceDetails' => ['nullable']
-        ])->validate();
+        ]);
+
+        if ($formData->fails()) {
+
+            $errors = $formData->errors();
+    
+            return response()->json(['message' => 'error','errors'=>$errors]);
+            
+        }
 
         $rules = [
             'WarehouseNo' => 'required',
@@ -292,7 +300,15 @@ class PurchaseInvoiceController extends Controller
             'PlateNo' => ['nullable'],
             'Remark' => ['nullable'],
             'purchaseInvoiceDetails' => ['required']
-        ])->validate();
+        ]);
+
+        if ($formData->fails()) {
+
+            $errors = $formData->errors();
+    
+            return response()->json(['message' => 'error','errors'=>$errors]);
+            
+        }
 
         $rules = [
             'WarehouseNo' => 'required',

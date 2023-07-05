@@ -127,6 +127,8 @@ class SaleInvoiceController extends Controller
 
 
         // Validate the JSON data
+
+
         $formData = Validator::make($jsonData, [
 
             'SalesDate' => ['required'],
@@ -143,7 +145,15 @@ class SaleInvoiceController extends Controller
             'PlateNo' => ['nullable'],
             'Remark' => ['nullable'],
             'saleinvoicedetails' => ['required']
-        ])->validate();
+        ]);
+
+        if ($formData->fails()) {
+
+            $errors = $formData->errors();
+    
+            return response()->json(['message' => 'error','errors'=>$errors]);
+            
+        }
 
         $rules = [
             'WarehouseNo' => 'required',
@@ -288,7 +298,15 @@ class SaleInvoiceController extends Controller
             'PlateNo' => ['nullable'],
             'Remark' => ['nullable'],
             'saleinvoicedetails' => ['required']
-        ])->validate();
+        ]);
+
+        if ($formData->fails()) {
+
+            $errors = $formData->errors();
+    
+            return response()->json(['message' => 'error','errors'=>$errors]);
+            
+        }
 
         $rules = [
             'WarehouseNo' => 'required',
