@@ -51,21 +51,44 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 class="mb-0">Grocery Sales</h3>
-                <strong>GS</strong>
+                <h3 class="mb-0">Hein Zarni POS</h3>
+                <strong>HZN</strong>
             </div>
 
             <ul class="list-unstyled components">
                 @php
-                    $role = auth()->user()->systemrole->RoleDesc
+                    $role = auth()->user()->systemrole->RolePermissions;
+                    
+                    $rolepermissions = explode(",", $role);
+
+                    
+                  
+                    $dashboardPermission = in_array('dashboard', $rolepermissions);
+                    $setupPermission = in_array('setup', $rolepermissions);
+                    $purchasePermission = in_array('purchase', $rolepermissions);
+                    $salesPermission = in_array('sales', $rolepermissions);
+                    $reportPermission = in_array('report', $rolepermissions);
+                    $systemPermission = in_array('system',$rolepermissions);
+
+                    
                 @endphp
-                @if ($role == "admin")
+
+               
+               
+                @if ($dashboardPermission)
+               
                     <li class="active">
                         <a href="/dashboard" aria-expanded="false">
                             <i class="bi bi-speedometer"></i>
                             Dashboard
                         </a>
                     </li>
+
+                
+                    
+                @endif
+
+                @if ($setupPermission)
                     <li>
                         <a href="#setupSubMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <i class="bi bi-sliders"></i>
@@ -96,55 +119,56 @@
                         </ul>
                     </li>
                 @endif
-                <li>
-                    <a href="#purchaseSetting" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="bi bi-cart"></i>
-                        Purchase
-                    </a>
-                    <ul class="collapse list-unstyled" id="purchaseSetting">
-                        <li>
-                            <a href="/itemarrival/index"><span class="me-2"><i class="bi bi-ui-radios"></i></span>Item Arrival</a>
-                        </li>
-                        <li>
-                            <a href="/purchaseinvoices/index"><span class="me-2"><i class="bi bi-list-check"></i></span>Purchase List</a>
-                        </li>
-                        <li>
-                            <a href="/purchaseinvoices/add"><span class="me-2"><i class="bi bi-bag-plus"></i></span>Purchase Invoice</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#saleSetting" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-sack-dollar"></i>
-                        Sales
-                    </a>
-                    <ul class="collapse list-unstyled" id="saleSetting">
-                        <li>
-                            <a href="/salesinvoices/index"><span class="me-2"><i class="bi bi-list-check"></i></span>Sales List</a>
-                        </li>
-                        <li>
-                            <a href="/salesinvoices/add"><span class="me-2"><i class="bi bi-file-text"></i></span>Sales Invoice</a>
-                        </li>
-                    </ul>
-                </li>
-                @if ($role=="admin")
+
+                @if ($purchasePermission)
+                    <li>
+                        <a href="#purchaseSetting" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="bi bi-cart"></i>
+                            Purchase
+                        </a>
+                        <ul class="collapse list-unstyled" id="purchaseSetting">
+                            <li>
+                                <a href="/itemarrival/index"><span class="me-2"><i class="bi bi-ui-radios"></i></span>Item Arrival</a>
+                            </li>
+                            <li>
+                                <a href="/purchaseinvoices/index"><span class="me-2"><i class="bi bi-list-check"></i></span>Purchase List</a>
+                            </li>
+                            <li>
+                                <a href="/purchaseinvoices/add"><span class="me-2"><i class="bi bi-bag-plus"></i></span>Purchase Invoice</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
+                @if ($salesPermission)
+                    <li>
+                        <a href="#saleSetting" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fa fa-sack-dollar"></i>
+                            Sales
+                        </a>
+                        <ul class="collapse list-unstyled" id="saleSetting">
+                            <li>
+                                <a href="/salesinvoices/index"><span class="me-2"><i class="bi bi-list-check"></i></span>Sales List</a>
+                            </li>
+                            <li>
+                                <a href="/salesinvoices/add"><span class="me-2"><i class="bi bi-file-text"></i></span>Sales Invoice</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+               
+               
+                @if ($reportPermission)
                     <li>
                         <a href="/report/index">
                             <i class="bi bi-file-earmark-pdf"></i>
                             Reports
                         </a>
-                        {{-- <ul class="collapse list-unstyled" id="reportSubmenu">
-                            <li>
-                                <a href="/user/index"><span class="me-2"><i class="bi bi-file-text"></i></span>Item</a>
-                            </li>
-                            <li>
-                                <a href="/customer/reports"><span class="me-2"><i class="bi bi-file-text"></i></span>Customer</a>
-                            </li>
-                            <li>
-                                <a href="/supplier/reports"><span class="me-2"><i class="bi bi-file-text"></i></span>Supplier</a>
-                            </li>
-                        </ul> --}}
+                       
                     </li>
+                @endif
+
+                @if ($systemPermission)
                     <li>
                         <a href="#settingSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <i class="bi bi-gear-wide-connected"></i>
@@ -160,6 +184,8 @@
                         </ul>
                     </li>
                 @endif
+                    
+                
             </ul>
             <div class="logout">
                 <a href="/logout">
@@ -169,6 +195,10 @@
             <div class="sidebar-footer">
                 {{-- <p class="text-muted mb-0">Copyright Hein Zarni &copy; 2023</p> --}}
                 <p class="text-muted mb-0">Powered by <a href="https://www.facebook.com/utcmandalay" target="_blank">Universal Technology</a></p>
+                <strong>
+                    <span>Powered by</span> <br>
+                    <a href="https://www.facebook.com/utcmandalay" target="_blank">UTC</a>
+                </strong>
             </div>
         </nav>
 
@@ -181,10 +211,10 @@
                     <button type="button" id="sidebarCollapse" class="btn main-btn">
                         <i class="fas fa-align-left"></i>
                     </button>
-                    <span class="version">v 0.0.1</span>
+                    <span class="version">v{{ env('VERSION') }}</span>
                     <div class="ms-auto">
                         <p class="nav-link mb-0">
-                            <span class="me-2"><i class="bi bi-person-circle"></i></span>{{auth()->user()->Username}}
+                            <span class="me-2"><i class="bi bi-person-circle"></i></span>{{auth()->user()->Fullname}}
                         </p>
                     </div>
                 </div>
@@ -200,8 +230,6 @@
             @endif --}}
             
             {{$slot}}
-
-           
 
         </div>
 

@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href={{ asset('./assets/css/login_form.css') }} type="text/css">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('./assets/css/toastr.min.css') }}">
 
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -69,20 +69,14 @@
                     <button type="button" id="loginSubmit">Login</button>
                 </div>
             </form>
-            @if (Session::has('danger'))
-                <div class="alert alert-danger alert-dismissible fade show" style="font-size: 0.9rem;" role="alert">
-                    {{ session('danger') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                        style="font-size: 0.9rem;"></button>
-                </div>
-            @endif
+            
             <div class="versionSection text-muted">
                 <div class="row">
                     <div class="col-8">
                         <h6>HEIN ZARNI <span id="UpdateYear"></span></h6>
                     </div>
                     <div class="col-4 text-end">
-                        <h6>v 0.0.1</h6>
+                        <h6>v {{ env('VERSION') }}</h6>
                     </div>
                 </div>
             </div>
@@ -115,6 +109,8 @@
             toastr.success('{{ Session::get('success') }}');
         @elseif (Session::has('warning'))
             toastr.warning('{{ Session::get('warning') }}');
+        @elseif (Session::has('danger'))
+        toastr.error('{{ Session::get('danger') }}');
         @endif
     </script>
 

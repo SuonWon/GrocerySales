@@ -24,12 +24,19 @@
             <div class="col-12 col-lg-9 col-xl-7">
                 <div class="row">
                     <div class="col-12 mb-3 companyImgUpload">
-                        <div class="inputImageUpload shadow">
+                        <div class="inputImageUpload rounded-3 shadow">
+                            @if ($companyinformation->CompanyLogo == '')
+                            <input type="file" accept="image/*" class="inputImage shadow-sm d-none" name="CompanyLogo" id="file" onchange="loadFile(event)">
+                            <label for="file" class="inputImageLabel"><i class="fa-regular fa-beat fa-image sizeImg"></i></label>
+                                <img class="uploadImageDisplayEdit img-fluid border-0" id="output"  />
+                            @else
                             <input type="file" accept="image/*" class="inputImage shadow-sm" name="CompanyLogo" id="file" onchange="loadFile(event)">
-                            <label for="file" class="inputImageLabelEdit"><i class="fa-regular fa-beat fa-image sizeImg"></i></label>
-                            <img class="uploadImageDisplayEdit" id="output"  src='{{ asset($companyinformation->CompanyLogo) }}'/>
+                            <label for="file" class="inputImageLabel border-0"></label>
+                                <img class="uploadImageDisplayEdit img-fluid" id="output"  src='{{asset($companyinformation->CompanyLogo) }}'/>
+                            @endif
                         </div>
                     </div>
+
                     <div class="col-6 mb-3">
                         <label for="CompanyCode" class="form-label cust-label">Company Code</label>
                         <input type="text" class="form-control cust-input-box" id="CompanyCode" name="CompanyCode" value="{{$companyinformation->CompanyCode}}" disabled>

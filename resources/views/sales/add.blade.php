@@ -47,7 +47,7 @@
         
         <div class="row justify-content-between">
             {{-- Title --}}
-            <div class="col-6 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">Sales Invoice</h3>
             </div>
             {{-- Back Button --}}
@@ -156,7 +156,7 @@
                         <table class="table" id="saleProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
-                                    <th style="width: 50px;">No</th>
+                                    {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Code</th>
                                     <th style="width: 200px;">Warehouse Code</th>
                                     <th style="width: 120px;">Quantity</th>
@@ -214,7 +214,7 @@
                         <div class="row justify-content-end mt-2">
                             <label for="saleSubTotal" class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Sub Total :</label>
                             <div class="col-5 col-xl-5 col-xxl-4 mb-2">
-                                <input type="number" class="form-control cust-input-box" id="saleSubTotal" name="SubTotal" value="0" disabled>
+                                <input type="text" class="form-control cust-input-box text-end" id="saleSubTotal" name="SubTotal" value="0" disabled>
                             </div>
                         </div>
                         {{-- Total Charges --}}
@@ -292,9 +292,7 @@
 
         tableRow.setAttribute("id", saleRowNo);
 
-        tableRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ saleRowNo +`" disabled>
-                            </td>
+        tableRow.innerHTML = `
                             <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
                                 <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -393,9 +391,7 @@
 
         newRow.setAttribute("id", saleRowNo);
 
-        newRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ saleRowNo +`" disabled>
-                            </td>
+        newRow.innerHTML = `
                             <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
                                 <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -838,9 +834,7 @@
 
             if( rowId == refNo) {
 
-                mainTable.rows[i].innerHTML = `<td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="referenceNo" value="`+ refNo +`" disabled>
-                                    </td>
+                mainTable.rows[i].innerHTML = `
                                     <td class="px-0 py-0" id="row_`+ refNo +`">
                                         <select name="" id="`+ refNo +`" class="saleItemList_`+ refNo +`" onchange="AddSaleItem(this.id,this.value)">
                                             <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>
@@ -881,7 +875,7 @@
                                         <input type="number" class="saleviss_`+ refNo +` text-end" value="`+ TotalViss +`" id="`+ refNo +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="tableInput" name="" id="itemAmount" value="`+ UnitPrice * Quantity +`" disabled>
+                                        <input type="text" class="tableInput" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddSaleDisRate(this.id, this.value);"`+ checkDisRate + ` onfocus="SAddFocusValue(event)">
@@ -963,7 +957,7 @@
 
         });    
         
-        document.getElementById("saleSubTotal").value = subTotal;
+        document.getElementById("saleSubTotal").value = subTotal.toLocaleString();
 
     }
 

@@ -14,6 +14,7 @@
                 'itemId' => $item->ItemCode,
                 'itemName' => $item->ItemName,
                 'itemPrice' => $item->UnitPrice,
+                'weightByPrice' => $item->WeightByPrice,
             ]
         @endphp
 
@@ -58,7 +59,7 @@
         
         <div class="row justify-content-between">
             {{-- Title --}}
-            <div class="col-6 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">Purchase Invoice</h3>
             </div>
             {{-- Back Button --}}
@@ -189,7 +190,7 @@
                         <table class="table" id="purchaseProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
-                                    <th style="width: 50px;">No</th>
+                                    {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Code</th>
                                     <th style="width: 200px;">Warehouse Code</th>
                                     <th style="width: 120px;">Quantity</th>
@@ -314,6 +315,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -330,9 +332,7 @@
 
         tableRow.setAttribute("id", rowNo);
 
-        tableRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ rowNo +`" disabled>
-                            </td>
+        tableRow.innerHTML = `
                             <td class="px-0 py-0" id="row_`+ rowNo +`">
                                 <select name="" id="`+ rowNo +`" class="itemCodeList_`+ rowNo +`" onchange="AddProduct(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -417,6 +417,7 @@
             WarehouseName: "",
             ItemCode : "",
             ItemName : "",
+            WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
             UnitName : "",
@@ -433,9 +434,7 @@
 
         newRow.setAttribute("id", rowNo);
 
-        newRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ rowNo +`" disabled>
-                            </td>
+        newRow.innerHTML = `
                             <td class="px-0 py-0" id="row_`+ rowNo +`">
                                 <select name="" id="`+ rowNo +`" class="itemCodeList_`+ rowNo +`" onchange="AddProduct(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -530,7 +529,9 @@
 
                         e.ItemName = element.itemName;
 
-                        e.Amount = e.Quantity * e.UnitPrice;
+                        e.WeightPrice = element.weightByPrice;
+
+                        //e.Amount = e.Quantity * e.UnitPrice;
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -634,7 +635,7 @@
 
                 }
                 
-                e.Amount = e.UnitPrice *  e.Quantity;
+                // e.Amount = e.UnitPrice *  e.Quantity;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -672,7 +673,7 @@
 
                 }
                 
-                e.Amount = e.Quantity *  inputValue;
+                //e.Amount = e.Quantity *  inputValue;
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -701,6 +702,22 @@
                 if (inputValue > 0) {
 
                     e.TotalViss = inputValue;
+
+                    if (e.TotalViss < e.WeightPrice) {
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                    } else if (e.TotalViss > e.WeightPrice) {
+
+                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+
+                    } else {
+
+                        e.Amount = e.UnitPrice;
+
+                    }
+
+                    e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
                 } else {
 
@@ -810,7 +827,9 @@
 
                     e.IsFOC = 0;
 
-                    let unitTotalAmt = e.UnitPrice * e.Quantity;
+                    //let unitTotalAmt = e.UnitPrice * e.Quantity;
+
+                    let unitTotalAmt = e.Amount
 
                     if (e.LineDisAmt != 0) {
 
@@ -881,9 +900,7 @@
 
             if( rowId == refNo) {
 
-                mainTable.rows[i].innerHTML = `<td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="referenceNo" value="`+ refNo +`" disabled>
-                                    </td>
+                mainTable.rows[i].innerHTML = `
                                     <td class="px-0 py-0" id="row_`+ refNo +`">
                                         <select name="" id="`+ refNo +`" class="itemCodeList_`+ refNo +`" onchange="AddProduct(this.id,this.value)">
                                             <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>
@@ -924,7 +941,7 @@
                                         <input type="number" class="puviss_`+ rowNo +`" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PAddFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ (UnitPrice * Quantity).toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddDiscountRate(this.id, this.value);"`+ checkDisRate + ` onfocus="PAddFocus(event);">

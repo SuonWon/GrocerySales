@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="row px-0">
-                <div class="col-12 px-0 text-end">
+                <div class="col-8 col-md-6 px-0 text-end">
                     {{-- Save Button --}}
                     <button type="submit" class="btn btn-success me-2">
                         <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save

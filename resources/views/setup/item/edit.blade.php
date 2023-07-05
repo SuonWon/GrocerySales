@@ -6,7 +6,7 @@
 
          <div class="row justify-content-between">
                {{-- Title --}}
-               <div class="col-6 p-0">
+               <div class="col-8 col-md-6 p-0">
                     <h3 class="section-title">Create Item</h3>
                </div>
                {{-- Back Button --}}
@@ -98,6 +98,14 @@
                          </div>
                     </div>
                     <div class="row">
+                         {{-- Weight By Price --}}
+                         <div class="col-6 mb-3">
+                              <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
+                              <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="{{$item->WeightByPrice}}" required>
+                              <div class="invalid-feedback">
+                              Please fill weight by price.
+                              </div>
+                         </div>
                          {{-- Default Sales Unit --}}
                          <div class="col-6 col-lg-6 mb-3">
                               <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales Unit</label>

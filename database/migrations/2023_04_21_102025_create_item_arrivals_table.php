@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('TotalBags',10,2);
             $table->decimal('OtherCharges',10,2);
             $table->decimal('TotalCharges',10,2);
-            $table->char('Status',1)->default('O');
+            $table->char('Status',1)->default('N');
             $table->string('Remark',200)->nullable();
             $table->string('CreatedBy',50)->nullable();
             $table->string('ModifiedBy',50)->nullable();

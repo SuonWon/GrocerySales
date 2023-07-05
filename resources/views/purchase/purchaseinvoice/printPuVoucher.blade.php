@@ -75,7 +75,7 @@
                 <div class="col-6 lh-lg offset-3 fs-6">
                     @if ($companyinfo)
                         <span class="p-title">{{$companyinfo->CompanyName}}</span>
-                        <span class="d-block">{{$companyinfo->Street}}</span>
+                        <span class="d-block mt-2">{{$companyinfo->Street}}</span>
                         <span class=""> <i class="fa-solid fa-phone"></i> {{$companyinfo->HotLineNo}} <i class="fa-solid fa-phone mx-1"></i>{{$companyinfo->OfficeNo}}</span>
                     @endif
                 </div>

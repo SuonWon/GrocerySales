@@ -85,22 +85,17 @@ class PurchaseInvoiceController extends Controller
         } else {
             // If both startDate and endDate are null, retrieve records for the current month
        
-            $query->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
-                  ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
+            $query->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->startOfMonth()->toDateString())
+                  ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
 
-            $deletequery->where('purchase_invoices.PurchaseDate', '>=', $this->currentMonth . '-01')
-            ->where('purchase_invoices.PurchaseDate', '<=', $this->currentMonth . '-31');
+            $deletequery->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->startOfMonth()->toDateString())
+            ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
         }
         
 
-        $purchaseinvoices = $query->get();
-
-            
-          
+        $purchaseinvoices = $query->get();   
         
-           
-            $deletepurchaseinvoices = $deletequery->get();
-
+        $deletepurchaseinvoices = $deletequery->get();
    
 
         return view('purchase.purchaseinvoice.index', [

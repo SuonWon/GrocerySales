@@ -26,7 +26,7 @@ class ItemController extends Controller
         $items = Item::orderBy('items.CreatedDate','desc')
         ->join('item_categories', 'items.ItemCategoryCode', '=', 'item_categories.ItemCategoryCode')
         ->join('unit_measurements','items.BaseUnit','=','unit_measurements.UnitCode')
-        ->selectRaw('items.ItemCategoryCode,items.ItemName,items.ItemCode,items.BaseUnit,items.UnitPrice,items.DefSalesUnit,items.DefPurUnit,items.LastPurPrice,items.Discontinued,items.Remark,items.CreatedBy,items.CreatedDate,items.ModifiedDate,items.ModifiedBy')
+        ->selectRaw('items.ItemCategoryCode,items.ItemName,items.ItemCode,items.BaseUnit,items.UnitPrice,items.WeightByPrice,items.DefSalesUnit,items.DefPurUnit,items.LastPurPrice,items.Discontinued,items.Remark,items.CreatedBy,items.CreatedDate,items.ModifiedDate,items.ModifiedBy')
         ->selectRaw('item_categories.ItemCategoryCode, item_categories.ItemCategoryName')
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
@@ -64,6 +64,7 @@ class ItemController extends Controller
         } else {
             $formData['Discontinued'] = 0;
         }
+        $formData['WeightByPrice'] = request('WeightByPrice');
         $formData['DefSalesUnit'] = request('DefSalesUnit');
         $formData['DefPurUnit'] = request('DefPurUnit');
         $formData['Remark'] = request('Remark');
@@ -120,6 +121,10 @@ class ItemController extends Controller
         } else {
             $formData['Discontinued'] = 0;
         }
+        $formData['WeightByPrice'] = request('WeightByPrice');
+        $formData['DefSalesUnit'] = request('DefSalesUnit');
+        $formData['DefPurUnit'] = request('DefPurUnit');
+        $formData['Remark'] = request('Remark');
         $formData['ModifiedDate'] = $this->datetime;
         $formData['Modifiedby'] = auth()->user()->Username;
         

@@ -72,7 +72,7 @@
         
         <div class="row justify-content-between">
             {{-- Title --}}
-            <div class="col-6 p-0">
+            <div class="col-8 col-md-6 p-0">
                 <h3 class="section-title">Sales Invoice</h3>
             </div>
             {{-- Back Button --}}
@@ -172,7 +172,7 @@
                         <table class="table" id="saleProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
-                                    <th style="width: 50px;">No</th>
+                                    {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Code</th>
                                     <th style="width: 200px;">Warehouse Code</th>
                                     <th style="width: 120px;">Quantity</th>
@@ -190,9 +190,9 @@
                             <tbody id="selectedSalesItems">
                                 @foreach ( $saleinvoice->saleinvoicedetails  as $key => $saleinvoicedetail )
                                     <tr id="{{$key + 1}}">
-                                        <td class="px-0 py-0">
+                                        {{-- <td class="px-0 py-0">
                                             <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
-                                        </td>
+                                        </td> --}}
                                         <td class="px-0 py-0" id="sRow{{$key + 1}}">
                                             <select name="" id="{{$key + 1}}" class="saleItemList_{{$key + 1}}" onchange="AddSaleItem(this.id,this.value)">
                                                 @if(isset($items) && is_object($items) && count($items) > 0)
@@ -257,7 +257,7 @@
                                             <input type="text" class="text-end" id="{{$key + 1}}" onblur="AddSaleDisAmt(this.id, this.value);" value="{{number_format($saleinvoicedetail->LineDisAmt)}}" onfocus="FocusValue(event);">
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" name="" id="totalAmt" value="{{$saleinvoicedetail->LineTotalAmt}}" disabled>
+                                            <input type="text" class="tableInput text-end" name="" id="totalAmt" value="{{number_format($saleinvoicedetail->LineTotalAmt)}}" disabled>
                                         </td>
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2" id="{{$key + 1}}" {{$saleinvoicedetail->IsFOC == 1 ? "checked" : ""}} onchange="AddSaleFoc(event, this.id)">
@@ -427,9 +427,7 @@
 
         newRow.setAttribute("id", saleRowNo);
 
-        newRow.innerHTML = `<td class="px-0 py-0">
-                                <input type="text" class="tableInput" name="" id="referenceNo" value="`+ saleRowNo +`" disabled>
-                            </td>
+        newRow.innerHTML = `
                             <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
                                 <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
@@ -797,7 +795,7 @@
 
                     e.LineTotalAmt = 0;
 
-                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC);
+                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, );
 
                 } else {
 
@@ -839,7 +837,7 @@
 
     // ========= Row Replace Function ========== //
     
-    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus = "") {
 
         let checkFoc = "";
 
@@ -875,9 +873,7 @@
 
             if( rowId == refNo) {
 
-                mainTable.rows[i].innerHTML = `<td class="px-0 py-0">
-                                        <input type="text" class="tableInput" name="" id="referenceNo" value="`+ refNo +`" disabled>
-                                    </td>
+                mainTable.rows[i].innerHTML = `
                                     <td class="px-0 py-0" id="row_`+ refNo +`">
                                         <select name="" id="`+ refNo +`" class="saleItemList_`+ refNo +`" onchange="AddSaleItem(this.id,this.value)">
                                             <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>

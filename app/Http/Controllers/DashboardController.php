@@ -9,6 +9,7 @@ use App\Models\PurchaseInvoice;
 use Illuminate\Http\Request;
 use App\Models\SaleInvoice;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 
 class DashboardController extends Controller
@@ -30,11 +31,11 @@ class DashboardController extends Controller
     {
 
         // Sale
-        $startDate = $this->currentMonth . "-01";
-        $endDate = $this->currentMonth . "-31";
+        $startDate = Carbon::now()->startOfMonth()->toDateString();
+        $endDate = Carbon::now()->endOfMonth()->toDateString();
+
         $saleInvoices = Saleinvoice::whereBetween('SalesDate', [$startDate, $endDate])->whereStatus('O')->get();
 
-      
 
         $totalsaleinvoice = $saleInvoices->count();
         $totalsaleamount = $saleInvoices->sum('GrandTotal');
@@ -97,5 +98,6 @@ class DashboardController extends Controller
             'toptencustomers' => $topTenCustomers,
             'items' => $items
         ]);
+
     }
 }
