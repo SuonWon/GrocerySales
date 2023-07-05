@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('CompanyLogo');
             $table->string('Street',100);
             $table->string('City',100);
-            $table->string('OfficeNo',20);
-            $table->string('HotLineNo',20);
+            $table->string('OfficeNo',50);
+            $table->string('HotLineNo',50);
             $table->string('Remark',200)->nullable();
             $table->string('CreatedBy',50)->nullable();
             $table->string('ModifiedBy',50)->nullable();

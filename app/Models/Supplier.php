@@ -22,6 +22,7 @@ class Supplier extends Model
         'SupplierCode',
         'SupplierName',
         'ContactName',
+        'Profit',
         'ContactNo',
         'OfficeNo',
         'Street',

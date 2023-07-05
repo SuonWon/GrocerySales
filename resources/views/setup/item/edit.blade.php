@@ -1,4 +1,4 @@
-<x-layout title="Create Item">
+<x-layout title="Update Item">
 
      <div class="container-fluid content-body mt-3">
  
@@ -7,7 +7,7 @@
          <div class="row justify-content-between">
                {{-- Title --}}
                <div class="col-8 col-md-6 p-0">
-                    <h3 class="section-title">Create Item</h3>
+                    <h3 class="section-title">Update Item</h3>
                </div>
                {{-- Back Button --}}
                <div class="col-4 p-0 text-end">
@@ -70,7 +70,7 @@
                     <div class="row">
                          {{-- Base Unit --}}
                          <div class="col-6 mb-3">
-                              <label for="custNRC" class="form-label cust-label">Base Unit</label>
+                              <label for="baseUnit" class="form-label cust-label">Base Unit</label>
                               <select class="mb-3 form-select" id="selectUnit" name="BaseUnit" required>
                                    @forelse ($units as $unit)
                
@@ -86,24 +86,6 @@
                               </select>
                               <div class="invalid-feedback">
                                    Please fill base unit.
-                              </div>
-                         </div>
-                         {{-- Unit Price --}}
-                         <div class="col-6 mb-3">
-                              <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                              <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
-                              <div class="invalid-feedback">
-                              Please fill unit price.
-                              </div>
-                         </div>
-                    </div>
-                    <div class="row">
-                         {{-- Weight By Price --}}
-                         <div class="col-6 mb-3">
-                              <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
-                              <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="{{$item->WeightByPrice}}" required>
-                              <div class="invalid-feedback">
-                              Please fill weight by price.
                               </div>
                          </div>
                          {{-- Default Sales Unit --}}
@@ -146,19 +128,36 @@
                                    Please fill default purchase unit.
                               </div>
                          </div>
+                         {{-- Unit Price --}}
+                         <div class="col-6 mb-3">
+                              <label for="unitPrice" class="form-label cust-label">Unit Price</label>
+                              <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice ? $item->UnitPrice : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                              <div class="invalid-feedback">
+                              Please fill unit price.
+                              </div>
+                         </div>
                     </div>
-               </div>
-               <div class="col-12 col-lg-6">
                     <div class="row">
+                         {{-- Weight By Price --}}
+                         <div class="col-6 mb-3">
+                              <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
+                              <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="{{$item->WeightByPrice ? $item->WeightByPrice : 1}}" required>
+                              <div class="invalid-feedback">
+                              Please fill weight by price.
+                              </div>
+                         </div>
                          {{-- Last Purchase Unit --}}
                          <div class="col-6 mb-3">
-                              <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Unit</label>
-                              <input type="number" class="form-control cust-input-box" id="lastPurchaseUnit" name="LastPurPrice" value="{{$item->LastPurPrice}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                              <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
+                              <input type="number" class="form-control cust-input-box" id="lastPurchaseUnit" name="LastPurPrice" value="{{$item->LastPurPrice ? $item->LastPurPrice : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                               <div class="invalid-feedback">
                                    Please fill last purchase price.
                               </div>
                          </div>
+                         
                     </div>
+               </div>
+               <div class="col-12 col-lg-6">
                     <div class="row">
                          {{-- Remark --}}
                          <div class="col-12 mb-3">

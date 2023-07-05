@@ -409,7 +409,8 @@ ul ul a {
     height: 35px;
 }
 
-.cust-input-box {
+.cust-input-box,
+.cust-form-select {
     width: 100%;
     padding: 0.35rem 0.35rem !important;
     height: 30px;
@@ -431,7 +432,8 @@ ul ul a {
 }
 
 .cust-textarea:focus,
-.cust-input-box:focus {
+.cust-input-box:focus,
+.cust-form-select:focus {
     box-shadow: none;
     border: 1px solid lightgray;
     border-radius: 4px 4px 2px 2px;

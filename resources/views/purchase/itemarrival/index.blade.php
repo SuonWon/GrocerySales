@@ -34,8 +34,9 @@
                             <th style="width: 100px;">Plate No</th>
                             <th style="width: 120px;">Arrival Date</th>
                             <th style="width: 100px;">Status</th>
-                            <th class="text-end" style="width: 150px;">Charges Per Bag</th>
-                            <th class="text-end" style="width: 150px;">Total Bags</th>
+                            <th class="text-end" style="width: 150px;">Total Bags/Viss</th>
+                            <th class="text-end" style="width: 150px;">Charges Per Bag/Viss</th>
+                            <th class="text-end" style="width: 150px;">Charges</th>
                             <th class="text-end" style="width: 150px;">Other Charges</th>
                             <th class="text-end" style="width: 150px;">Total Charges</th>
                             @if ($role == 'admin')
@@ -65,11 +66,12 @@
                                         <span class="badge text-bg-danger ">Void</span>
                                     @endif
                                 </td>
-                                <td class="text-end">{{number_format($itemarrival->ChargesPerBag)}}</td>
                                 <td class="text-end">{{$itemarrival->TotalBags}}</td>
-                                <td class="text-end">{{number_format($itemarrival->OtherCharges)}}</td>
+                                <td class="text-end">{{number_format($itemarrival->ChargesPerBag)}}</td>
                                 <td class="text-end">{{number_format($itemarrival->TotalCharges)}}</td>
-                                @if ($role == 'admin')
+                                <td class="text-end">{{number_format($itemarrival->OtherCharges)}}</td>
+                                <td class="text-end">{{number_format($itemarrival->TotalCharges + $itemarrival->OtherCharges)}}</td>
+                                @if ($role == 'admin') 
                                     <td>{{$itemarrival->CreatedBy}}</td>
                                     <td>{{$itemarrival->CreatedDate}}</td>
                                     <td>{{$itemarrival->ModifiedBy}}</td>

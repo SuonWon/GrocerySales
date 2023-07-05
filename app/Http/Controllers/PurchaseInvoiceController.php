@@ -223,7 +223,7 @@ class PurchaseInvoiceController extends Controller
             ->join('warehouses', 'purchase_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'purchase_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'purchase_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
-            ->select('purchase_invoice_details.*', 'warehouses.WarehouseCode', 'warehouses.WarehouseName', 'items.ItemCode', 'items.ItemName', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
+            ->select('purchase_invoice_details.*', 'warehouses.WarehouseCode', 'warehouses.WarehouseName', 'items.ItemCode', 'items.ItemName','items.WeightByPrice', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
             ->get();
 
         $purchaseinvoice->purchaseinvoicedetails = $purchaseinvoicedetails;

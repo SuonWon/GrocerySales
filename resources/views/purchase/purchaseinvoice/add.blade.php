@@ -703,25 +703,29 @@
 
                     e.TotalViss = inputValue;
 
-                    if (e.TotalViss < e.WeightPrice) {
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                    // if (e.TotalViss < e.WeightPrice) {
 
-                    } else if (e.TotalViss > e.WeightPrice) {
+                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                    // } else if (e.TotalViss > e.WeightPrice) {
 
-                    } else {
+                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
-                        e.Amount = e.UnitPrice;
+                    // } else {
 
-                    }
+                    //     e.Amount = e.UnitPrice;
+
+                    // }
 
                     e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
                 } else {
 
                     e.TotalViss = 0;
+
+                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
 
                 }
 
@@ -964,9 +968,9 @@
 
         }
 
-        if (nextFocus != "") {
-            document.querySelector("."+nextFocus).focus();
-        }
+        // if (nextFocus != "") {
+        //     document.querySelector("."+nextFocus).focus();
+        // }
 
         dselect(document.querySelector(".warehouseList_"+ refNo), config);
 
@@ -1267,7 +1271,7 @@
 
             let year = date.getFullYear();
 
-            let day = date.getDate();
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
             document.getElementById("paidDate").value = year + "-" + month + "-" + day;
 

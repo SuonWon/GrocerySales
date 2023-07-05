@@ -53,7 +53,7 @@
                     </div>
                     {{-- Discontinued --}}
                     <div class="col-2 mb-3">
-                        <label class="cust-label form-label text-end" for="discontinued">Discontinued</label>
+                        <label class="cust-label form-label text-end" for="discontinued">Is Active</label>
                         <div class="col-sm-8 form-check form-switch ms-3">
                             <input class="form-check-input" type="checkbox" role="switch" id="discontinued" name="Discontinued" checked>
                             <x-formerror name="Discontinued"></x-formerror>
@@ -94,33 +94,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{-- Unit Price --}}
-                    <div class="col-6 mb-3">
-                        <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                        <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
-                        <div class="invalid-feedback">
-                            Please fill unit price.
-                        </div>
-                    </div>
-                    {{-- Weight By Price --}}
-                    <div class="col-6 mb-3">
-                        <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
-                        <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="1" required>
-                        <div class="invalid-feedback">
-                            Please fill weight by price.
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="row">
-                    {{-- Last Purchase Unit --}}
-                    <div class="col-6 mb-3">
-                        <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
-                        <input type="number" class="form-control cust-input-box" id="lastPurchasePrice" name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
-                        <div class="invalid-feedback">
-                            Please fill last purchase price.
-                        </div>
-                    </div>
                     {{-- Default Sale Unit --}}
                     <div class="col-6 col-lg-6 mb-3">
                         <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales Unit</label>
@@ -151,6 +124,34 @@
                             Please fill default purchase unit.
                         </div>
                     </div>
+                    
+                </div>
+                <div class="row">
+                    {{-- Unit Price --}}
+                    <div class="col-6 mb-3">
+                        <label for="unitPrice" class="form-label cust-label">Unit Price</label>
+                        <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="0" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                        <div class="invalid-feedback">
+                            Please fill unit price.
+                        </div>
+                    </div>
+                    {{-- Weight By Price --}}
+                    <div class="col-6 mb-3">
+                        <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
+                        <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="1" required>
+                        <div class="invalid-feedback">
+                            Please fill weight by price.
+                        </div>
+                    </div>
+                    {{-- Last Purchase Unit --}}
+                    <div class="col-6 mb-3">
+                        <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
+                        <input type="number" class="form-control cust-input-box" id="lastPurchasePrice" name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" value="0" required>
+                        <div class="invalid-feedback">
+                            Please fill last purchase price.
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="col-12 col-lg-6">
