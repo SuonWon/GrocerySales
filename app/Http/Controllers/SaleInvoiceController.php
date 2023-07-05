@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -144,17 +145,43 @@ class SaleInvoiceController extends Controller
             'saleinvoicedetails' => ['required']
         ])->validate();
 
+        $rules = [
+            'WarehouseNo' => 'required',
+            'ItemCode' => 'required',
+            'Quantity' => 'required',
+            'PackedUnit' => 'required',
+            'TotalViss' => 'required',
+            'UnitPrice' => 'required',
+            'Amount' => 'required',
+            'LineTotalAmt' => 'required'
+        ];
+
+        $saleinvoicedetails = $formData['saleinvoicedetails'];
+
+        foreach ($saleinvoicedetails as $saleDetails) {
+            $validator = Validator::make($saleDetails, $rules);
+
+        
+            if ($validator->fails()) {
+              
+                $errors = $validator->errors();
+    
+                return response()->json(['message' => 'error','errors'=>$errors]);
+                
+            }
+        }
+
         if ($formData['IsPaid'] == 0) {
             unset($formData['PaidDate']);
         }
 
-        // return response()->json(['message' => $formData]);
+        
 
         $InvoiceNo = GenerateId::generatePrimaryKeyId('sale_invoices', 'InvoiceNo', 'SV-', true);
 
         $formData['InvoiceNo'] = $InvoiceNo;
 
-        $saleinvoicedetails = $formData['saleinvoicedetails'];
+        
 
         // Add additional data to the form data
         $formData['CreatedBy'] = auth()->user()->Username;
@@ -263,11 +290,37 @@ class SaleInvoiceController extends Controller
             'saleinvoicedetails' => ['required']
         ])->validate();
 
+        $rules = [
+            'WarehouseNo' => 'required',
+            'ItemCode' => 'required',
+            'Quantity' => 'required',
+            'PackedUnit' => 'required',
+            'TotalViss' => 'required',
+            'UnitPrice' => 'required',
+            'Amount' => 'required',
+            'LineTotalAmt' => 'required'
+        ];
+
+        $saleinvoicedetails = $formData['saleinvoicedetails'];
+
+        foreach ($saleinvoicedetails as $saleDetails) {
+            $validator = Validator::make($saleDetails, $rules);
+
+        
+            if ($validator->fails()) {
+              
+                $errors = $validator->errors();
+    
+                return response()->json(['message' => 'error','errors'=>$errors]);
+                
+            }
+        }
+
 
         $formData['InvoiceNo'] = $saleinvoice->InvoiceNo;
         $formData['ModifiedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = $this->datetime;
-        $saleinvoicedetails = $formData['saleinvoicedetails'];
+        
         unset($formData['saleinvoicedetails']);
         try {
 

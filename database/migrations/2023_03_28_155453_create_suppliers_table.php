@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('SupplierCode',10)->primary();
             $table->string('SupplierName',100);
             $table->string('ContactName',100);
+            $table->decimal('Profit',10,1);
             $table->string('ContactNo',50)->nullable();
             $table->string('OfficeNo',50)->nullable();
             $table->string('Street',100)->nullable();

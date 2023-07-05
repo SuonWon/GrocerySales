@@ -1226,6 +1226,22 @@
 
                     }
 
+                }else if(response.message == "error"){
+                    
+                    const err = response.errors;
+
+                   
+                    for (let field in err) {
+                        if (err.hasOwnProperty(field)) {
+                            const errorMessages = err[field];
+
+                            // Output each error message for the field
+                            errorMessages.forEach(function (errorMessage) {
+                                toastr.warning(errorMessage);
+                            });
+                        }
+                    }
+
                 }
             
             },

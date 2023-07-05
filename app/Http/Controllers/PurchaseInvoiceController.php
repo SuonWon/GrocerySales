@@ -151,14 +151,38 @@ class PurchaseInvoiceController extends Controller
             'purchaseInvoiceDetails' => ['nullable']
         ])->validate();
 
+        $rules = [
+            'WarehouseNo' => 'required',
+            'ItemCode' => 'required',
+            'Quantity' => 'required',
+            'PackedUnit' => 'required',
+            'TotalViss' => 'required',
+            'UnitPrice' => 'required',
+            'Amount' => 'required',
+            'LineTotalAmt' => 'required'
+        ];
 
+        $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
+
+        foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
+
+            $validator = Validator::make($purchaseInvoiceDetail, $rules);
+
+            if ($validator->fails()) {
+              
+                $errors = $validator->errors();
+    
+                return response()->json(['message' => 'error','errors'=>$errors]);
+                
+            }
+        }
 
         $formData['InvoiceNo'] = GenerateId::generatePrimaryKeyId('purchase_invoices', 'InvoiceNo', 'PV-', true, false);
         $InvoiceNo = $formData['InvoiceNo'];
         $ArrivalCode = $formData['ArrivalCode'];
 
 
-        $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
+        
         // Add additional data to the form data
         $formData['CreatedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = null;
@@ -270,13 +294,39 @@ class PurchaseInvoiceController extends Controller
             'purchaseInvoiceDetails' => ['required']
         ])->validate();
 
+        $rules = [
+            'WarehouseNo' => 'required',
+            'ItemCode' => 'required',
+            'Quantity' => 'required',
+            'PackedUnit' => 'required',
+            'TotalViss' => 'required',
+            'UnitPrice' => 'required',
+            'Amount' => 'required',
+            'LineTotalAmt' => 'required'
+        ];
+
+        $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
+       
+        foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
+            $validator = Validator::make($purchaseInvoiceDetail, $rules);
+
+        
+            if ($validator->fails()) {
+              
+                $errors = $validator->errors();
+    
+                return response()->json(['message' => 'error','errors'=>$errors]);
+                
+            }
+        }
+
         $oldArrivalCode = $purchaseinvoice->ArrivalCode;
         $newArrivalCode = $formData['ArrivalCode'];
 
         $formData['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
         $formData['ModifiedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = $this->datetime;
-        $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
+        
 
         unset($formData['purchaseInvoiceDetails']);
         try {

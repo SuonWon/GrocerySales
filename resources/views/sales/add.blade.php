@@ -1102,6 +1102,8 @@
 
         });
 
+        toastr.options.timeOut = 10000;
+
         $.ajaxSetup({
 
             headers: {
@@ -1130,7 +1132,7 @@
 
         data = JSON.stringify(data);
 
-    
+        console.log(data);
 
         $.ajax({
             url: '/salesinvoices/add' ,
@@ -1157,14 +1159,33 @@
 
                     }
 
+                }else if(response.message == "error"){
+                    
+                    const err = response.errors;
+
+                   
+                    for (let field in err) {
+                        if (err.hasOwnProperty(field)) {
+                            const errorMessages = err[field];
+
+                            // Output each error message for the field
+                            errorMessages.forEach(function (errorMessage) {
+                                toastr.warning(errorMessage);
+                            });
+                        }
+                    }
+
                 }
             
             },
             error: function(error) {
-                console.log('no');
+               
                 console.log(error.responseText);
                 res = JSON.parse(error.responseText);
-                console.log(res);
+                if(res){
+                    toastr.error(res);
+                }
+                
             }
         });
     };

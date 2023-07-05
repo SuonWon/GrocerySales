@@ -48,6 +48,7 @@ class SupplierController extends Controller
         $formData['SupplierCode'] = GenerateId::generatePrimaryKeyId('suppliers','SupplierCode','SP-');
  
         $formData['ContactNo'] = request('ContactNo');
+        $formData['Profit'] = request('Profit');
         $formData['OfficeNo'] = request('OfficeNo');
         $formData['IsActive'] = request('IsActive');
         if ($formData['IsActive'] == "on") {
@@ -91,6 +92,7 @@ class SupplierController extends Controller
                 'SupplierName'=>['required'],
                 'ContactName' => ['required'],    
             ]);
+            $formData['Profit'] = request('Profit');
             $formData['SupplierCode'] = $supplier->SupplierCode;
             $formData['ContactNo'] = request('ContactNo');
             $formData['OfficeNo'] = request('OfficeNo');
