@@ -46,7 +46,8 @@ class SupplierController extends Controller
         ]);
 
         $formData['SupplierCode'] = GenerateId::generatePrimaryKeyId('suppliers','SupplierCode','SP-');
- 
+        
+        $formData['Profit'] = request('Profit');
         $formData['ContactNo'] = request('ContactNo');
         $formData['Profit'] = request('Profit');
         $formData['OfficeNo'] = request('OfficeNo');
@@ -61,7 +62,7 @@ class SupplierController extends Controller
         $formData['City'] = request('City');
         $formData['Remark'] = request('Remark');
         $formData['CreatedBy'] = auth()->user()->Username;
-        $formData['ModifiedDate'] = null; 
+        $formData['ModifiedDate'] = null;
 
         try{
             $newsupplier = Supplier::create($formData);
@@ -94,6 +95,7 @@ class SupplierController extends Controller
             ]);
             $formData['Profit'] = request('Profit');
             $formData['SupplierCode'] = $supplier->SupplierCode;
+            $formData['Profit'] = request('Profit');
             $formData['ContactNo'] = request('ContactNo');
             $formData['OfficeNo'] = request('OfficeNo');
             $formData['Street'] = request('Street');

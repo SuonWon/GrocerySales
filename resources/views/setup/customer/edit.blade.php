@@ -57,7 +57,7 @@
                     {{-- NRC No --}}
                     <div class="col-6 mb-3">
                         <label for="custNRC" class="form-label cust-label">NRC No</label>
-                        <input type="text" class="form-control cust-input-box" id="custNRC" name="NRCNo" value="{{$customer->NRCNo}}" required>
+                        <input type="text" class="form-control cust-input-box" id="custNRC" name="NRCNo" value="{{$customer->NRCNo}}" >
                         <div class="invalid-feedback">
                             Please fill NRC no.
                         </div>
@@ -65,7 +65,7 @@
                     {{-- Contact No --}}
                     <div class="col-6 mb-3">
                         <label for="custContactNo" class="form-label cust-label">Contact No</label>
-                        <input type="tel" class="form-control cust-input-box" id="custContactNo" name="ContactNo" value="{{$customer->ContactNo}}" required>
+                        <input type="tel" class="form-control cust-input-box" id="custContactNo" name="ContactNo" value="{{$customer->ContactNo}}" >
                         <div class="invalid-feedback">
                             Please fill contact no.
                         </div>
@@ -89,7 +89,7 @@
                     {{-- Email --}}
                     <div class="col-12 col-xl-6 mb-3">
                         <label for="custEmail" class="form-label cust-label text-end">Email</label>
-                        <input type="email" class="form-control cust-input-box" id="custEmail" name="Email" value="{{$customer->Email}}" required>
+                        <input type="email" class="form-control cust-input-box" id="custEmail" name="Email" value="{{$customer->Email}}" >
                         <div class="invalid-feedback">
                             Please fill email address.
                         </div>
