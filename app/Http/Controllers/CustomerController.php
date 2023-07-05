@@ -43,7 +43,7 @@ class CustomerController extends Controller
         $formData = request()->validate([
        
             'CustomerName' => ['required'],
-            'Email' => ['email', Rule::unique('customers', 'email')],
+            // 'Email' => ['email', Rule::unique('customers', 'email')],
         ]);
 
         $formData['CustomerCode'] = GenerateId::generatePrimaryKeyId('customers','CustomerCode','CS-');

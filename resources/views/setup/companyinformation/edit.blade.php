@@ -87,19 +87,16 @@
                         </textarea>
                     </div> -->
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-end">
-                    {{-- Update Button --}}
-                    <button type="submit" class="btn btn-primary py-1">
-                        <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
-                    </button>
-                    {{-- Delete Button --}}
-                    {{-- <button type="button" id="{{$companyinformation->CompanyCode}}" class="btn delete-btn py-1" data-bs-toggle="modal" data-bs-target="#companyDeleteModal" onclick="PassCompanyCode(this.id)">
-                        <span class="me-2"><i class="bi bi-trash-fill"></i></span> Delete
-                    </button> --}}
+                <div class="row">
+                    <div class="col-12 text-end">
+                        {{-- Update Button --}}
+                        <button type="submit" class="btn btn-primary py-1">
+                            <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
+                        </button>
+                    </div>
                 </div>
             </div>
+            
         </form>
 
         {{-- End of Form Section --}}

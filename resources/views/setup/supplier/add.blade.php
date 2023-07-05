@@ -66,16 +66,30 @@
                             Please fill supplier's contact name.
                         </div>
                     </div>
-                    {{-- Contact No --}}
+                    {{-- Profit --}}
                     <div class="col-6 mb-3">
-                        <label for="supplierContactNo" class="form-label cust-label">Contact No</label>
-                        <input type="tel" class="form-control cust-input-box" id="supplierContactNo" name="ContactNo" value="" required>
+                        <label for="supplierProfit" class="form-label cust-label">Profit (%)</label>
+                        <select class="mb-3 form-select cust-form-select" id="supplierProfit" name="Profit" required>
+                            <option selected value="1">1</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2">2</option>
+                            <option value="2.5">2.5</option>
+                            <option value="3">3</option>
+                        </select>
                         <div class="invalid-feedback">
-                            Please fill supplier's contact no.
+                            Please fill profit.
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    {{-- Contact No --}}
+                    <div class="col-6 mb-3">
+                        <label for="supplierContactNo" class="form-label cust-label">Contact No</label>
+                        <input type="tel" class="form-control cust-input-box" id="supplierContactNo" name="ContactNo" value="">
+                        <div class="invalid-feedback">
+                            Please fill supplier's contact no.
+                        </div>
+                    </div>
                     {{-- Office No --}}
                     <div class="col-6 mb-3">
                         <label for="supplierOfficeNo" class="form-label cust-label cust-label text-end">Office No</label>

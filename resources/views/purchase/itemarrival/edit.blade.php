@@ -56,46 +56,53 @@
                             Please fill Plate No.
                         </div>
                     </div>
-                    {{-- Charges Per Bag --}}
-                    <div class="col-12 col-md-6 mb-3">
-                        <label for="ChargesPerBag" class="form-label cust-label">Charges Per Bag</label>
-                        <input type="number" class="form-control cust-input-box" id="ChargesPerBag"
-                            name="ChargesPerBag"
-                            @if (old('ChargesPerBag')) value="{{ old('ChargesPerBag') }}" @else value="{{ $itemarrival->ChargesPerBag }}" @endif
-                            required>
-                        <div class="invalid-feedback">
-                            Please fill Charges Per Bag.
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     {{-- Total Bags --}}
                     <div class="col-12 col-md-4 mb-3">
-                        <label for="TotalBags" class="form-label cust-label">Total Bags</label>
-                        <input type="number" class="form-control cust-input-box" id="TotalBags" name="TotalBags"
+                        <label for="totalBags" class="form-label cust-label">Total Bags/Viss</label>
+                        <input type="number" class="form-control cust-input-box" id="totalBags" name="TotalBags"
                             @if (old('TotalBags')) value="{{ old('TotalBags') }}" @else value="{{ $itemarrival->TotalBags }}" @endif
-                            required>
+                            onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
                         <div class="invalid-feedback">
                             Please fill Total Bags.
                         </div>
                     </div>
-
+                    {{-- Charges Per Bag --}}
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="chargesPerBag" class="form-label cust-label">Charges Per Bag/Viss</label>
+                        <input type="number" class="form-control cust-input-box" id="chargesPerBag"
+                            name="ChargesPerBag"
+                            @if (old('ChargesPerBag')) value="{{ old('ChargesPerBag') }}" @else value="{{ $itemarrival->ChargesPerBag }}" @endif
+                            onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
+                        <div class="invalid-feedback">
+                            Please fill Charges Per Bag.
+                        </div>
+                    </div>
+                    {{-- Total Charges --}}
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="totalCharges" class="form-label cust-label">Charges</label>
+                        <input type="number" class="form-control cust-input-box" id="totalCharges" name="TotalCharges"
+                            value="{{ $itemarrival->TotalCharges }}" readonly>
+                    </div>
+                </div>
+                <div class="row">
                     {{-- Other Charges --}}
                     <div class="col-12 col-md-4 mb-3">
-                        <label for="OtherCharges" class="form-label cust-label">Other Charges</label>
-                        <input type="number" class="form-control cust-input-box" id="OtherCharges" name="OtherCharges"
+                        <label for="otherCharges" class="form-label cust-label">Other Charges</label>
+                        <input type="number" class="form-control cust-input-box" id="otherCharges" name="OtherCharges"
                             @if (old('OtherCharges')) value="{{ old('OtherCharges') }}" @else value="{{ $itemarrival->OtherCharges }}" @endif
-                            required>
+                            onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
                         <div class="invalid-feedback">
                             Please fill other charges.
                         </div>
                     </div>
-
                     {{-- Total Charges --}}
                     <div class="col-12 col-md-4 mb-3">
-                        <label for="TotalCharges" class="form-label cust-label">Total Charges</label>
-                        <input type="number" class="form-control cust-input-box" id="TotalCharges" name="TotalCharges"
-                            value="{{ $itemarrival->TotalCharges }}" readonly>
+                        <label for="fullTotalCharges" class="form-label cust-label">Total Charges</label>
+                        <input type="number" class="form-control cust-input-box" id="fullTotalCharges"
+                            name="FullTotalCharges"
+                            value="{{ $itemarrival->OtherCharges + $itemarrival->TotalCharges }}" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -148,4 +155,43 @@
 
 </x-layout>
 
-<script></script>
+<script>
+    let calculateTotalAmt = () => {
+
+        const chargesPerBag = Number(document.querySelector('#chargesPerBag').value);
+
+        const totalBags = Number(document.querySelector('#totalBags ').value);
+        
+        const otherCharges = Number(document.querySelector('#otherCharges').value);
+
+        let charges = chargesPerBag * totalBags;
+
+        let netPrice = (chargesPerBag * totalBags) + otherCharges;
+
+        document.querySelector('#fullTotalCharges').value = netPrice;
+
+        document.querySelector('#totalCharges').value = charges;
+
+        // if (chargesPerBag && totalBags && otherCharges) {
+
+        //     let charges = chargesPerBag * totalBags;
+
+        //     let netPrice = (chargesPerBag * totalBags) + otherCharges;
+
+        //     document.querySelector('#fullTotalCharges').value = netPrice;
+
+        //     document.querySelector('#totalCharges').value = charges;
+
+        // } else if (chargesPerBag && totalBags) {
+
+        //     let netPrice = (chargesPerBag * totalBags);
+
+        //     document.querySelector('#totalCharges').value = netPrice;
+
+        // } else {
+
+        //     document.querySelector('#totalCharges').value = '';
+
+        // }
+    }
+</script>

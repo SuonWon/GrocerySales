@@ -49,8 +49,6 @@ Route::get('/', function (Request $request) {
             return redirect()->route('dashboard');
         }
 
-
-
         return redirect()->route('saleinvoices');
     } else {
         return redirect()->route('login');
