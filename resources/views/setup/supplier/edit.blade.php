@@ -58,6 +58,21 @@
                     </div>
                 </div>
                 <div class="row">
+                    {{-- Profit --}}
+                    <div class="col-6 mb-3">
+                        <label for="supplierProfit" class="form-label cust-label">Profit (%)</label>
+                        <select class="mb-3 form-select cust-form-select" id="supplierProfit" name="Profit" required>
+                            <option selected value="{{$supplier->Profit}}">{{$supplier->Profit}}</option>
+                            <option value="1">1</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2">2</option>
+                            <option value="2.5">2.5</option>
+                            <option value="3">3</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please fill profit.
+                        </div>
+                    </div>
                     {{-- Contact No --}}
                     <div class="col-6 mb-3">
                         <label for="supplierContactNo" class="form-label cust-label">Contact No</label>
@@ -72,6 +87,8 @@
                         <input type="tel" class="form-control cust-input-box" id="supplierOfficeNo" name="OfficeNo" value="{{$supplier->OfficeNo}}">
                     </div>
                 </div>
+            </div>
+            <div class="col-12 col-lg-6">
                 <div class="row">
                     {{-- Street --}}
                     <div class="col-12 mb-3">
@@ -79,8 +96,6 @@
                         <input type="text" class="form-control cust-input-box" id="supplierStreet" name="Street" value="{{$supplier->Street}}">
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-lg-6">
                 <div class="row">
                     {{-- Township --}}
                     <div class="col-6 mb-3">
