@@ -9,6 +9,8 @@ use App\Models\CompanyInformation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use App\Models\StockInWarehouse;
+use App\Models\Warehouse;
 use PhpParser\Node\Expr\FuncCall;
 
 class ItemController extends Controller
@@ -56,7 +58,8 @@ class ItemController extends Controller
             'LastPurPrice' => ['required'],
         ]);
 
-        $formData['ItemCode'] = GenerateId::generatePrimaryKeyId('items','ItemCode','SI-'); 
+        $ItemCode = GenerateId::generatePrimaryKeyId('items','ItemCode','SI-'); 
+        $formData['ItemCode'] = $ItemCode;
 
         $formData['Discontinued'] = request('Discontinued');
         if ($formData['Discontinued'] == "on") {
@@ -70,11 +73,34 @@ class ItemController extends Controller
         $formData['Remark'] = request('Remark');
         $formData['ModifiedDate'] = null;
         $formData['CreatedBy'] = auth()->user()->Username;
+
+        
       
-        //dd($formData);
+      
         try{
 
             $newitem = Item::create($formData);
+
+            if($newitem){
+                $WarehouseCodes = Warehouse::select('WarehouseCode')->get();
+
+                foreach ($WarehouseCodes as $WarehouseCode) {
+                    $stockdata = [];
+
+                    $stockdata['WarehouseCode'] = $WarehouseCode->WarehouseCode;
+                    $stockdata['ItemCode'] = $ItemCode;
+                    $stockdata['StockQty'] = 0;
+                    $stockdata['LastUpdatedDate'] = $this->datetime;
+
+                    try {
+                        StockInWarehouse::create($stockdata);
+
+                    } catch (QueryException $e) {
+                        return back()->with(['error' => $e->getMessage()]);
+                    }
+                
+                }
+            }
 
             return redirect('/item/add')->with('success','Item Create Successfully');
 

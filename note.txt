@@ -52,3 +52,50 @@ Company Information က ဘယ်လိုထည့်မှာလည်း
 
 Auth Controller မှာ CreatedBy တွေ လိုက်ထည့်ထားတယ်
 User ကိုဆွဲထုတ်တဲ့ နေရာမှာ Role name ပေါ်အောင်ပြင်ပေးထားတယ်
+
+
+1. Item အသစ်တိုးရင် ItemWarehouse Table ထဲကို Warehouse 1 ခုရှိရင် တစ်ကြောင်း 2 ခုရှိရင် 2 
+ကြောင်း ဝင်အောင်လုပ်ရမယ်။
+
+2. Sales လုပ်ရင် ItemWarehouse Table ထဲက record ကို နှုတ် ရမယ်။
+
+3. Purchse လုပ်ရင် ItemWarehouse Table ထဲက record ကို ပေါင်းရမယ်။ 
+
+
+========================================
+
+
+DELIMITER //
+
+CREATE PROCEDURE stockcontrol_proc(IN wcode VARCHAR(10),IN icode VARCHAR(10),IN newQty FLOAT(10,2),IN status VARCHAR(20))
+
+BEGIN
+
+    
+    DECLARE oldQty float(10,2);
+    DECLARE finalQty float(10,2);
+
+    CASE
+        WHEN status = 'Sales' THEN 
+                    SELECT StockQty INTO oldQty FROM `stock_in_warehouses` WHERE WarehouseCode  = wcode AND ItemCode = icode;
+    
+                    SET finalQty := oldQty - newQty;
+
+                    UPDATE `stock_in_warehouses` SET StockQty = finalQty WHERE WarehouseCode  = wcode AND ItemCode = icode;
+        WHEN status = 'Purchases' THEN
+                    SELECT StockQty INTO oldQty FROM `stock_in_warehouses` WHERE WarehouseCode  = wcode AND ItemCode = icode;
+    
+                    SET finalQty := oldQty + newQty;
+
+                    UPDATE `stock_in_warehouses` SET StockQty = finalQty WHERE WarehouseCode  = wcode AND ItemCode = icode;
+    END CASE;
+
+END //
+
+DELIMITER ;
+
+CALL stockcontrol_proc2('WH-0001');
+
+CALL stockcontrol_proc('WH_0001','SI-0004');
+
+=================================================
