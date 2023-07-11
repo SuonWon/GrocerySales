@@ -48,7 +48,7 @@
                 <div class="row">
                     {{-- Plate No --}}
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="PlateNo" class="form-label cust-label">Plate No</label>
+                        <label for="PlateNo" class="form-label cust-label">Plate No/Name</label>
                         <input type="text" class="form-control cust-input-box" id="PlateNo" name="PlateNo"
                             @if (old('PlateNo')) value="{{ old('PlateNo') }}" @else value="{{ $itemarrival->PlateNo }}" @endif
                             required>
@@ -60,7 +60,7 @@
                 <div class="row">
                     {{-- Total Bags --}}
                     <div class="col-12 col-md-4 mb-3">
-                        <label for="totalBags" class="form-label cust-label">Total Bags/Viss</label>
+                        <label for="totalBags" class="form-label cust-label">Total Bags</label>
                         <input type="number" class="form-control cust-input-box" id="totalBags" name="TotalBags"
                             @if (old('TotalBags')) value="{{ old('TotalBags') }}" @else value="{{ $itemarrival->TotalBags }}" @endif
                             onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
@@ -68,12 +68,30 @@
                             Please fill Total Bags.
                         </div>
                     </div>
+                    {{-- Total Viss --}}
+                    <div class="col-12 col-md-4 mb-3">
+                        <label for="totalViss" class="form-label cust-label">Total Viss</label>
+                        <input type="number" class="form-control cust-input-box" id="totalViss" name="TotalViss"
+                            @if (old('TotalViss')) value="{{ old('TotalViss') }}" @else value="{{ $itemarrival->TotalViss }}" @endif
+                            onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
+                        <div class="invalid-feedback">
+                            Please fill Total Bags.
+                        </div>
+                    </div>
+                    {{-- Is Bag --}}
+                    <div class="col-4 col-md-4 mb-3">
+                        <label class="cust-label form-label text-end" for="isBag">IsBag</label>
+                        <div class="col-sm-8 form-check form-switch ms-1">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isBag" name="IsBag"
+                                onchange="calculateTotalAmt();" {{ $itemarrival->IsBag == 'T' ? 'checked' : '' }}>
+                        </div>
+                    </div>
                     {{-- Charges Per Bag --}}
                     <div class="col-12 col-md-4 mb-3">
                         <label for="chargesPerBag" class="form-label cust-label">Charges Per Bag/Viss</label>
                         <input type="number" class="form-control cust-input-box" id="chargesPerBag"
                             name="ChargesPerBag"
-                            @if (old('ChargesPerBag')) value="{{ old('ChargesPerBag') }}" @else value="{{ $itemarrival->ChargesPerBag }}" @endif
+                            @if (old('ChargesPerBag')) value="{{ old('ChargesPerBag') }}" @else value="{{ number_format($itemarrival->ChargesPerBag, 0, '.', '') }}" @endif
                             onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
                         <div class="invalid-feedback">
                             Please fill Charges Per Bag.
@@ -83,7 +101,7 @@
                     <div class="col-12 col-md-4 mb-3">
                         <label for="totalCharges" class="form-label cust-label">Charges</label>
                         <input type="number" class="form-control cust-input-box" id="totalCharges" name="TotalCharges"
-                            value="{{ $itemarrival->TotalCharges }}" readonly>
+                            value="{{ number_format($itemarrival->TotalCharges, 0, '.', '') }}" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -91,7 +109,7 @@
                     <div class="col-12 col-md-4 mb-3">
                         <label for="otherCharges" class="form-label cust-label">Other Charges</label>
                         <input type="number" class="form-control cust-input-box" id="otherCharges" name="OtherCharges"
-                            @if (old('OtherCharges')) value="{{ old('OtherCharges') }}" @else value="{{ $itemarrival->OtherCharges }}" @endif
+                            @if (old('OtherCharges')) value="{{ old('OtherCharges') }}" @else value="{{ number_format($itemarrival->OtherCharges, 0, '.', '') }}" @endif
                             onkeyup="calculateTotalAmt();" onfocus="AutoSelectValue(event)" required>
                         <div class="invalid-feedback">
                             Please fill other charges.
@@ -102,7 +120,8 @@
                         <label for="fullTotalCharges" class="form-label cust-label">Total Charges</label>
                         <input type="number" class="form-control cust-input-box" id="fullTotalCharges"
                             name="FullTotalCharges"
-                            value="{{ $itemarrival->OtherCharges + $itemarrival->TotalCharges }}" readonly>
+                            value="{{ number_format($itemarrival->OtherCharges + $itemarrival->TotalCharges, 0, '.', '') }}"
+                            readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -161,20 +180,36 @@
         const chargesPerBag = Number(document.querySelector('#chargesPerBag').value);
 
         const totalBags = Number(document.querySelector('#totalBags ').value);
-        
+
+        const totalViss = Number(document.querySelector('#totalViss').value);
+
         const otherCharges = Number(document.querySelector('#otherCharges').value);
 
-        let charges = chargesPerBag * totalBags;
+        const isBag = document.getElementById('isBag');
 
-        let netPrice = (chargesPerBag * totalBags) + otherCharges;
+        let charges, netPrice = 0;
 
-        document.querySelector('#fullTotalCharges').value = netPrice;
+        if (isBag.checked) {
 
-        document.querySelector('#totalCharges').value = charges;
+            charges = (chargesPerBag * totalBags);
 
-        // if (chargesPerBag && totalBags && otherCharges) {
+            netPrice = (chargesPerBag * totalBags) + otherCharges;
 
-        //     let charges = chargesPerBag * totalBags;
+        } else {
+
+            charges = (chargesPerBag * totalViss);
+
+            netPrice = (chargesPerBag * totalViss) + otherCharges;
+
+        }
+
+        document.querySelector('#fullTotalCharges').value = Math.round(netPrice);
+
+        document.querySelector('#totalCharges').value = Math.round(charges);
+
+        // if(chargesPerBag && totalBags && otherCharges) {
+
+        //     let charges = (chargesPerBag * totalBags);
 
         //     let netPrice = (chargesPerBag * totalBags) + otherCharges;
 
@@ -182,13 +217,13 @@
 
         //     document.querySelector('#totalCharges').value = charges;
 
-        // } else if (chargesPerBag && totalBags) {
+        // }else if(chargesPerBag && totalBags) {
 
         //     let netPrice = (chargesPerBag * totalBags);
 
         //     document.querySelector('#totalCharges').value = netPrice;
 
-        // } else {
+        // }else{
 
         //     document.querySelector('#totalCharges').value = '';
 

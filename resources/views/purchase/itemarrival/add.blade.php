@@ -41,7 +41,7 @@
                 <div class="row">
                     {{-- Plate No --}}
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="PlateNo" class="form-label cust-label">Vehicle No</label>
+                        <label for="PlateNo" class="form-label cust-label">Plate No/Name</label>
                         <input type="text" class="form-control cust-input-box" id="PlateNo" name="PlateNo"
                             value="{{ old('PlateNo') }}">
                         <div class="invalid-feedback">
@@ -61,12 +61,29 @@
                 <div class="row">
                     {{-- Total Bags --}}
                     <div class="col-12 col-md-4 mb-3">
-                        <label for="totalBags" class="form-label cust-label">Total Bags/Viss</label>
+                        <label for="totalBags" class="form-label cust-label">Total Bags</label>
                         <input type="number" class="form-control cust-input-box" id="totalBags" name="TotalBags"
                             value="{{ old('TotalBags') ? old('TotalBags') : 0 }}" onfocus="AutoSelectValue(event)" onkeyup="calculateTotalAmt()"
                             required>
                         <div class="invalid-feedback">
                             Please fill Total Bags.
+                        </div>
+                    </div>
+                    {{-- Total Viss --}}
+                    <div class="col-8 col-md-4 mb-3">
+                        <label for="totalViss" class="form-label cust-label">Total Viss</label>
+                        <input type="number" class="form-control cust-input-box" id="totalViss" name="TotalViss"
+                            value="{{ old('TotalViss') ? old('TotalViss') : 0 }}" onfocus="AutoSelectValue(event)" onkeyup="calculateTotalAmt();"
+                            required>
+                        <div class="invalid-feedback">
+                            Please fill Total Viss.
+                        </div>
+                    </div>
+                    {{-- Is Bag --}}
+                    <div class="col-4 col-md-4 mb-3">
+                        <label class="cust-label form-label text-end" for="isBag">IsBag</label>
+                        <div class="col-sm-8 form-check form-switch ms-1">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isBag" name="IsBag" onchange="calculateTotalAmt();" checked>
                         </div>
                     </div>
                     {{-- Charges Per Bag --}}
@@ -108,13 +125,13 @@
                         <textarea type="email" class="form-control cust-textarea" id="itemRemark" name="Remark" rows="3"></textarea>
                     </div>
                 </div>
-            </div>
-            <div class="row px-0">
-                <div class="col-12 px-0 text-end">
-                    {{-- Save Button --}}
-                    <button type="submit" class="btn btn-success">
-                        <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
-                    </button>
+                <div class="row px-0">
+                    <div class="col-12 px-0 text-end">
+                        {{-- Save Button --}}
+                        <button type="submit" class="btn btn-success">
+                            <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -131,16 +148,32 @@
         const chargesPerBag = Number(document.querySelector('#chargesPerBag').value);
 
         const totalBags = Number(document.querySelector('#totalBags ').value);
+
+        const totalViss = Number(document.querySelector('#totalViss').value);
         
         const otherCharges = Number(document.querySelector('#otherCharges').value);
 
-        let charges = (chargesPerBag * totalBags);
+        const isBag = document.getElementById('isBag');
 
-        let netPrice = (chargesPerBag * totalBags) + otherCharges;
+        let charges, netPrice = 0;
 
-        document.querySelector('#fullTotalCharges').value = netPrice;
+        if (isBag.checked) {
 
-        document.querySelector('#totalCharges').value = charges;
+            charges = (chargesPerBag * totalBags);
+
+            netPrice = (chargesPerBag * totalBags) + otherCharges;
+
+        } else {
+
+            charges = (chargesPerBag * totalViss);
+
+            netPrice = (chargesPerBag * totalViss) + otherCharges;
+
+        }
+
+        document.querySelector('#fullTotalCharges').value = Math.round(netPrice);
+
+        document.querySelector('#totalCharges').value = Math.round(charges);
 
         // if(chargesPerBag && totalBags && otherCharges) {
 

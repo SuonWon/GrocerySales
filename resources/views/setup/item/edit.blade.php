@@ -33,7 +33,7 @@
                          </div>
                          {{-- Discontinued --}}
                          <div class="col-2 mb-3">
-                              <label class="cust-label form-label text-end" for="discontinued">Discontinued</label>
+                              <label class="cust-label form-label text-end" for="discontinued">Is Active</label>
                               <div class="col-sm-8 form-check form-switch ms-3">
                               <input class="form-check-input" type="checkbox" role="switch" id="discontinued" name="Discontinued" {{$item->Discontinued == "on" ? "checked" : ''}}>
                               </div>
