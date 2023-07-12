@@ -134,7 +134,7 @@
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="salePlateNo" class="form-label cust-label">Plate No</label>
                         <input type="text" class="form-control cust-input-box" id="salePlateNo" name="PlateNo"
-                        value="{{ $saleinvoice->PlateNo }}">
+                            value="{{ $saleinvoice->PlateNo }}">
                     </div>
                     {{-- Remarks --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-4 mb-2">
@@ -417,6 +417,9 @@
                         </button>
                         <button type="button" class="btn btn-primary me-2" id="pUpdateSalesVou">
                             <span class="me-2"><i class="fa fa-print"></i></span> Save & Preview
+                        </button>
+                        <button type="button" class="btn btn-primary me-2" id="saveRaw">
+                            <span class="me-2"><i class="bi bi-envelope-paper-fill"></i></span> Save & Raw
                         </button>
                         <button type="button" class="btn delete-btn" id="{{ $saleinvoice->InvoiceNo }}"
                             onclick="PassSaleInNo(this.id);" data-bs-toggle="modal"
@@ -1224,6 +1227,12 @@
 
     // ========= End of Print Update Sales Function ========== //
 
+    // ========= Save and Raw Function ========= //
+
+    $("#saveRaw").on('click', PrintSalesUpdate)
+
+    // ========= End of Save and Raw Function
+
     // ========= Update Data to Database ========= //
 
     $("#updateSalesForm").submit(PrintSalesUpdate)
@@ -1351,6 +1360,12 @@
                         sessionStorage.setItem('update', 'success');
 
                         window.location.href = "/salesinvoices/salesvoucher/" + $("#saleInvoiceNo").val();
+
+                    } else if (event.target.id == 'saveRaw') {
+
+                        sessionStorage.setItem('save', 'success');
+
+                        window.location.href = "/salesinvoices/printLetter/" + $("#saleInvoiceNo").val();
 
                     } else {
 
