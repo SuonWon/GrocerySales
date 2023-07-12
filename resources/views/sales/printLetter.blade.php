@@ -127,7 +127,7 @@
                     <span>မှတ်ချက်: </span>
                 </div>
                 <div class="col-11 ps-4 default_fs">
-                    <span>{{$saleinvoicedetails->Remark}}</span>
+                    <span>{{$saleinvoice->Remark}}</span>
                 </div>
             </div>
             <div class="row mt-5">
