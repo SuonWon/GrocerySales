@@ -24,6 +24,7 @@ class SaleInvoice extends Model
         'CustomerCode',
         'PlateNo',
         'SubTotal',
+        'ShippingCharges',
         'LaborCharges',
         'DeliveryCharges',
         'WeightCharges',

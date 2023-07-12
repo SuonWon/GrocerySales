@@ -98,34 +98,42 @@
                     <p class="content-title"><span>Charges Info</span></p>
                     <div class="row px-2">
                         <div class="col-5 text-end">
-                            <p>Labor Charges :</p>
+                            <p>တန်ဆာခ :</p>
                         </div>
                         <div class="col-5 text-end">
-                            <p>{{$saleinvoice->LaborCharges}}</p>
-                        </div>
-                    </div>
-                    <div class="row px-2">
-                        <div class="col-5 text-end">
-                            <p>Delivery Charges :</p>
-                        </div>
-                        <div class="col-5 text-end">
-                            <p>{{$saleinvoice->DeliveryCharges}}</p>
+                            <p>{{number_format($saleinvoice->ShippingCharges)}}</p>
                         </div>
                     </div>
                     <div class="row px-2">
                         <div class="col-5 text-end">
-                            <p>Weight Charges :</p>
+                            <p>ကမ်းတတ်အလုပ်သမားခ :</p>
                         </div>
                         <div class="col-5 text-end">
-                            <p>{{$saleinvoice->WeightCharges}}</p>
+                            <p>{{number_format($saleinvoice->LaborCharges)}}</p>
                         </div>
                     </div>
                     <div class="row px-2">
                         <div class="col-5 text-end">
-                            <p>Service Charges :</p>
+                            <p>ကမ်းတတ်ကားခ :</p>
                         </div>
                         <div class="col-5 text-end">
-                            <p>{{$saleinvoice->ServiceCharges}}</p>
+                            <p>{{number_format($saleinvoice->DeliveryCharges)}}</p>
+                        </div>
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-5 text-end">
+                            <p>ပွဲရုံအလုပ်သမားခ :</p>
+                        </div>
+                        <div class="col-5 text-end">
+                            <p>{{number_format($saleinvoice->WeightCharges)}}</p>
+                        </div>
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-5 text-end">
+                            <p>အကျိုးဆောင်ခ :</p>
+                        </div>
+                        <div class="col-5 text-end">
+                            <p>{{number_format($saleinvoice->ServiceCharges)}}</p>
                         </div>
                     </div>
                 </div>

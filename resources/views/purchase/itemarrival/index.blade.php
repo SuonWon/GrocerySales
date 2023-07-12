@@ -31,10 +31,11 @@
                     <thead>
                         <tr>
                             <th style="width: 100px;">Arrival Code</th>
-                            <th style="width: 100px;">Plate No</th>
+                            <th style="width: 100px;">Plate No/Name</th>
                             <th style="width: 120px;">Arrival Date</th>
                             <th style="width: 100px;">Status</th>
-                            <th class="text-end" style="width: 150px;">Total Bags/Viss</th>
+                            <th class="text-end" style="width: 150px;">Total Bags</th>
+                            <th class="text-end" style="width: 150px;">Total Viss</th>
                             <th class="text-end" style="width: 150px;">Charges Per Bag/Viss</th>
                             <th class="text-end" style="width: 150px;">Charges</th>
                             <th class="text-end" style="width: 150px;">Other Charges</th>
@@ -67,6 +68,7 @@
                                     @endif
                                 </td>
                                 <td class="text-end">{{$itemarrival->TotalBags}}</td>
+                                <td class="text-end">{{$itemarrival->TotalViss}}</td>
                                 <td class="text-end">{{number_format($itemarrival->ChargesPerBag)}}</td>
                                 <td class="text-end">{{number_format($itemarrival->TotalCharges)}}</td>
                                 <td class="text-end">{{number_format($itemarrival->OtherCharges)}}</td>

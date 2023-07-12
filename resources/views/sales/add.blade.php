@@ -8,44 +8,38 @@
     @endphp
 
     @foreach ($items as $item)
-
         @php
             $saleItemArray[] = [
                 'itemId' => $item->ItemCode,
                 'itemName' => $item->ItemName,
                 'itemPrice' => $item->UnitPrice,
                 'weightPrice' => $item->WeightByPrice,
-            ]
+            ];
         @endphp
-
     @endforeach
 
-    @foreach ($warehouses as $warehouse )
-    
+    @foreach ($warehouses as $warehouse)
         @php
             $saleWarehouseList[] = [
                 'warehouseCode' => $warehouse->WarehouseCode,
-                'warehouseName' => $warehouse->WarehouseName
-            ]
+                'warehouseName' => $warehouse->WarehouseName,
+            ];
         @endphp
-
     @endforeach
 
     @foreach ($units as $unit)
-
         @php
             $saleUnitList[] = [
                 'unitCode' => $unit->UnitCode,
-                'unitName' => $unit->UnitDesc
-            ]
+                'unitName' => $unit->UnitDesc,
+            ];
         @endphp
-
     @endforeach
 
     <div class="container-fluid content-body mt-3">
 
-    {{-- Section Title --}}
-        
+        {{-- Section Title --}}
+
         <div class="row justify-content-between">
             {{-- Title --}}
             <div class="col-8 col-md-6 p-0">
@@ -59,26 +53,27 @@
             </div>
         </div>
 
-    {{-- End of Section Title --}}
+        {{-- End of Section Title --}}
 
-    {{-- Generate Id --}}
+        {{-- Generate Id --}}
         {{-- @php
             require app_path('./utils/GenerateId.php');
             $generateid = new GenerateId();
             $id = $generateid->generatePrimaryKeyId('sale_invoices','InvoiceNo','SV-',true);
      
         @endphp --}}
-    {{-- End of Generate Id --}}
-        
-    {{-- Form Section --}}
+        {{-- End of Generate Id --}}
+
+        {{-- Form Section --}}
 
         <x-error name="Email"></x-error>
 
-        <form action="/salesinvoices/add" method="Post" id="saveSalesForm" class="row form-card mt-2 mb-3 needs-validation" novalidate>
+        <form action="/salesinvoices/add" method="Post" id="saveSalesForm"
+            class="row form-card mt-2 mb-3 needs-validation" novalidate>
             @csrf
-            
+
             <div class="col-12 px-0">
-                
+
                 <p class="p-0 content-title"><span>Basic Info</span></p>
                 <div class="row">
                     {{-- Invoice No --}}
@@ -89,22 +84,22 @@
                     {{-- Sale Date --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="saleDate" class="form-label cust-label">Sales Date</label>
-                        <input type="date" class="form-control cust-input-box" id="saleDate" name="SaleDate" value="{{$currentDate}}" required>
+                        <input type="date" class="form-control cust-input-box" id="saleDate" name="SaleDate"
+                            value="{{ $currentDate }}" required>
                     </div>
                     <div class="invalid-feedback">
-                            Please fill sales date.
-                        </div>
+                        Please fill sales date.
+                    </div>
                     {{-- customer Code --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="customerNameList" class="form-label cust-label">Customer Name</label>
                         <select class="mb-3 form-select" id="customerNameList" name="CustomerCode" required>
                             <option value="" selected disabled>Choose</option>
-                            @if(isset($customers) && is_object($customers) && count($customers) > 0)
+                            @if (isset($customers) && is_object($customers) && count($customers) > 0)
                                 @forelse ($customers as $customer)
-                                    
-                                        <option value="{{$customer->CustomerCode}}">{{$customer->CustomerName}}</option>
-                                    
-                                
+                                    <option value="{{ $customer->CustomerCode }}">{{ $customer->CustomerName }}</option>
+
+
                                 @empty
                                     <option disabled>No Customer Found</option>
                                 @endforelse
@@ -119,8 +114,9 @@
                     {{-- Plate No --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="salePlateNo" class="form-label cust-label">Plate No</label>
-                        <input type="text" class="form-control cust-input-box" id="salePlateNo" name="PlateNo" value="">
-                        
+                        <input type="text" class="form-control cust-input-box" id="salePlateNo" name="PlateNo"
+                            value="">
+
                     </div>
                     {{-- Remarks --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-4 mb-2">
@@ -136,30 +132,33 @@
                             {{-- Paid Date --}}
                             <div class="col-12 col-md-6 col-xl-5 col-xxl-4 mb-2">
                                 <label for="salePaidDate" class="form-label cust-label">Paid Date</label>
-                                <input type="date" class="form-control cust-input-box" id="salePaidDate" name="PaidDate" value="" disabled>
+                                <input type="date" class="form-control cust-input-box" id="salePaidDate"
+                                    name="PaidDate" value="" disabled>
                             </div>
                             {{-- Paid Status --}}
                             <div class="col-12 col-md-6 col-xl-4 col-xxl-3 mb-2">
                                 <label class="cust-label form-label text-end" for="saleIsPaid">Paid</label>
                                 <div class="col-sm-8 form-check form-switch">
-                                    <input class="form-check-input cust-form-switch" type="checkbox" role="switch" id="saleIsPaid" name="IsPaid" onchange="SPaidCheck(event);">
+                                    <input class="form-check-input cust-form-switch" type="checkbox" role="switch"
+                                        id="saleIsPaid" name="IsPaid" onchange="SPaidCheck(event);">
                                 </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                
+
                 <p class="p-0 content-title"><span>Details</span></p>
-                <button class="btn btn-noBorder" id="addNewProd" type="button"><span class="me-2"><i class="bi bi-plus-circle"></i></span>New</button>
+                <button class="btn btn-noBorder" id="addNewProd" type="button"><span class="me-2"><i
+                            class="bi bi-plus-circle"></i></span>New</button>
                 <div class="row">
                     <div class="saleTable">
                         <table class="table" id="saleProdList">
                             <thead class="sticky-top">
                                 <tr id="0">
                                     {{-- <th style="width: 50px;">No</th> --}}
-                                    <th style="width: 200px;">Item Code</th>
-                                    <th style="width: 200px;">Warehouse Code</th>
+                                    <th style="width: 200px;">Item Name</th>
+                                    <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
                                     <th style="width: 120px;">Unit Price</th>
@@ -180,32 +179,49 @@
                 <div class="row mt-3 justify-content-between">
                     <div class="col-xl-5 col-xxl-4">
                         <p class="p-0 content-title"><span>Charges</span></p>
+                        {{-- Shipping Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="saleShippingCharges" class="form-label text-end charges-label col-6">တန်ဆာခ :</label>
+                            <div class="col-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleShippingCharges" name="ShippingCharges" value="0"
+                                    onblur="SaleCharges(event);">
+                            </div>
+                        </div>
                         {{-- Labor Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleLaborCharges" class="form-label text-end cust-label col-5">Labor Charges :</label>
+                            <label for="saleLaborCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်အလုပ်သမာခ:</label>
                             <div class="col-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleLaborCharges" name="LaborCharges" value="0" onblur="SaleCharges(event);">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleLaborCharges" name="LaborCharges" value="0"
+                                    onblur="SaleCharges(event);">
                             </div>
                         </div>
                         {{-- Delivery Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleDeliveryCharges" class="form-label text-end cust-label col-5">Delivery Charges :</label>
+                            <label for="saleDeliveryCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်ကားခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleDeliveryCharges" name="DeliveryCharges" value="0" onblur="SaleCharges(event);">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleDeliveryCharges" name="DeliveryCharges" value="0"
+                                    onblur="SaleCharges(event);">
                             </div>
                         </div>
                         {{-- Weight Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleWeightCharges" class="form-label text-end cust-label col-5">Weight Charges :</label>
+                            <label for="saleWeightCharges" class="form-label text-end charges-label col-6">ပွဲရုံအလုပ်သမားခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleWeightCharges" name="WeightCharges" value="0" onblur="SaleCharges(event);">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleWeightCharges" name="WeightCharges" value="0"
+                                    onblur="SaleCharges(event);">
                             </div>
                         </div>
                         {{-- Service Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleServiceCharges" class="form-label text-end cust-label col-5">Service Charges :</label>
+                            <label for="saleServiceCharges" class="form-label text-end charges-label col-6">အကျိုးဆောင်ခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleServiceCharges" name="ServiceCharges" value="0" onblur="SaleCharges(event);">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleServiceCharges" name="ServiceCharges" value="0"
+                                    onblur="SaleCharges(event);">
                             </div>
                         </div>
                         <hr>
@@ -213,23 +229,29 @@
                     <div class="col-xl-6">
                         {{-- Sub Total --}}
                         <div class="row justify-content-end mt-2">
-                            <label for="saleSubTotal" class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Sub Total :</label>
+                            <label for="saleSubTotal"
+                                class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Sub Total :</label>
                             <div class="col-5 col-xl-5 col-xxl-4 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleSubTotal" name="SubTotal" value="0" disabled>
+                                <input type="text" class="form-control cust-input-box text-end" id="saleSubTotal"
+                                    name="SubTotal" value="0" disabled>
                             </div>
                         </div>
                         {{-- Total Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleTotalCharges" class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Total Charges :</label>
+                            <label for="saleTotalCharges"
+                                class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Total Charges :</label>
                             <div class="col-5 col-xl-5 col-xxl-4 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleTotalCharges" name="TotalCharges" value="0" disabled>
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleTotalCharges" name="TotalCharges" value="0" disabled>
                             </div>
                         </div>
                         {{-- Grand Total --}}
                         <div class="row justify-content-end">
-                            <label for="saleGrandTotal" class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Grand Total :</label>
+                            <label for="saleGrandTotal"
+                                class="form-label text-end cust-label col-5 col-xl-4 col-xxl-3">Grand Total :</label>
                             <div class="col-5 col-xl-5 col-xxl-4 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="saleGrandTotal" name="GrandTotal" value="0" disabled>
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="saleGrandTotal" name="GrandTotal" value="0" disabled>
                             </div>
                         </div>
                     </div>
@@ -240,25 +262,27 @@
                         <button type="submit" class="btn btn-success me-2" id="saveData">
                             <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
                         </button>
-                        <button type="button" class="btn btn-primary" id="printSalesInBtn">
+                        <button type="button" class="btn btn-primary me-2" id="printSalesInBtn">
                             <span class="me-2"><i class="fa fa-print"></i></span> Save & Preview
+                        </button>
+                        <button type="button" class="btn btn-primary" id="saveRaw">
+                            <span class="me-2"><i class="bi bi-envelope-paper-fill"></i></span> Save & Raw
                         </button>
                     </div>
                 </div>
             </div>
-            
+
         </form>
-    
-    {{-- End of form Section --}}
+
+        {{-- End of form Section --}}
 
     </div>
 
 </x-layout>
 
 <script>
-
     dselect(document.querySelector("#customerNameList"), config);
-    
+
     var saleRowNo = 1;
 
     let saleItemArray = @json($saleItemArray);
@@ -269,25 +293,25 @@
 
     let saleProductDataList = [];
 
-    $(document).ready(function(){
+    $(document).ready(function() {
 
         let saleProductData = {
-            referenceNo : saleRowNo,
-            WarehouseNo : "",
+            referenceNo: saleRowNo,
+            WarehouseNo: "",
             WarehouseName: "",
-            ItemCode : "",
-            ItemName : "",
+            ItemCode: "",
+            ItemName: "",
             WeightPrice: 1,
-            Quantity : 1,
-            PackedUnit : "",
-            UnitName : "",
-            TotalViss : 1,
-            UnitPrice : 0,
-            Amount : 0,
-            LineDisPer : 0,
-            LineDisAmt : 0,
-            LineTotalAmt : 0,
-            IsFOC : 0
+            Quantity: 1,
+            PackedUnit: "",
+            UnitName: "",
+            TotalViss: 1,
+            UnitPrice: 0,
+            Amount: 0,
+            LineDisPer: 0,
+            LineDisAmt: 0,
+            LineTotalAmt: 0,
+            IsFOC: 0
         }
 
         const tableRow = document.createElement('tr');
@@ -295,99 +319,104 @@
         tableRow.setAttribute("id", saleRowNo);
 
         tableRow.innerHTML = `
-                            <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
-                                <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
+                            <td class="px-0 py-0" id="sRow` + saleRowNo + `">
+                                <select name="" id="` + saleRowNo + `" class="saleItemList_` + saleRowNo + `" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
                                     @forelse ($items as $item) 
-                                        <option value="{{$item->ItemCode}}">{{$item->ItemName}}</option>
+                                        <option value="{{ $item->ItemCode }}">{{ $item->ItemName }}</option>
                                     @empty
                                         <option disabled>No Item</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <select name="" id="`+ saleRowNo +`" class="saleWhList_`+ saleRowNo +`" onchange="AddSaleWh(this.id, this.value);">
+                                <select name="" id="` + saleRowNo + `" class="saleWhList_` + saleRowNo + `" onchange="AddSaleWh(this.id, this.value);">
                                     <option selected disabled>Choose</option>
                                     @forelse ($warehouses as $warehouse) 
-                                        <option value="{{$warehouse->WarehouseCode}}">{{$warehouse->WarehouseName}}</option>
+                                        <option value="{{ $warehouse->WarehouseCode }}">{{ $warehouse->WarehouseName }}</option>
                                     @empty
                                         <option disabled>No Arrival Code Found</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="text-end" value="0" id="`+ saleRowNo +`" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_`+ saleRowNo +`">
+                                <input type="number" class="text-end" value="0" id="` + saleRowNo +
+            `" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_` +
+            saleRowNo + `">
                             </td>
                             <td class="px-0 py-0">
-                                <select name="" class="saleUnitList_`+ saleRowNo +`" id="`+ saleRowNo +`" onchange="AddSaleUnit(this.id, this.value);">
+                                <select name="" class="saleUnitList_` + saleRowNo + `" id="` + saleRowNo + `" onchange="AddSaleUnit(this.id, this.value);">
                                     <option selected disabled>Choose</option>
                                     @forelse ($units as $unit) 
-                                        <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                        <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                                     @empty
                                         <option disabled>No Arrival Code Found</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="unitprice_`+ saleRowNo +`" value="0" id="`+ saleRowNo +`" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_`+ saleRowNo +`" >
+                                <input type="number" class="unitprice_` + saleRowNo + `" value="0" id="` + saleRowNo +
+            `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
+            saleRowNo + `" >
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="saleviss_`+ saleRowNo +` text-end" id="`+ saleRowNo +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="tableInput" name="" id="`+ saleRowNo +`" onblur="AddSaleDisRate(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
+                                <input type="number" class="tableInput" name="" id="` + saleRowNo + `" onblur="AddSaleDisRate(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="text-end" name="" id="`+ saleRowNo +`" onblur="AddSaleDisAmt(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
+                                <input type="text" class="text-end" name="" id="` + saleRowNo + `" onblur="AddSaleDisAmt(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="totalAmt" disabled>
                             </td>
                             <td class="px-3 py-0">
-                                <input type="checkbox" class="form-check-input cust-form-check mt-2" id="`+ saleRowNo +`" onchange="AddSaleFoc(event, this.id)">
+                                <input type="checkbox" class="form-check-input cust-form-check mt-2" id="` +
+            saleRowNo + `" onchange="AddSaleFoc(event, this.id)">
                             </td>
                             <td class="px-2 py-0">
-                                <button type="button" id="`+ saleRowNo +`" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
+                                <button type="button" id="` + saleRowNo + `" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>`;
 
-            saleProductDataList.push(saleProductData);
+        saleProductDataList.push(saleProductData);
 
-            document.getElementById("selectedSalesItems").appendChild(tableRow);
+        document.getElementById("selectedSalesItems").appendChild(tableRow);
 
-            dselect(document.querySelector(".saleWhList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleWhList_" + saleRowNo), config);
 
-            dselect(document.querySelector(".saleItemList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleItemList_" + saleRowNo), config);
 
-            dselect(document.querySelector(".saleUnitList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleUnitList_" + saleRowNo), config);
 
-            saleRowNo++;
+        saleRowNo++;
 
     });
 
-    $("#addNewProd").on("click", ()=>{
+    $("#addNewProd").on("click", () => {
 
         let saleProductData = {
-            referenceNo : saleRowNo,
-            WarehouseNo : "",
+            referenceNo: saleRowNo,
+            WarehouseNo: "",
             WarehouseName: "",
-            ItemCode : "",
-            ItemName : "",
-            WeightPrice : 1,
-            Quantity : 1,
-            PackedUnit : "",
-            UnitName : "",
-            TotalViss : 1,
-            UnitPrice : 0,
-            Amount : 0,
-            LineDisPer : 0,
-            LineDisAmt : 0,
-            LineTotalAmt : 0,
-            IsFOC : 0
+            ItemCode: "",
+            ItemName: "",
+            WeightPrice: 1,
+            Quantity: 1,
+            PackedUnit: "",
+            UnitName: "",
+            TotalViss: 1,
+            UnitPrice: 0,
+            Amount: 0,
+            LineDisPer: 0,
+            LineDisAmt: 0,
+            LineTotalAmt: 0,
+            IsFOC: 0
         }
 
         const newRow = document.createElement('tr');
@@ -395,73 +424,79 @@
         newRow.setAttribute("id", saleRowNo);
 
         newRow.innerHTML = `
-                            <td class="px-0 py-0" id="sRow`+ saleRowNo +`">
-                                <select name="" id="`+ saleRowNo +`" class="saleItemList_`+ saleRowNo +`" onchange="AddSaleItem(this.id,this.value)">
+                            <td class="px-0 py-0" id="sRow` + saleRowNo + `">
+                                <select name="" id="` + saleRowNo + `" class="saleItemList_` + saleRowNo + `" onchange="AddSaleItem(this.id,this.value)">
                                     <option selected disabled>Choose</option>
                                     @forelse ($items as $item) 
-                                        <option value="{{$item->ItemCode}}">{{$item->ItemName}}</option>
+                                        <option value="{{ $item->ItemCode }}">{{ $item->ItemName }}</option>
                                     @empty
                                         <option disabled>No Item</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <select name="" id="`+ saleRowNo +`" class="saleWhList_`+ saleRowNo +`" onchange="AddSaleWh(this.id, this.value);">
+                                <select name="" id="` + saleRowNo + `" class="saleWhList_` + saleRowNo + `" onchange="AddSaleWh(this.id, this.value);">
                                     <option selected disabled>Choose</option>
                                     @forelse ($warehouses as $warehouse) 
-                                        <option value="{{$warehouse->WarehouseCode}}">{{$warehouse->WarehouseName}}</option>
+                                        <option value="{{ $warehouse->WarehouseCode }}">{{ $warehouse->WarehouseName }}</option>
                                     @empty
                                         <option disabled>No Arrival Code Found</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="text-end" value="0" id="`+ saleRowNo +`" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_`+ saleRowNo +`">
+                                <input type="text" class="text-end" value="0" id="` + saleRowNo +
+            `" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_` +
+            saleRowNo + `">
                             </td>
                             <td class="px-0 py-0">
-                                <select name="" class="saleUnitList_`+ saleRowNo +`" id="`+ saleRowNo +`" onchange="AddSaleUnit(this.id, this.value);">
+                                <select name="" class="saleUnitList_` + saleRowNo + `" id="` + saleRowNo + `" onchange="AddSaleUnit(this.id, this.value);">
                                     <option selected disabled>Choose</option>
                                     @forelse ($units as $unit) 
-                                        <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                        <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                                     @empty
                                         <option disabled>No Arrival Code Found</option>
                                     @endforelse
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="unitprice_`+ saleRowNo +` text-end" value="0" id="`+ saleRowNo +`" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_`+ saleRowNo +`" >
+                                <input type="text" class="unitprice_` + saleRowNo + ` text-end" value="0" id="` +
+            saleRowNo +
+            `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
+            saleRowNo + `" >
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="saleviss_`+ saleRowNo +` text-end" id="`+ saleRowNo +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="tableInput" name="" id="`+ saleRowNo +`" onblur="AddSaleDisRate(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
+                                <input type="number" class="tableInput" name="" id="` + saleRowNo + `" onblur="AddSaleDisRate(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="text-end" name="" id="`+ saleRowNo +`" onblur="AddSaleDisAmt(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
+                                <input type="text" class="text-end" name="" id="` + saleRowNo + `" onblur="AddSaleDisAmt(this.id, this.value);" value="0" onfocus="SAddFocusValue(event)">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="totalAmt" disabled>
                             </td>
                             <td class="px-3 py-0">
-                                <input type="checkbox" class="form-check-input cust-form-check mt-2" id="`+ saleRowNo +`" onchange="AddSaleFoc(event, this.id)">
+                                <input type="checkbox" class="form-check-input cust-form-check mt-2" id="` +
+            saleRowNo + `" onchange="AddSaleFoc(event, this.id)">
                             </td>
                             <td class="px-2 py-0">
-                                <button type="button" id="`+ saleRowNo +`" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
+                                <button type="button" id="` + saleRowNo + `" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>`;
 
         document.getElementById("selectedSalesItems").appendChild(newRow);
 
-        dselect(document.querySelector(".saleWhList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleWhList_" + saleRowNo), config);
 
-        dselect(document.querySelector(".saleItemList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleItemList_" + saleRowNo), config);
 
-        dselect(document.querySelector(".saleUnitList_"+ saleRowNo), config);
+        dselect(document.querySelector(".saleUnitList_" + saleRowNo), config);
 
         saleProductDataList.push(saleProductData);
 
@@ -471,7 +506,7 @@
 
     // ======= Add Item Function ======== //
 
-    function AddSaleItem(refNo,inputValue){
+    function AddSaleItem(refNo, inputValue) {
 
         saleProductDataList.forEach(e => {
 
@@ -487,19 +522,24 @@
 
                         e.ItemName = element.itemName;
 
+                        e.WeightPrice = element.weightPrice;
+
                         //e.Amount = e.Quantity * e.UnitPrice;
 
-                        e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                        e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
-                        e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
+                        e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e
+                            .IsFOC);
 
-                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
+                            .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
                     }
 
                 });
 
-                
+
 
             }
 
@@ -508,14 +548,14 @@
         SaleSubTotalAmt();
 
         SaleGrandTotalAmt();
-        
+
     }
 
     // ====== End of Add Item Function ======= //
 
     // ======= Add Warehouse Function ======== //
 
-    function AddSaleWh(refNo,inputValue){
+    function AddSaleWh(refNo, inputValue) {
 
         saleProductDataList.forEach(e => {
 
@@ -529,7 +569,9 @@
 
                         e.WarehouseName = element.warehouseName;
 
-                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
+                            .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
                     }
 
@@ -545,7 +587,7 @@
 
     // ======= Add Unit Function ======== //
 
-    function AddSaleUnit(refNo,inputValue){
+    function AddSaleUnit(refNo, inputValue) {
 
         saleProductDataList.forEach(e => {
 
@@ -559,7 +601,9 @@
 
                         e.UnitName = element.unitName;
 
-                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
+                            .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
                     }
 
@@ -575,7 +619,7 @@
 
     // ====== Add Unit Qty Function ========== //
 
-    function AddSaleQty(event, refNo, inputValue){
+    function AddSaleQty(event, refNo, inputValue) {
 
         let nextFocus = event.target.getAttribute("nextfocus");
 
@@ -583,7 +627,7 @@
 
             if (e.referenceNo == refNo) {
 
-                if (inputValue > 0 ) {
+                if (inputValue > 0) {
 
                     e.Quantity = Number(inputValue.replace(/,/g, ""));
 
@@ -592,20 +636,22 @@
                     e.Quantity = 0;
 
                 }
-                
+
                 //e.Amount = e.UnitPrice *  e.Quantity;
 
-                e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus);
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, nextFocus);
 
             }
 
         });
 
-        
+
 
         SaleSubTotalAmt();
 
@@ -625,7 +671,7 @@
 
             if (e.referenceNo == refNo) {
 
-                if (inputValue > 0 ) {
+                if (inputValue > 0) {
 
                     e.UnitPrice = Number(inputValue.replace(/,/g, ""));
 
@@ -635,13 +681,15 @@
 
                 }
 
-                //e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
-                
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+
                 //e.Amount = e.Quantity *  inputValue;
 
                 e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus); 
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, nextFocus);
 
             }
 
@@ -663,7 +711,7 @@
 
             if (e.referenceNo == refNo) {
 
-                if (inputValue > 0 ) {
+                if (inputValue > 0) {
 
                     e.TotalViss = inputValue;
 
@@ -673,16 +721,22 @@
 
                 }
 
-                e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, "");
 
             }
 
         });
-        
+
+        SaleSubTotalAmt();
+
+        SaleGrandTotalAmt();
+
     }
 
     // ========= End of Add Total Viss Function ========= //
@@ -704,10 +758,12 @@
                     e.LineDisAmt = Number(inputValue.replace(/,/g, ""));
 
                 }
-                
+
                 e.LineTotalAmt = e.Amount - e.LineDisAmt;
 
-                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, "");
 
             }
 
@@ -727,9 +783,9 @@
 
         saleProductDataList.forEach(e => {
 
-            if (e.referenceNo == refNo ) {
+            if (e.referenceNo == refNo) {
 
-                if ((inputValue == 0 || inputValue < 0 || inputValue > 100) ) {
+                if ((inputValue == 0 || inputValue < 0 || inputValue > 100)) {
 
                     e.LineDisPer = 0;
 
@@ -738,10 +794,12 @@
                     e.LineDisPer = inputValue;
 
                 }
-                
+
                 e.LineTotalAmt = e.Amount - ((e.LineDisPer / 100) * e.Amount);
 
-                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, "");
 
             }
 
@@ -769,7 +827,9 @@
 
                     e.LineTotalAmt = 0;
 
-                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                        .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
                 } else {
 
@@ -793,13 +853,15 @@
 
                     }
 
-                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                    SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                        .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
                 }
-                
+
 
             }
-            
+
 
         });
 
@@ -813,7 +875,8 @@
 
     // ========= Row Replace Function ========== //
 
-    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+    function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName,
+        TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
 
         let checkFoc = "";
 
@@ -843,69 +906,81 @@
 
         let noRow = mainTable.rows.length;
 
-        for(let i = 0; i < noRow; i++) {
+        for (let i = 0; i < noRow; i++) {
 
             let rowId = mainTable.rows[i].getAttribute("id");
 
-            if( rowId == refNo) {
+            if (rowId == refNo) {
 
                 mainTable.rows[i].innerHTML = `
-                                    <td class="px-0 py-0" id="row_`+ refNo +`">
-                                        <select name="" id="`+ refNo +`" class="saleItemList_`+ refNo +`" onchange="AddSaleItem(this.id,this.value)">
-                                            <option value="`+ ItemCode +`" selected disabled>`+ ItemName +`</option>
+                                    <td class="px-0 py-0" id="row_` + refNo + `">
+                                        <select name="" id="` + refNo + `" class="saleItemList_` + refNo + `" onchange="AddSaleItem(this.id,this.value)">
+                                            <option value="` + ItemCode + `" selected disabled>` + ItemName + `</option>
                                             @forelse ($items as $item) 
-                                                <option value="{{$item->ItemCode}}">{{$item->ItemName}}</option>
+                                                <option value="{{ $item->ItemCode }}">{{ $item->ItemName }}</option>
                                             @empty
                                                 <option disabled>No Item</option>
                                             @endforelse
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <select name="" id="`+ refNo +`" class="saleWhList_`+ refNo +`" onchange="AddSaleWh(this.id,this.value);">
-                                            <option value="`+ WarehouseNo +`" selected disabled>`+ WarehouseName +`</option>
+                                        <select name="" id="` + refNo + `" class="saleWhList_` + refNo + `" onchange="AddSaleWh(this.id,this.value);">
+                                            <option value="` + WarehouseNo + `" selected disabled>` + WarehouseName + `</option>
                                             @forelse ($warehouses as $warehouse) 
-                                                <option value="{{$warehouse->WarehouseCode}}">{{$warehouse->WarehouseName}}</option>
+                                                <option value="{{ $warehouse->WarehouseCode }}">{{ $warehouse->WarehouseName }}</option>
                                             @empty
                                                 <option disabled>No Warehouse Code Found</option>
                                             @endforelse
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" value="`+ Quantity.toLocaleString() +`" id="`+ refNo +`" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_`+ refNo +`">
+                                        <input type="text" class="text-end" value="` + Quantity.toLocaleString() +
+                    `" id="` + refNo +
+                    `" onblur="AddSaleQty(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="unitprice_` +
+                    refNo + `">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <select name="" class="saleUnitList_`+ refNo +`" id="`+ refNo +`" onchange="AddSaleUnit(this.id, this.value);">
-                                            <option value="`+ PackedUnit +`" selected disabled>`+ UnitName +`</option>
+                                        <select name="" class="saleUnitList_` + refNo + `" id="` + refNo + `" onchange="AddSaleUnit(this.id, this.value);">
+                                            <option value="` + PackedUnit + `" selected disabled>` + UnitName + `</option>
                                             @forelse ($units as $unit) 
-                                                <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                                <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                                             @empty
                                                 <option disabled>No Unit Code Found</option>
                                             @endforelse
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="unitprice_`+ refNo +` text-end" value="`+ UnitPrice.toLocaleString() +`" id="`+ refNo +`" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_`+ refNo +`" >
+                                        <input type="text" class="unitprice_` + refNo + ` text-end" value="` +
+                    UnitPrice.toLocaleString() + `" id="` + refNo +
+                    `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
+                    refNo + `" >
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="saleviss_`+ refNo +` text-end" value="`+ TotalViss +`" id="`+ refNo +`" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                        <input type="number" class="saleviss_` + refNo + ` text-end" value="` +
+                    TotalViss + `" id="` + refNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="itemAmount" value="` + Amount
+                    .toLocaleString() + `" disabled>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="tableInput" name="" id="`+ refNo +`" value="`+ LineDisPer +`" onblur="AddSaleDisRate(this.id, this.value);"`+ checkDisRate + ` onfocus="SAddFocusValue(event)">
+                                        <input type="number" class="tableInput" name="" id="` + refNo + `" value="` +
+                    LineDisPer + `" onblur="AddSaleDisRate(this.id, this.value);"` + checkDisRate + ` onfocus="SAddFocusValue(event)">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="`+ refNo +`" value="`+ LineDisAmt.toLocaleString() +`" onblur="AddSaleDisAmt(this.id, this.value);"`+ checkDisAmt +` onfocus="SAddFocusValue(event)">
+                                        <input type="text" class="text-end" name="" id="` + refNo + `" value="` +
+                    LineDisAmt.toLocaleString() + `" onblur="AddSaleDisAmt(this.id, this.value);"` + checkDisAmt + ` onfocus="SAddFocusValue(event)">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="totalAmt" value="`+ LineTotalAmt.toLocaleString() +`" disabled>
+                                        <input type="text" class="text-end" name="" id="totalAmt" value="` +
+                    LineTotalAmt.toLocaleString() + `" disabled>
                                     </td>
                                     <td class="px-3 py-0">
-                                        <input type="checkbox" class="form-check-input cust-form-check mt-2" id="`+ refNo +`"`+ checkFoc +` onchange="AddSaleFoc(event, this.id)" >
+                                        <input type="checkbox" class="form-check-input cust-form-check mt-2" id="` +
+                    refNo + `"` + checkFoc + ` onchange="AddSaleFoc(event, this.id)" >
                                     </td>
                                     <td class="px-2 py-0">
-                                        <button type="button" id="`+ refNo +`" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
+                                        <button type="button" id="` + refNo + `" class="btn delete-btn py-0 mt-1 px-1" id="" onclick="DeleteSalesRow(this.id)">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </td>`;
@@ -919,28 +994,28 @@
 
         // }
 
-        dselect(document.querySelector(".saleWhList_"+ refNo), config);
+        dselect(document.querySelector(".saleWhList_" + refNo), config);
 
-        dselect(document.querySelector(".saleItemList_"+ refNo), config);
+        dselect(document.querySelector(".saleItemList_" + refNo), config);
 
-        dselect(document.querySelector(".saleUnitList_"+ refNo), config);
+        dselect(document.querySelector(".saleUnitList_" + refNo), config);
     }
 
     // ========= End of Row Replace Function ========= //
 
     // ========= Delete Row Function ===========//
-    
+
     function DeleteSalesRow(refNo) {
 
         let mainTable = document.getElementById("saleProdList");
 
         let noRow = mainTable.rows.length;
 
-        for(let i = 0; i < noRow; i++) {
+        for (let i = 0; i < noRow; i++) {
 
             let rowId = mainTable.rows[i].getAttribute("id");
 
-            if( rowId == refNo) {
+            if (rowId == refNo) {
 
                 document.getElementById("saleProdList").deleteRow(i);
 
@@ -951,7 +1026,7 @@
         }
 
         saleProductDataList = saleProductDataList.filter((element) => element.referenceNo != refNo);
-        
+
 
         SaleSubTotalAmt();
 
@@ -970,8 +1045,8 @@
 
             subTotal += Number(element.LineTotalAmt);
 
-        });    
-        
+        });
+
         document.getElementById("saleSubTotal").value = subTotal.toLocaleString();
 
     }
@@ -979,10 +1054,11 @@
     // ========== End of Display Sub Total Amount Function ========== //
 
     // ========== Display Grand Total Amount Function ========= //
-    
+
     function SaleGrandTotalAmt() {
 
-        let grandTotal = Number($("#saleSubTotal").val().replace(/,/g,"")) - Number($("#saleTotalCharges").val().replace(/,/g,""));
+        let grandTotal = Number($("#saleSubTotal").val().replace(/,/g, "")) - Number($("#saleTotalCharges").val()
+            .replace(/,/g, ""));
 
         document.getElementById("saleGrandTotal").value = grandTotal.toLocaleString();
 
@@ -1000,11 +1076,11 @@
 
             if (disAmt != 0) {
 
-            lineTotalAmt = amount - disAmt;
+                lineTotalAmt = amount - disAmt;
 
             } else if (disRate != 0) {
 
-                lineTotalAmt = amount - (amount *(disRate / 100))
+                lineTotalAmt = amount - (amount * (disRate / 100))
 
             } else {
 
@@ -1014,7 +1090,7 @@
 
         }
 
-        
+
 
         return lineTotalAmt;
 
@@ -1026,15 +1102,17 @@
 
     function SaleTotalCharges() {
 
+        let shippingCharge = Number($("#saleShippingCharges").val().replace(/,/g, ""));
+
         let laborCharge = Number($("#saleLaborCharges").val().replace(/,/g, ""));
 
         let deliveryCharge = Number($("#saleDeliveryCharges").val().replace(/,/g, ""));
 
-        let weightCharge = Number($("#saleWeightCharges").val().replace(/,/g,""));
+        let weightCharge = Number($("#saleWeightCharges").val().replace(/,/g, ""));
 
-        let serviceCharge = Number($("#saleServiceCharges").val().replace(/,/g,""));
+        let serviceCharge = Number($("#saleServiceCharges").val().replace(/,/g, ""));
 
-        let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge;
+        let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge + shippingCharge;
 
         $("#saleTotalCharges").val(totalCharges.toLocaleString());
 
@@ -1048,13 +1126,13 @@
 
         if (event.target.value < 0 || !check.test(event.target.value)) {
 
-            $("#"+event.target.id).val(0);
+            $("#" + event.target.id).val(0);
 
         }
 
         let inputValue = Number((event.target.value).replace(/,/g, ""));
 
-        $("#"+event.target.id).val(inputValue.toLocaleString());
+        $("#" + event.target.id).val(inputValue.toLocaleString());
 
         SaleTotalCharges()
 
@@ -1068,6 +1146,12 @@
 
     // ========= End of Save and Print Function ========= //
 
+    // ========= Save and Raw Function ========= //
+
+    $("#saveRaw").on('click', SaveSalesData)
+
+    // ========= End of Save and Raw Function
+
     // ========= Save Data to Database ========== //
 
     $("#saveSalesForm").submit(SaveSalesData);
@@ -1076,24 +1160,56 @@
 
         event.preventDefault();
 
+        let customerCode = $("#customerNameList").val();
+
+        if (customerCode == null) {
+
+            toastr.warning('Please enter Customer Name');
+
+            return;
+
+        }
+
         let saleInvoiceDetailsArr = [];
+
+        let errorMsg = "";
+
+        let lineNo = 0;
 
         saleProductDataList.forEach(element => {
 
             if (element.ItemCode != "") {
 
+                if (element.WarehouseNo == "") {
+
+                    errorMsg = "W";
+
+                    lineNo = element.referenceNo;
+
+                    return;
+
+                } else if (element.PackedUnit == "") {
+
+                    errorMsg = "U";
+
+                    lineNo = element.referenceNo;
+
+                    return;
+
+                }
+
                 let purchaseInvoiceDetailsObject = {
-                    WarehouseNo : element.WarehouseNo,
-                    ItemCode : element.ItemCode,
-                    Quantity : element.Quantity,
-                    PackedUnit : element.PackedUnit,
-                    TotalViss : element.TotalViss,
-                    UnitPrice : element.UnitPrice,
-                    Amount : element.Amount,
-                    LineDisPer : element.LineDisPer,
-                    LineDisAmt : element.LineDisAmt,
-                    LineTotalAmt : element.LineTotalAmt,
-                    IsFOC : element.IsFOC
+                    WarehouseNo: element.WarehouseNo,
+                    ItemCode: element.ItemCode,
+                    Quantity: element.Quantity,
+                    PackedUnit: element.PackedUnit,
+                    TotalViss: element.TotalViss,
+                    UnitPrice: element.UnitPrice,
+                    Amount: element.Amount,
+                    LineDisPer: element.LineDisPer,
+                    LineDisAmt: element.LineDisAmt,
+                    LineTotalAmt: element.LineTotalAmt,
+                    IsFOC: element.IsFOC
                 }
 
                 saleInvoiceDetailsArr.push(purchaseInvoiceDetailsObject);
@@ -1101,6 +1217,20 @@
             }
 
         });
+
+        if (errorMsg == "W") {
+
+            toastr.warning('Please enter Warehouse Name in line no ' + lineNo);
+
+            return;
+
+        } else if (errorMsg == "U") {
+
+            toastr.warning('Please enter Unit Name in line no ' + lineNo);
+
+            return;
+
+        }
 
         $.ajaxSetup({
 
@@ -1114,9 +1244,10 @@
 
         // data.InvoiceNo = $("#saleInvoiceNo").val();
         data.SalesDate = $("#saleDate").val();
-        data.CustomerCode = $("#customerNameList").val();
+        data.CustomerCode = customerCode;
         data.PlateNo = $("#salePlateNo").val();
         data.SubTotal = Number($("#saleSubTotal").val().replace(/,/g, ""));
+        data.ShippingCharges = Number($("#saleShippingCharges").val().replace(/,/g, ""));
         data.LaborCharges = Number($("#saleLaborCharges").val().replace(/,/g, ""));
         data.DeliveryCharges = Number($("#saleDeliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#saleWeightCharges").val().replace(/,/g, ""));
@@ -1126,28 +1257,34 @@
         data.Remark = $("#salesRemark").val();
         data.IsPaid = document.getElementById("saleIsPaid").checked ? 1 : 0;
         data.PaidDate = $("#salePaidDate").val() == "" ? null : $("#salePaidDate").val();
-        data.saleinvoicedetails  = saleInvoiceDetailsArr;
+        data.saleinvoicedetails = saleInvoiceDetailsArr;
 
         data = JSON.stringify(data);
 
-    
+
 
         $.ajax({
-            url: '/salesinvoices/add' ,
+            url: '/salesinvoices/add',
             type: 'POST',
             data: data,
             dataType: 'json',
             success: function(response) {
 
                 console.log(response);
-                
-                if(response.message == "good"){
+
+                if (response.message == "good") {
 
                     if (event.target.id == 'printSalesInBtn') {
 
                         sessionStorage.setItem('save', 'success');
 
                         window.location.href = "/salesinvoices/salesvoucher/" + response.InvoiceNo;
+
+                    } else if (event.target.id == 'saveRaw') {
+
+                        sessionStorage.setItem('save', 'success');
+
+                        window.location.href = "/salesinvoices/printLetter/" + response.InvoiceNo;
 
                     } else {
 
@@ -1158,7 +1295,7 @@
                     }
 
                 }
-            
+
             },
             error: function(error) {
                 console.log('no');
@@ -1195,7 +1332,9 @@
 
     }
 
-    $("#saleLaborCharges").on('focus', SAddSelectValue)
+    $("#saleShippingCharges").on('focus', SAddSelectValue);
+
+    $("#saleLaborCharges").on('focus', SAddSelectValue);
 
     $("#saleWeightCharges").on('focus', SAddSelectValue);
 
@@ -1210,7 +1349,7 @@
 
     function SPaidCheck(event) {
 
-        if (event.target.checked) { 
+        if (event.target.checked) {
 
             let date = new Date();
 
@@ -1235,5 +1374,4 @@
     }
 
     // ========= End of Paid Check Functions ========= //
-
 </script>

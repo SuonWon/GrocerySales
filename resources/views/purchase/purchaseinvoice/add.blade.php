@@ -5,6 +5,7 @@
         $itemArray = [];
         $unitList = [];
         $supplierList = [];
+        $itemArrival = [];
     @endphp
 
     @foreach ($items as $item)
@@ -48,6 +49,19 @@
             $supplierList[] = [
                 'supplierCode' => $supplier->SupplierCode,
                 'supplierName' => $supplier->SupplierName,
+                'profit' => $supplier->Profit,
+            ]
+        @endphp
+        
+    @endforeach
+
+    @foreach ($arrivals as $arrival)
+
+        @php
+            $itemArrival[] = [
+                'arrivalCode' => $arrival->ArrivalCode,
+                'charges' => $arrival->TotalCharges,
+                'totalBags' => $arrival->TotalBags,
             ]
         @endphp
         
@@ -108,8 +122,8 @@
                     </div>
                     {{-- Supplier Code --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
-                        <label for="supplierCodeList" class="form-label cust-label">Supplier Code</label>
-                        <select class="mb-3 form-select" id="supplierCodeList" name="SupplierCode" required>
+                        <label for="supplierCodeList" class="form-label cust-label">Supplier Name</label>
+                        <select class="mb-3 form-select" id="supplierCodeList" name="SupplierCode" onchange="AddSupplierData();" required>
                             <option selected disabled value="">Choose</option>
                             @if(isset($suppliers) && is_object($suppliers) && count($suppliers) > 0)
                                 @forelse ($suppliers as $supplier)
@@ -133,27 +147,35 @@
                         </div>
                     </div>
                     {{-- Arrival Code --}}
-                    <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
-                        <label for="arrivalCodeList" class="form-label cust-label">Arrival Code</label>
-                        <select class="mb-3 form-select" id="arrivalCodeList" name="ArrivalCode" required>
-                            <option value="" selected disabled>Choose</option>
-                            @if(isset($arrivals) && is_object($arrivals) && count($arrivals) > 0)
-                                @forelse ($arrivals as $arrival)
-                                    
-                                    <option value="{{$arrival->ArrivalCode}}">{{$arrival->PlateNo}}</option>
-
-                                @empty
-
-                                    <option>No data</option>
-
-                                @endforelse
-                            @else
-                                <option disabled></option>
-                            @endif
-                        </select>
-                        <div class="invalid-feedback">
-                            Please fill Arrival Code.
+                    <div class="col-12 col-md-6 col-xl-4 col-xxl-3 mb-2">
+                        <label for="arrivalCodeList" class="form-label cust-label">Plate No/Name</label>
+                        <div class="d-flex">
+                            <div class="col-10">
+                                <select class="mb-3 me-2 form-select" id="arrivalCodeList" name="ArrivalCode" onchange="AddArrivalData(event);" required>
+                                    <option value="" selected disabled>Choose</option>
+                                    @if(isset($arrivals) && is_object($arrivals) && count($arrivals) > 0)
+                                        @forelse ($arrivals as $arrival)
+                                            
+                                            <option value="{{$arrival->ArrivalCode}}">{{$arrival->PlateNo}}</option>
+        
+                                        @empty
+        
+                                            <option>No data</option>
+        
+                                        @endforelse
+                                    @else
+                                        <option disabled></option>
+                                    @endif
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please fill Arrival Code.
+                                </div>
+                            </div>
+                            <input class="form-check-input cust-form-check col-2" type="checkbox" value="" name="IsArrivalComplete" id="isArrivalComplete">
                         </div>
+                        
+                        
+                        
                     </div>
                     {{-- Remarks --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-4 mb-2">
@@ -191,8 +213,8 @@
                             <thead class="sticky-top">
                                 <tr id="0">
                                     {{-- <th style="width: 50px;">No</th> --}}
-                                    <th style="width: 200px;">Item Code</th>
-                                    <th style="width: 200px;">Warehouse Code</th>
+                                    <th style="width: 200px;">Item Name</th>
+                                    <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
                                     <th style="width: 120px;">Unit Price</th>
@@ -214,30 +236,37 @@
                 <div class="row mt-3 justify-content-between">
                     <div class="col-xl-5 col-xxl-4">
                         <p class="p-0 content-title"><span>Charges</span></p>
+                        {{-- Shipping Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="shippingCharges" class="form-label text-end charges-label col-6">တန်ဆာခ :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end" id="shippingCharges" name="ShippingCharges" value="0" onblur="PuCharges(event);">
+                            </div>
+                        </div>
                         {{-- Labor Charges --}}
                         <div class="row justify-content-end">
-                            <label for="laborCharges" class="form-label text-end cust-label col-5">Labor Charges :</label>
+                            <label for="laborCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်အလုပ်သမားခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="laborCharges" name="LaborCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
                         {{-- Delivery Charges --}}
                         <div class="row justify-content-end">
-                            <label for="deliveryCharges" class="form-label text-end cust-label col-5">Delivery Charges :</label>
+                            <label for="deliveryCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်ကားခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="deliveryCharges" name="DeliveryCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
                         {{-- Weight Charges --}}
                         <div class="row justify-content-end">
-                            <label for="weightCharges" class="form-label text-end cust-label col-5">Weight Charges :</label>
+                            <label for="weightCharges" class="form-label text-end charges-label col-6">ပွဲရုံအလုပ်သမားခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="weightCharges" name="WeightCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
                         {{-- Service Charges --}}
                         <div class="row justify-content-end">
-                            <label for="serviceCharges" class="form-label text-end cust-label col-5">Service Charges :</label>
+                            <label for="serviceCharges" class="form-label text-end charges-label col-6">အကျိုးဆောင်ခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="serviceCharges" name="ServiceCharges" value="0" rowNo="23" onblur="PuCharges(event);">
                             </div>
@@ -303,7 +332,9 @@
 
     let unitList = @json($unitList);
 
-    let supplierList = @json($supplierList)
+    let supplierList = @json($supplierList);
+
+    let itemArrival = @json($itemArrival);
 
     let purchaseProductDataList = [];
 
@@ -531,7 +562,7 @@
 
                         e.WeightPrice = element.weightByPrice;
 
-                        //e.Amount = e.Quantity * e.UnitPrice;
+                        e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -634,8 +665,8 @@
                     e.Quantity = 0;
 
                 }
-                
-                // e.Amount = e.UnitPrice *  e.Quantity;
+
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -672,8 +703,8 @@
                     e.UnitPrice = 0;
 
                 }
-                
-                //e.Amount = e.Quantity *  inputValue;
+
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -703,37 +734,26 @@
 
                     e.TotalViss = inputValue;
 
-                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
-
-                    // if (e.TotalViss < e.WeightPrice) {
-
-                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
-
-                    // } else if (e.TotalViss > e.WeightPrice) {
-
-                    //     e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
-
-                    // } else {
-
-                    //     e.Amount = e.UnitPrice;
-
-                    // }
-
-                    e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
-
                 } else {
 
                     e.TotalViss = 0;
 
-                    e.Amount = e.UnitPrice * (e.TotalViss / e.WeightPrice);
-
                 }
+
+                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+
+                e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
                 RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
 
             }
 
         });
+
+        SubTotalAmount();
+
+        GrandTotalAmount();
+
         
     }
 
@@ -1007,6 +1027,8 @@
 
         }
 
+        rowNo = refNo;
+
         purchaseProductDataList = purchaseProductDataList.filter((element) => element.referenceNo != refNo);
 
         SubTotalAmount();
@@ -1029,6 +1051,8 @@
         });    
         
         document.getElementById("subTotal").value = subTotal.toLocaleString();
+
+        AddSupplierData();
 
     }
 
@@ -1079,6 +1103,8 @@
     // ========= Display Total Charges Function ========== //
 
     function DisplayTotalCharges() {
+
+        let shippingCharge = Number($("#shippingCharges").val().replace(/,/g, ""));
         
         let laborCharge = Number($("#laborCharges").val().replace(/,/g, ""));
 
@@ -1088,7 +1114,7 @@
 
         let serviceCharge = Number($("#serviceCharges").val().replace(/,/g,""));
 
-        let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge;
+        let totalCharges = shippingCharge + laborCharge + deliveryCharge + weightCharge + serviceCharge;
 
         $("#totalCharges").val(totalCharges.toLocaleString());
 
@@ -1130,11 +1156,50 @@
 
         event.preventDefault();
 
+        let supplierCode = $("#supplierCodeList").val();
+
+        let arrivalCode = $("#arrivalCodeList").val();
+
+        if (supplierCode == null) {
+
+            toastr.warning('Please enter Supplier Name');
+
+            return;
+
+        } else if (arrivalCode == null) {
+
+            toastr.warning('Please enter Arrival Plate No/Name');
+
+            return;
+        }
+
         let purchaseInvoiceDetailsArr = [];
+
+        let errorMsg = "";
+
+        let lineNo = 0;
 
         purchaseProductDataList.forEach(element => {
 
             if (element.ItemCode != "") {
+
+                if (element.WarehouseNo == "") {
+
+                    errorMsg = "W";
+
+                    lineNo = element.referenceNo;
+
+                    return;
+
+                } else if (element.PackedUnit == "") {
+
+                    errorMsg = "U";
+
+                    lineNo = element.referenceNo;
+
+                    return;
+
+                }
 
                 let purchaseInvoiceDetailsObject = {
                     WarehouseNo : element.WarehouseNo,
@@ -1156,6 +1221,20 @@
 
         });
 
+        if (errorMsg == "W") {
+
+            toastr.warning('Please enter Warehouse Name in line no ' + lineNo);
+
+            return;
+
+        } else if (errorMsg == "U") {
+
+            toastr.warning('Please enter Unit Name in line no ' + lineNo);
+
+            return;
+
+        }
+
 
         $.ajaxSetup({
 
@@ -1169,9 +1248,12 @@
 
         // data.InvoiceNo = $("#invoiceNo").val();
         data.PurchaseDate = $("#purchaseDate").val();
-        data.SupplierCode = $("#supplierCodeList").val();
-        data.ArrivalCode = $("#arrivalCodeList").val();
+        data.SupplierCode = supplierCode;
+        data.ArrivalCode = arrivalCode;
+        data.IsComplete = document.getElementById("isArrivalComplete").checked ? 1 : 0;
+        // console.log(data.IsArrivalComplete);
         data.SubTotal = Number($("#subTotal").val().replace(/,/g, ""));
+        data.ShippingCharges = Number($("#shippingCharges").val().replace(/,/g, ""));
         data.LaborCharges = Number($("#laborCharges").val().replace(/,/g, ""));
         data.DeliveryCharges = Number($("#deliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#weightCharges").val().replace(/,/g, ""));
@@ -1184,6 +1266,8 @@
         data.purchaseInvoiceDetails = purchaseInvoiceDetailsArr;
 
         data = JSON.stringify(data);
+
+        console.log(data);
 
         $.ajax({
             url: '/purchaseinvoices/add' ,
@@ -1248,6 +1332,8 @@
 
     }
 
+    $("#shippingCharges").on('focus', PAddSelect)
+
     $("#laborCharges").on('focus', PAddSelect)
 
     $("#weightCharges").on('focus', PAddSelect);
@@ -1288,5 +1374,49 @@
     }
 
     // ========= End of Paid Check Functions ========= //
+
+    // ========= Add Shipping Charges Function ======= //
+
+    function AddArrivalData(event) {
+
+        let arrivalCode = event.target.value;
+
+        itemArrival.forEach((e) => {
+            
+            if(e.arrivalCode == arrivalCode) {
+
+                document.querySelector("#shippingCharges").value = Number(e.charges).toLocaleString();
+
+            }
+
+        });
+
+        DisplayTotalCharges();
+    }
+
+    // ========= End of Add Shipping Charges Function ======= //
+
+
+    // ========= Add Supplier Data ========= //
+
+    function AddSupplierData() {
+
+        let supplierCode = document.querySelector("#supplierCodeList").value;
+
+        let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g,""));
+
+        supplierList.forEach((e) => {
+
+            if (e.supplierCode == supplierCode) {
+
+                document.querySelector("#serviceCharges").value = Math.round(subTotal * (e.profit / 100)).toLocaleString();
+
+            }
+
+        });
+
+    }
+
+    // ========= End of Add Supplier Data ========= //
 
 </script>
