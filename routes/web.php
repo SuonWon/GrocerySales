@@ -213,6 +213,8 @@ Route::prefix('salesinvoices')->middleware('mymiddleware:sales')->group(function
 
     Route::get('/salesvoucher/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'printPreview'])->where('saleinvoice', '^SV-(\d+)$');
 
+    Route::get('/printLetter/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'printLetter'])->where('saleinvoice', '^SV-(\d+)$');
+
     Route::get('/reports', [SaleInvoiceController::class, 'salesinvoicesreports']);
 });
 

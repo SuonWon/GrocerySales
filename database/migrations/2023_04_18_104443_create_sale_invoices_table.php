@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('CustomerCode')->references('CustomerCode')->on('customers');
             $table->string('PlateNo',20)->nullable();
             $table->decimal('SubTotal',10,2);
+            $table->decimal('ShippingCharges',10)->nullable();
             $table->decimal('LaborCharges',10,2)->nullable();
             $table->decimal('DeliveryCharges',10,2)->nullable();
             $table->decimal('WeightCharges',10,2)->nullable();

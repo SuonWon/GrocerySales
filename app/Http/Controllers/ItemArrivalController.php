@@ -18,27 +18,29 @@ class ItemArrivalController extends Controller
 
 
         $this->datetime = Date('Y-m-d H:i:s');
-
     }
 
-    public function index(){
-        $itemarrivals = ItemArrival::orderBy('CreatedDate','desc')->where('Status','N')->orwhere('Status','O')->get();
+    public function index()
+    {
+        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->get();
 
-        return view('purchase.itemarrival.index',[
+        return view('purchase.itemarrival.index', [
             'itemarrivals' => $itemarrivals
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         $todayDate = Carbon::now()->format('Y-m-d');
         return view('purchase.itemarrival.add', [
             'todayDate' => $todayDate
         ]);
     }
 
-    public function store(){
-       $formData = request()->validate([
-         
+    public function store()
+    {
+        $formData = request()->validate([
+
             'ArrivalDate' => ['required'],
             'PlateNo' => ['nullable'],
             'ChargesPerBag' => ['required'],
@@ -46,35 +48,42 @@ class ItemArrivalController extends Controller
             'OtherCharges' => ['required'],
             'TotalCharges' => ['required'],
             'Remark' => ['nullable']
-       ]);
+        ]);
 
-       
-       $formData['ArrivalCode'] = GenerateId::generatePrimaryKeyId('item_arrivals','ArrivalCode','IA-',false,true);
 
-       $formData['CreatedBy'] = auth()->user()->Username;
-       $formData['ModifiedDate'] = null;
+        $formData['ArrivalCode'] = GenerateId::generatePrimaryKeyId('item_arrivals', 'ArrivalCode', 'IA-', false, true);
+        $formData['TotalViss'] = request('TotalViss');
+        $formData['IsBag'] = request('IsBag');
+        if ($formData['IsBag'] == 'on') {
+            $formData['IsBag'] = 'T';
+        } else {
+            $formData['IsBag'] = 'F';
+        }
+        $formData['CreatedBy'] = auth()->user()->Username;
+        $formData['ModifiedDate'] = null;
 
-       
 
-       try{
+
+        try {
             $newitemarrival = ItemArrival::create($formData);
 
-            return redirect()->route('additemarrival')->with('success','Create Item Arrival Successful');
-       }catch(QueryException $e){
+            return redirect()->route('additemarrival')->with('success', 'Create Item Arrival Successful');
+        } catch (QueryException $e) {
             return back()->with(['error' => $e->getMessage()]);
-       }
-
+        }
     }
 
-    public function show(ItemArrival $itemarrival){
-        return view('purchase.itemarrival.edit',[
+    public function show(ItemArrival $itemarrival)
+    {
+        return view('purchase.itemarrival.edit', [
             'itemarrival' => $itemarrival
         ]);
     }
 
-    public function update(ItemArrival $itemarrival){
+    public function update(ItemArrival $itemarrival)
+    {
         $formData = request()->validate([
-            
+
             'ArrivalDate' => ['required'],
             'PlateNo' => ['nullable'],
             'ChargesPerBag' => ['required'],
@@ -82,23 +91,30 @@ class ItemArrivalController extends Controller
             'OtherCharges' => ['required'],
             'TotalCharges' => ['required'],
             'Remark' => ['nullable']
-       ]);
+        ]);
 
+        $formData['TotalViss'] = request('TotalViss');
+        $formData['IsBag'] = request('IsBag');
+        if ($formData['IsBag'] == 'on') {
+            $formData['IsBag'] = 'T';
+        } else {
+            $formData['IsBag'] = 'F';
+        }
         $formData['ModifiedDate'] = $this->datetime;
         $formData['ModifiedBy'] = auth()->user()->Username;
 
-        try{
-            $updateitemarrival = ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->update($formData);
+        try {
+            $updateitemarrival = ItemArrival::where('ArrivalCode', $itemarrival->ArrivalCode)->update($formData);
 
-            return redirect()->route('itemarrivals')->with('success','Update Item Arrival Successfully');
-        }catch(QueryException $e){
+            return redirect()->route('itemarrivals')->with('success', 'Update Item Arrival Successfully');
+        } catch (QueryException $e) {
             return back()->with(['error' => $e->getMessage()]);
         }
-
     }
 
-    public function destory(ItemArrival $itemarrival){
-        try{
+    public function destory(ItemArrival $itemarrival)
+    {
+        try {
             // ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->delete();
 
 
@@ -111,11 +127,10 @@ class ItemArrivalController extends Controller
             $data['DeletedBy'] = auth()->user()->Username;
             $data['DeletedDate'] = $this->datetime;
 
-            ItemArrival::where('ArrivalCode',$itemarrival->ArrivalCode)->update($data);
+            ItemArrival::where('ArrivalCode', $itemarrival->ArrivalCode)->update($data);
 
-            return redirect()->route('itemarrivals')->with('success','Delete ItemArrival Successfully');
-
-        }catch(QueryException $e){
+            return redirect()->route('itemarrivals')->with('success', 'Delete ItemArrival Successfully');
+        } catch (QueryException $e) {
             if ($e->errorInfo[1] == 1451) {
                 return back()->with(['error' => 'Cannot delete this record because it is referenced by another table.']);
             } else {
@@ -126,11 +141,12 @@ class ItemArrivalController extends Controller
 
     //Item Arrival  Report
 
-    public function itemarrivalreports(){
-        $itemarrivals = ItemArrival::orderBy('CreatedDate','desc')->get();
+    public function itemarrivalreports()
+    {
+        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->get();
         $companyinfo = CompanyInformation::first();
 
-        return view('reports.itemarrivalreports',[
+        return view('reports.itemarrivalreports', [
             'itemarrivals' => $itemarrivals,
             'companyinfo' => $companyinfo,
         ]);

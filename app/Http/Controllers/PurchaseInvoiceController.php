@@ -30,7 +30,6 @@ class PurchaseInvoiceController extends Controller
 
     public function index(Request $request)
     {
-
         $query = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
@@ -96,11 +95,14 @@ class PurchaseInvoiceController extends Controller
         $purchaseinvoices = $query->get();   
         
         $deletepurchaseinvoices = $deletequery->get();
+
+        $arrivals = ItemArrival::all();
    
 
         return view('purchase.purchaseinvoice.index', [
             'purchaseinvoices' => $purchaseinvoices,
-            'deletepurchaseinvoices' => $deletepurchaseinvoices
+            'deletepurchaseinvoices' => $deletepurchaseinvoices,
+            'arrivals' => $arrivals,
         ]);
     }
 
@@ -109,7 +111,7 @@ class PurchaseInvoiceController extends Controller
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->get();
         $warehouses = Warehouse::all();
-        $items = Item::all();
+        $items = Item::where('Discontinued', '=', 1)->get();
         $units = UnitMeasurement::all();
         $currentDate = Carbon::now()->format('Y-m-d');
 
@@ -127,8 +129,6 @@ class PurchaseInvoiceController extends Controller
     public function store()
     {
 
-
-
         // Retrieve the JSON data from the request body
         $jsonData = json_decode(request()->getContent(), true);
 
@@ -137,8 +137,10 @@ class PurchaseInvoiceController extends Controller
 
             'PurchaseDate' => ['required'],
             'ArrivalCode' => ['required'],
+            'IsComplete' => ['required'],
             'SupplierCode' => ['required'],
             'SubTotal' => ['nullable'],
+            'ShippingCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -151,11 +153,21 @@ class PurchaseInvoiceController extends Controller
             'purchaseInvoiceDetails' => ['nullable']
         ])->validate();
 
-
+        if ($formData['IsPaid'] == 0) {
+            unset($formData['PaidDate']);
+        }
 
         $formData['InvoiceNo'] = GenerateId::generatePrimaryKeyId('purchase_invoices', 'InvoiceNo', 'PV-', true, false);
         $InvoiceNo = $formData['InvoiceNo'];
         $ArrivalCode = $formData['ArrivalCode'];
+
+        if ($formData['IsComplete'] == 1) {
+
+            ItemArrival::where('ArrivalCode', $ArrivalCode)->update(['Status' => "O"]);
+
+            PurchaseInvoice::where('ArrivalCode', $ArrivalCode)->update(['IsComplete' => 1]);
+
+        }
 
 
         $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
@@ -163,11 +175,11 @@ class PurchaseInvoiceController extends Controller
         $formData['CreatedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = null;
 
+        logger($formData);
+
         try {
             // Create a new sales invoice record
             $newPurchaseInvoice = PurchaseInvoice::create($formData);
-
-            ItemArrival::where('ArrivalCode', $ArrivalCode)->update(['Status' => "O"]);
 
             if (isset($newPurchaseInvoice)) {
 
@@ -198,7 +210,9 @@ class PurchaseInvoiceController extends Controller
                     try {
 
                         $newPurchasesInvoicedetails = PurchaseInvoiceDetail::create($data);
+
                         Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
+
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);
@@ -255,8 +269,10 @@ class PurchaseInvoiceController extends Controller
 
             'PurchaseDate' => ['required'],
             'ArrivalCode' => ['required'],
+            'IsComplete' => ['required'],
             'SupplierCode' => ['required'],
             'SubTotal' => ['required'],
+            'ShippingCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -273,6 +289,36 @@ class PurchaseInvoiceController extends Controller
         $oldArrivalCode = $purchaseinvoice->ArrivalCode;
         $newArrivalCode = $formData['ArrivalCode'];
 
+        if ($formData['IsComplete'] == 1) {
+
+            if ($oldArrivalCode != $newArrivalCode) {
+
+                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
+
+                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+
+            }
+
+            ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
+
+            PurchaseInvoice::where('ArrivalCode', $newArrivalCode)->update(['IsComplete' => 1]);
+
+        } else {
+
+            if ($oldArrivalCode != $newArrivalCode) {
+
+                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "N"]);
+
+                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+
+            }
+
+            ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+
+            PurchaseInvoice::where('ArrivalCode', $oldArrivalCode)->update(['IsComplete' => 0]);
+
+        }
+
         $formData['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
         $formData['ModifiedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = $this->datetime;
@@ -282,11 +328,6 @@ class PurchaseInvoiceController extends Controller
         try {
 
             $updatesaleinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($formData);
-
-            if ($oldArrivalCode != $newArrivalCode) {
-                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
-                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
-            }
 
 
             if (isset($updatesaleinvoice)) {

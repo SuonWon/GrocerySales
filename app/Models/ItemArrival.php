@@ -24,6 +24,8 @@ class ItemArrival extends Model
         'PlateNo',
         'ChargesPerBag',
         'TotalBags',
+        'TotalViss',
+        'IsBag',
         'OtherCharges',
         'TotalCharges',
         'CreatedBy',
