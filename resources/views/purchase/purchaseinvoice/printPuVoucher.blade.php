@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-   
+
     @import url('https://fonts.googleapis.com/css2?family=Lora:wght@700&display=swap');
 
     .titleFont{
@@ -30,70 +30,72 @@
     }
 
     .dataRow :first-child{
-        width: 40px;
+        width: 30px;
     }
 
     .dataRow :nth-child(2){
-        width: 250px;
+        width: 245px;
     }
 
     .dataRow :nth-child(3){
-        width: 80px;
+        width: 121px;
     }
 
     .dataRow :nth-child(4){
-        width: 90px;
+        width: 70px;
     }
 
     .dataRow :nth-child(5){
-        width: 100px;
+        width: 101px;
     }
 
     .dataRow :nth-child(6){
-        width: 120px;
+        width: 101px;
     }
 
-    .dataRow :nth-child(7){
-        width: 110px;
-    }
 
-    .dataRow :nth-child(8){
-        width: 170px;
-    }
 
     </style>
-    
+
 </head>
 <body>
-    <section class="w-100 bg-secondary">
+    <section class="bg-secondary">
         <div class="voucherSection mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
                 <button class="btn btn-primary me-2" id="printPuVoucher"><i class="fa fa-print"></i></button>
-                <a href="/purchaseinvoices/edit/{{$purchaseinvoice->InvoiceNo}}" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
+                <a href="/purchaseinvoices/index" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
             </div>
-            <div class="w-100 text-center mb-3">
-                <div class="col-6 lh-lg offset-3 fs-6">
+            <div class="w-100 text-center mb-2">
+                <div class="col-12 lh-lg fs-6">
+                    <div>
+                        <h5 class="mb-2 title_fs ">ဦးသာဆင့် + ဒေါ်တင်ကြည်</h5>
+                        <h5 class="title_fs mb-0">( သ္မီး )ကိုစန်းဝေ + မမြင့်မြင့်ထွေး</h5>
+                    </div>
                     @if ($companyinfo)
-                        <span class="p-title">{{$companyinfo->CompanyName}}</span>
-                        <span class="d-block mt-2">{{$companyinfo->Street}}</span>
-                        <span class=""> <i class="fa-solid fa-phone"></i> {{$companyinfo->HotLineNo}} <i class="fa-solid fa-phone mx-1"></i>{{$companyinfo->OfficeNo}}</span>
+                        <span class="p-title fs-2 fw-bold">{{$companyinfo->CompanyName}}</span>
+                        <div>
+                            <span>{{$companyinfo->Street}}</span>၊<span> {{$companyinfo->City}}။</span>
+                        </div>
+                        <div class="row">
+                            <span class="col-8 offset-2"><i class="fa-solid fa-phone"></i> {{$companyinfo->HotLineNo}}, {{$companyinfo->OfficeNo}}</span>
+                        </div>
                     @endif
                 </div>
             </div>
-            <div class="title mb-3">
+            <div class="title">
                 <div class="row">
-                    <div class="col-8 d-flex flex-column">
-                        <span class="mb-2">Invoice No &nbsp;&nbsp;: <span id="vInvoiceNo">{{$purchaseinvoice->InvoiceNo}}</span></span>
-                        <span class="mb-2">Arrival Code : <span id="vArrivalCode">{{$purchaseinvoice->ArrivalCode}}</span></span>
+                    <div class="col-7 d-flex flex-column">
+                        <span class="mb-2 default_fs">ဘောင်ချာနံပါတ် : <span id="vInvoiceNo">{{$purchaseinvoice->InvoiceNo}}</span></span>
+                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-4">&nbsp;: </span><span id="vArrivalCode">{{$purchaseinvoice->ArrivalCode}}</span></span>
                     </div>
-                    <div class="col-4 d-flex flex-column px-4">
-                        <span class="mb-2">Date <span class="ms-4">&nbsp; : <span id="vPurchaseDate"></span>{{$purchaseinvoice->PurchaseDate}}</span></span>
-                        <span class="mb-2">Supplier 
-                            <span class="ms-2"> : 
+                    <div class="col-5 d-flex flex-column px-4">
+                        <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$purchaseinvoice->PurchaseDate}}</span></span>
+                        <span class="mb-2 default_fs">ကုန်သည်
+                            <span>:
                                 <span id="vSupplier">
 
                                     @forelse ($suppliers as $supplier)
-                                        
+
                                         @if ($supplier->SupplierCode == $purchaseinvoice->SupplierCode)
                                             {{$supplier->SupplierName}}
                                         @endif
@@ -101,136 +103,117 @@
                                         @empty
                                                 No Supplier Found
                                     @endforelse
-                                </span> 
+                                </span>
                             </span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="purchaseInvoiceTable pb-2 border-bottom border-black border-1">
+            <div class="purchaseInvoiceTable py-2 border-bottom border-black border-1">
                 <table>
                     <thead>
-                        <tr class="text-end border-top border-bottom border-black">
+                        <tr class="text-end border-top border-bottom border-black custom-header-h">
                             <th class="text-start">No.</th>
-                            <th class="text-start">Name</th>
-                            <th>Qty</th>
-                            <th>Unit</th>
-                            <th>Viss</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Net Amount</th>
+                            <th class="text-start">အမျိုးအမည်</th>
+                            <th>အရေအတွက်</th>
+                            <th>ပိဿာ</th>
+                            <th>ဈေးနှုန်း</th>
+                            <th>သင့်ငွေ</th>
                         </tr>
                     </thead>
                     <tbody id="purchaseItemLists">
                         @foreach ( $purchaseinvoice->purchaseinvoicedetails  as $key => $purchaseinvoicedetail )
-                            <tr class="dataRow text-end">
+                            <tr class="dataRow text-end mt-4">
                                 <td class="text-start">{{$key + 1}}</td>
                                 <td class="text-start">{{$purchaseinvoicedetail->ItemName}}</td>
-                                <td>{{$purchaseinvoicedetail->Quantity}}</td>
-                                <td>{{$purchaseinvoicedetail->PackedUnit}}</td>
+                                <td>{{number_format($purchaseinvoicedetail->Quantity)}} {{$purchaseinvoicedetail->PackedUnit}}</td>
                                 <td>{{$purchaseinvoicedetail->TotalViss}}</td>
-                                <td>{{$purchaseinvoicedetail->UnitPrice}}</td>
-                                <td>{{$purchaseinvoicedetail->LineDisAmt != 0 ? $purchaseinvoicedetail->LineDisAmt : ( $purchaseinvoicedetail->LineDisPer != 0 ? $purchaseinvoicedetail->LineDisPer . "%" : 0)}}</td>
-                                <td>{{$purchaseinvoicedetail->IsFOC == 1 ? "FOC" : $purchaseinvoicedetail->LineTotalAmt}}</td>
-                            </tr>                            
+                                <td>{{number_format($purchaseinvoicedetail->UnitPrice)}}</td>
+                                <td>{{$purchaseinvoicedetail->IsFOC == 1 ? "FOC" : number_format($purchaseinvoicedetail->LineTotalAmt)}}</td>
+                            </tr>
                         @endforeach
-                        
+
                     </tbody>
                 </table>
             </div>
-
-
 
             <!-- Charges And Amount Calculation Section -->
             <div class="chargesNetPrce mt-2 position-relative">
                 <div class="row">
                     <!-- Left Amount Calculation -->
-                    <div class="col-4 d-flex flex-column lh-lg">
-                        <div class="row justify-content-between">
-                            <div class="col-7 text-start pe-0">
-                                Labour Charges :
+                    <div class="col-5 d-flex flex-column lh-md">
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span class="default_fs">တန်ဆာခ</span>
                             </div>
-                            <div class="col-3 text-end ps-0">
-                                <span id="vLabourCharges"> {{$purchaseinvoice->LaborCharges}}</span>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="vShippingCharges"> {{number_format($purchaseinvoice->ShippingCharges)}}</span>
                             </div>
-                            <div class="col-2"></div>
                         </div>
-                        <div class="row justify-content-between">
-                            <div class="col-7 text-start pe-0">
-                                Weight Charges :
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span class="default_fs">ဝန်ဆောင်ခ</span>
                             </div>
-                            <div class="col-3 text-end ps-0">
-                                <span id="vWeightCharges"> {{$purchaseinvoice->WeightCharges}}</span>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="vServiceCharges"> {{number_format($purchaseinvoice->ServiceCharges + $purchaseinvoice->WeightCharges + $purchaseinvoice->LaborCharges)}}</span>
                             </div>
-                            <div class="col-2"></div>
                         </div>
-                        <div class="row justify-content-between">
-                            <div class="col-7 text-start pe-0">
-                                Delivery Charges:
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span class="default_fs">ကမ်းတက်ကားခ</span>
                             </div>
-                            <div class="col-3 text-end ps-0">
-                                <span id="vDeliveryCharges"> {{$purchaseinvoice->DeliveryCharges}}</span>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="vDeliveryCharges"> {{number_format($purchaseinvoice->DeliveryCharges)}}</span>
                             </div>
-                            <div class="col-2"></div>
                         </div>
-                        <div class="row justify-content-between">
-                            <div class="col-7 text-start pe-0">
-                                Service Charges :
+                        <div class="border-bottom border-1 border-dark my-1 col-12"></div>
+                        <div class="row justify-content-between m-0 p-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span class="p-0 m-0 default_fs">စုစုပေါင်းအသုံးစရိတ်</span>
                             </div>
-                            <div class="col-3 text-end ps-0">
-                                <span id="vServiceCharges"> {{$purchaseinvoice->ServiceCharges}}</span>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="vTotalChargesOne"> {{number_format($purchaseinvoice->TotalCharges)}}</span>
                             </div>
-                            <div class="col-2"></div>
-                        </div>
-                        <div class="border-bottom border-1 border-black col-10"></div>
-                        <div class="row justify-content-between">
-                            <div class="col-7 text-start pe-0">
-                                Total Charges <span class="ms-3">:</span>
-                            </div>
-                            <div class="col-3 text-end ps-0">
-                                <span id="vTotalChargesOne"> {{$purchaseinvoice->TotalCharges}}</span>
-                            </div>
-                            <div class="col-2"></div>
                         </div>
                     </div>
 
                     <!-- Right Amount Calculation -->
-                    <div class="col-4 d-flex flex-column text-end offset-4 ps-0 lh-lg">
+                    <div class="col-5 d-flex flex-column text-end offset-2 ps-0 lh-md">
                         <div class="row justify-content-between">
-                            <div class="col-6 offset-2 pe-0">
-                                Subtotal :
+                            <div class="col-7 offset-1 pe-0">
+                               <span class="default_fs"> စုစုပေါင်း :</span>
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vSubTotal">{{$purchaseinvoice->SubTotal}}</span>
+                                <span id="vSubTotal">{{number_format($purchaseinvoice->SubTotal)}}</span>
                             </div>
                         </div>
                         <div class="row justify-content-between">
-                            <div class="col-6 offset-2 pe-0">
-                                Total Charges :
+                            <div class="col-7 offset-1 pe-0 default_fs">
+                                စုစုပေါင်းအသုံးစရိတ် :
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vTotalChargesTwo">{{$purchaseinvoice->TotalCharges}}</span>
+                                <span id="vTotalChargesTwo">{{number_format($purchaseinvoice->TotalCharges)}}</span>
                             </div>
                         </div>
-                        <div class="border-bottom border-1 border-black col-9 offset-3"></div>
+                        <div class="border-bottom border-1 border-dark my-1 col-10 offset-2"></div>
                         <div class="row justify-content-between">
-                            <div class="col-6 offset-2 pe-0">
-                                Grand Total :
+                            <div class="col-7 offset-1 pe-0 default_fs">
+                                အသားတင်စုစုပေါင်း :
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vGrandTotal">{{$purchaseinvoice->GrandTotal}}</span>
+                                <span id="vGrandTotal">{{number_format($purchaseinvoice->GrandTotal)}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-4 offset-5">
+                <div class="row mt-5">
+                    <div class="col-4 offset-4">
                         <div class="row">
                             <div class="col-12 mb-0">
-                                <h5>------------------</h5>
+                                <h5>-----------------------------</h5>
                             </div>
                             <div class="col-12">
-                                <h5>Please sign here</h5>
+                                <h5 class="fs-6">ကြီးပွားတိုးတက်ကြပါစေ။</h5>
                             </div>
                         </div>
                     </div>
@@ -240,8 +223,8 @@
         <div class="sticky-bottom mx-auto text-end px-5 py-3" style="width: 934px;" id="newPuBtn">
             <a href="/purchaseinvoices/add" class="btn btn-primary" style="height: 40px; font-size: 1rem;"><span class="me-2"><i class="fa fa-plus"></i></span> New Purchase Invoice</a>
         </div>
-        
-        
+
+
     </section>
     <!-- Jquery CDN link -->
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
@@ -267,7 +250,7 @@
                 toastr.success('Save successful');
 
                 sessionStorage.removeItem('save');
-                
+
             } else if (sessionStorage.getItem('update') == "success") {
 
                 toastr.success('Update successful');
@@ -285,12 +268,12 @@
             $("#newPuBtn").css("display", "none");
 
             window.print();
-                        
+
             $("#buttons").css("display", "");
 
             $("#newPuBtn").css("display", "");
 
-            
+
 
         });
 

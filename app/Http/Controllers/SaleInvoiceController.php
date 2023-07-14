@@ -133,6 +133,7 @@ class SaleInvoiceController extends Controller
             'SalesDate' => ['required'],
             'CustomerCode' => ['required'],
             'SubTotal' => ['required'],
+            'ShippingCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -258,6 +259,7 @@ class SaleInvoiceController extends Controller
             'SalesDate' => ['required'],
             'CustomerCode' => ['required'],
             'SubTotal' => ['required'],
+            'ShippingCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -395,6 +397,36 @@ class SaleInvoiceController extends Controller
 
 
         return view('sales.printVoucher', [
+            'saleinvoice' => $saleinvoice,
+            'customers' => $customers,
+            'warehouses' => $warehouses,
+            'items' => $items,
+            'units' => $units,
+            'companyinfo' => $companyinfo,
+        ]);
+    }
+
+    public function printLetter(SaleInvoice $saleinvoice)
+    {
+
+        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+            ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
+            ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
+            ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
+            ->select('sale_invoice_details.*', 'warehouses.WarehouseCode', 'warehouses.WarehouseName', 'items.ItemCode', 'items.ItemName', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
+            ->get();
+
+        $saleinvoice->saleinvoicedetails = $saleinvoicedetails;
+
+
+        $customers = Customer::all();
+        $warehouses = Warehouse::all();
+        $items = Item::all();
+        $units = UnitMeasurement::all();
+        $companyinfo = CompanyInformation::first();
+
+
+        return view('sales.printLetter', [
             'saleinvoice' => $saleinvoice,
             'customers' => $customers,
             'warehouses' => $warehouses,

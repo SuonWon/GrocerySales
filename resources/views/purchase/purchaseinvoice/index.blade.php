@@ -95,7 +95,7 @@
                                    <th style="width: 100px !important;">Purchase Date</th>
                                    <th style="width: 100px !important;">Paid Date</th>
                                    <th style="width: 150px !important;">Supplier Name</th>
-                                   <th style="width: 100px !important;">Arrival Code</th>
+                                   <th style="width: 100px !important;">Plate No/Name</th>
                                    <th class="text-end" style="width: 150px !important;">Sub Total</th>
                                    {{-- <th>Labor Charges</th>
                                    <th>Delivery Charges</th>
@@ -129,7 +129,13 @@
                                         <td>{{$purchaseinvoice->PurchaseDate}}</td>
                                         <td>{{$purchaseinvoice->PaidDate}}</td>
                                         <td>{{$purchaseinvoice->SupplierName}}</td>
-                                        <td>{{$purchaseinvoice->ArrivalCode}}</td>
+                                        <td>
+                                             @foreach ($arrivals as $arrival)
+                                                  @if ($purchaseinvoice->ArrivalCode == $arrival->ArrivalCode)
+                                                       {{$arrival->PlateNo}}
+                                                  @endif
+                                             @endforeach
+                                        </td>
                                         <td class="text-end">{{number_format($purchaseinvoice->SubTotal)}}</td>
                                         {{-- <td>{{$purchaseinvoice->LaborCharges}}</td>
                                         <td>{{$purchaseinvoice->DeliveryCharges}}</td>

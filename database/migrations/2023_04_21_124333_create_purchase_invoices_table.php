@@ -19,11 +19,13 @@ return new class extends Migration
             $table->foreign('SupplierCode')->references('SupplierCode')->on('suppliers');
             $table->string('ArrivalCode');
             $table->foreign('ArrivalCode')->references('ArrivalCode')->on('item_arrivals');
+            $table->char('IsComplete', 1)->default(0)->nullable();
             $table->decimal('SubTotal',10,2);
-            $table->decimal('LaborCharges',10,2)->nullable();
-            $table->decimal('DeliveryCharges',10,2)->nullable();
-            $table->decimal('WeightCharges',10,2)->nullable();
-            $table->decimal('ServiceCharges',10,2)->nullable();
+            $table->decimal('ShippingCharges',10,2)->nullable()->default(0);
+            $table->decimal('LaborCharges',10,2)->nullable()->default(0);
+            $table->decimal('DeliveryCharges',10,2)->nullable()->default(0);
+            $table->decimal('WeightCharges',10,2)->nullable()->default(0);
+            $table->decimal('ServiceCharges',10,2)->nullable()->default(0);
             $table->decimal('TotalCharges',10,2);
             $table->decimal('GrandTotal',10,2);
             $table->string('Remark',200);

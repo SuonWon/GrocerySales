@@ -286,7 +286,7 @@
 
             });
 
-            toastr.options.timeOut = 5000;
+            toastr.options.timeOut = 3000;
             toastr.options.closeButton = true;
             toastr.options.positionClass = "toast-top-right";
             toastr.options.showMethod = "fadeIn";
