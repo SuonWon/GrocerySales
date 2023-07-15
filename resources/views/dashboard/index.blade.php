@@ -110,8 +110,8 @@
 
         .dashboardTitle{
             width: 100%;
-            height: 50px;
             display: flex;
+            padding: 3px 10px;
             flex-direction: row;
             align-items: center;
             justify-content: start;
@@ -135,6 +135,7 @@
 
         {{-- Cards Section  --}}
         <div class="cardSection row px-1">
+
             {{-- Total Sale Invoice & Total Sale Amount --}}
             <div class=" col-12 col-md-6 col-lg-4 col-xxl-3 p-2">
                 <div class="dashboardCard firstCardShadow shadow-sm">
@@ -212,6 +213,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         {{-- Top Customer & Recently Arrival Product Section --}}
@@ -220,17 +222,17 @@
             {{-- Top Ten Customers --}}
             <div class="col-12 col-xxl-8">
                 <div class="table-card rounded-1 dashboardTbHeight">
-                    <div class="dashboardTitle section-title">
+                    <div class="dashboardTitle section-title mb-2">
                         <h5 class="fw-bold">Top Ten Customer</h5>
                     </div>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-muted">Code</th>
-                                <th scope="col" class="text-muted">Name</th>
-                                <th scope="col" class="text-muted">NRC</th>
-                                <th scope="col" class="text-muted text-end">Amount</th>
-                                <th scope="col" class="text-muted text-center">Address</th>
+                                <th scope="col">Code</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">NRC</th>
+                                <th scope="col" class="text-end">Amount</th>
+                                <th scope="col" class="text-center">Address</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,16 +253,16 @@
             {{-- Recently Arrival Product --}}
             <div class="col-12 col-xxl-4 my-3 my-xxl-0">
                 <div class="table-card rounded-1 dashboardTbHeight">
-                    <div class="dashboardTitle section-title">
+                    <div class="dashboardTitle section-title mb-2">
                         <h5 class="fw-bold">Recently Arrival Products</h5>
                     </div>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-muted">Code</th>
-                                <th scope="col" class="text-muted">Name</th>
-                                <th scope="col" class="text-muted">Unit</th>
-                                <th scope="col" class="text-muted text-end">Qty</th>
+                                <th scope="col">Code</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col"text-end">Qty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -285,18 +287,18 @@
                 {{-- Recently Ten Purchase Invoices --}}
                 <div class="row justify-content-center my-3">
                     <div class="table-card col-12 rounded-1">
-                        <div class="dashboardTitle section-title">
+                        <div class="dashboardTitle section-title mb-2">
                             <h5 class="fw-bold">Recently Purchase Invoice</h5>
                         </div>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="text-muted text-center">Invoice No</th>
-                                    <th scope="col" class="text-muted text-center" class="text-center">Date</th>
-                                    <th scope="col" class="text-muted text-center">Supplier</th>
-                                    <th scope="col" class="text-muted text-end">Paid Date</th>
-                                    <th scope="col" class="text-muted text-end">Amount</th>
-                                    <th scope="col" class="text-muted text-center">Status</th>
+                                    <th scope="col" class="text-center">Invoice No</th>
+                                    <th scope="col" class="text-center">Date</th>
+                                    <th scope="col" class="text-center">Supplier</th>
+                                    <th scope="col" class="text-end">Paid Date</th>
+                                    <th scope="col" class="text-end">Amount</th>
+                                    <th scope="col" class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -322,18 +324,18 @@
                 {{-- Recently Ten Sale Invoices  --}}
                 <div class="row justify-content-center rounded my-3">
                     <div class="table-card col-12 rounded-1">
-                        <div class="dashboardTitle section-title">
+                        <div class="dashboardTitle section-title mb-2">
                             <h5 class="fw-bold">Recently Sale Invoice</h5>
                         </div>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="text-muted text-center">Invoice No</th>
-                                    <th scope="col" class="text-muted text-center">Date</th>
-                                    <th scope="col" class="text-muted text-center">Customer</th>
-                                    <th scope="col" class="text-muted text-end">Paid Date</th>
-                                    <th scope="col" class="text-muted text-end">Amount</th>
-                                    <th scope="col" class="text-muted text-center">Status</th>
+                                    <th scope="col" class="text-center">Invoice No</th>
+                                    <th scope="col" class="text-center">Date</th>
+                                    <th scope="col" class="text-center">Customer</th>
+                                    <th scope="col" class="text-end">Paid Date</th>
+                                    <th scope="col" class="text-end">Amount</th>
+                                    <th scope="col" class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>

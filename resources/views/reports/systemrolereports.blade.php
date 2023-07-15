@@ -35,7 +35,7 @@
 </head>
 <body style="font-size: 0.85rem">
     <section class="w-100 bg-secondary">
-        <div class="voucherSection mx-auto bg-light text-dark">
+        <div class="reportSection mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
                 <button class="btn btn-primary me-2" id="printPuVoucher"><i class="fa fa-print"></i></button>
                 <a href="/report/index" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
