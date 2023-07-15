@@ -205,9 +205,9 @@
                          <div class="modal-body">
                               <div class="table-width">
                                    <table class="table table-striped table-bordered">
-                                        <thead style="background-color: #36616d; color: aliceblue; white-space: nowrap;">
+                                        <thead>
                                              <tr>
-                                                  <th>Invoice No</th>
+                                                  <th class="column-sticky first-column-th">Invoice No</th>
                                                   <th>Purchase Date</th>
                                                   <th>Supplier Name</th>
                                                   <th>Arrival Code</th>
@@ -229,13 +229,14 @@
                                                        {{-- <th>Deleted By</th>
                                                        <th>Deleted Date</th> --}}
                                                   @endif
+                                                  <th class="column-sticky last-column-th"></th>
                                                   {{-- <th></th> --}}
                                              </tr>
                                         </thead>
                                         <tbody style="white-space: nowrap;">
                                              @forelse ($deletepurchaseinvoices as $deletepurchaseinvoice)
                                                   <tr>
-                                                       <td class="text-center">
+                                                       <td class="text-center column-sticky first-column-tb">
                                                             @if ($deletepurchaseinvoice->IsPaid == 1)
                                                                  <a href="/purchaseinvoices/details/{{$deletepurchaseinvoice->InvoiceNo}}"><span class="text-success px-1"><i class="bi bi-check-circle-fill"></i></span> {{$deletepurchaseinvoice->InvoiceNo}}</a>
                                                             @else
@@ -270,14 +271,11 @@
                                                             {{-- <td>{{$deletepurchaseinvoice->DeletedBy}}</td>
                                                             <td>{{$deletepurchaseinvoice->DeletedDate}}</td> --}}
                                                        @endif
-                                                       {{-- <td>
-                                                            <a href="/purchaseinvoices/edit/{{$deletepurchaseinvoice->InvoiceNo}}" class="btn btn-primary py-0 px-1 me-2">
-                                                                 <i class="bi bi-pencil-fill"></i>
+                                                       <td class="column-sticky last-column-tb text-center">
+                                                            <a href="/purchaseinvoices/restore/{{$deletepurchaseinvoice->InvoiceNo}}" class="btn btn-primary py-0 px-1 me-2">
+                                                                 <i class="bi bi-arrow-clockwise"></i>
                                                             </a>
-                                                            <button class="btn delete-btn py-0 px-1 me-2" id="{{$deletepurchaseinvoice->InvoiceNo}}" onclick="PassPurchaseInNo(this.id);" data-bs-toggle="modal" data-bs-target="#purchaseDeleteModal">
-                                                                 <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                       </td> --}}
+                                                       </td>
                                                   </tr>
                                              @empty
                                              

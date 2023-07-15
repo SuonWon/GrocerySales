@@ -340,6 +340,29 @@ class SaleInvoiceController extends Controller
         }
     }
 
+    public function restore(SaleInvoice $saleinvoice)
+    {
+
+
+        $data = [];
+        $data['DeletedBy'] = null;
+        $data['InvoiceNo'] = $saleinvoice->InvoiceNo;
+        $data['DeletedDate'] = null;
+        $data['Status'] = 'O';
+
+        try {
+
+            $deletesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
+
+            return redirect()->route('saleinvoices')->with('success', 'Restore sale invoices successful');
+            
+        } catch (QueryException $e) {
+
+            return response()->json(['message' => $e->getMessage()]);
+
+        }
+    }
+
     public function viewDetails(SaleInvoice $saleinvoice)
     {
 

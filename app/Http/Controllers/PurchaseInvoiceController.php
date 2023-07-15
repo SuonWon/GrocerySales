@@ -388,12 +388,35 @@ class PurchaseInvoiceController extends Controller
 
         try {
 
-            $deletesaleinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
+            $deletePurchaseInvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
 
             return redirect()->route('purchaseinvoices')->with('success', 'Delete purchase invoices successful');
         } catch (QueryException $e) {
 
             return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function restore(PurchaseInvoice $purchaseinvoice)
+    {
+
+
+        $data = [];
+        $data['DeletedBy'] = null;
+        $data['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
+        $data['DeletedDate'] = null;
+        $data['Status'] = 'O';
+
+        try {
+
+            $deletePurchaseInvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
+
+            return redirect()->route('purchaseinvoices')->with('success', 'Restore purchase invoices successful');
+            
+        } catch (QueryException $e) {
+
+            return response()->json(['message' => $e->getMessage()]);
+
         }
     }
 
