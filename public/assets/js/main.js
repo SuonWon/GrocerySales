@@ -255,7 +255,7 @@ function CheckNumber(event) {
 
     let inputValue = Number((event.target.value).replace(/,/g, ""));
 
-    $("#"+event.target.id).val(inputValue.toLocaleString());
+    $("#"+event.target.id).val(inputValue);
 
 
 }
