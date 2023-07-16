@@ -247,8 +247,6 @@ function CheckNumber(event) {
 
     allowNum = /^[0-9/,]+$/;
 
-    console.log(event.target.value);
-
     if (event.target.value < 0 || !allowNum.test(event.target.value)) {
 
         $("#"+event.target.id).val(0);
@@ -257,7 +255,7 @@ function CheckNumber(event) {
 
     let inputValue = Number((event.target.value).replace(/,/g, ""));
 
-    $("#"+event.target.id).val(inputValue.toLocaleString());
+    $("#"+event.target.id).val(inputValue);
 
 
 }
