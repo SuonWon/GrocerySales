@@ -757,6 +757,14 @@ input[type="number"] {
     font-size: 17px;
 }
 
+.landscapeReport{
+    width: 1321px;
+    height: 1000px;
+    padding: 15px;
+    margin: 0;
+    font-size: 17px;
+}
+
 .title_fs, .default_fs {
     font-size: 15px;
 }

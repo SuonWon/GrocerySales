@@ -86,7 +86,16 @@
                 <div class="row">
                     <div class="col-7 d-flex flex-column">
                         <span class="mb-2 default_fs">ဘောင်ချာနံပါတ် : <span id="vInvoiceNo">{{$purchaseinvoice->InvoiceNo}}</span></span>
-                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-4">&nbsp;: </span><span id="vArrivalCode">{{$purchaseinvoice->ArrivalCode}}</span></span>
+                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-4">&nbsp;: </span>
+                            <span id="vArrivalCode">
+                                @foreach ($arrivals as $arrival)
+                                    @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
+                                        {{$arrival->PlateNo}}
+                                    @endif
+                                    
+                                @endforeach
+                            </span>
+                        </span>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
                         <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$purchaseinvoice->PurchaseDate}}</span></span>
@@ -238,7 +247,7 @@
 
         $(document).ready(function (){
 
-            toastr.options.timeOut = 5000;
+            toastr.options.timeOut = 500;
             toastr.options.closeButton = true;
             toastr.options.positionClass = "toast-top-right";
             toastr.options.showMethod = "fadeIn";

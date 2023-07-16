@@ -41,7 +41,10 @@
                 <a href="/report/index" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
             </div>
             <div class="w-100 text-center mb-3">
-                
+                <div>
+                    <h5 class="mb-2 title_fs ">ဦးသာဆင့် + ဒေါ်တင်ကြည်</h5>
+                    <h5 class="title_fs mb-0">( သ္မီး )ကိုစန်းဝေ + မမြင့်မြင့်ထွေး</h5>
+                </div>
                 <div class="col-6 lh-lg offset-3 fs-6">
                     @if ($companyinfo)
                         <span class="p-title">{{$companyinfo->CompanyName}}</span>
