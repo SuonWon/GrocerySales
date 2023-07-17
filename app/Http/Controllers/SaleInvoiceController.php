@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use App\Models\StockInWarehouse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -189,11 +191,17 @@ class SaleInvoiceController extends Controller
                     $data['LineDisAmt'] = $saleDetails['LineDisAmt'];
                     $data['LineTotalAmt'] = $saleDetails['LineTotalAmt'];
                     $data['IsFOC'] = $saleDetails['IsFOC'];
+                    $warehouseCode = $saleDetails['WarehouseNo'];
+                    $ItemCode = $saleDetails['ItemCode'];
+                    $totalViss = $saleDetails['TotalViss'];
 
                     try {
 
                         //logger($data);
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
+
+                        // DB::statement("CALL stockcontrol_proc('$warehouseCode', '$ItemCode','$totalViss','Sales');");
+                        StockInWarehouse::where('WarehouseCode',$saleDetails['WarehouseNo'])->where('ItemCode',$saleDetails['ItemCode'])->decrement('StockQty', $saleDetails['TotalViss']);
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);

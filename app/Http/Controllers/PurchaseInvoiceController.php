@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\GenerateId;
+use App\Models\StockInWarehouse;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseInvoiceController extends Controller
 {
@@ -189,11 +191,12 @@ class PurchaseInvoiceController extends Controller
                     $data = [];
                     $data['InvoiceNo'] = $InvoiceNo;
                     $guid = Str::uuid()->toString();
-                    $ItemCode = $purchaseInvoiceDetail['ItemCode'];
+                    
                     $unitPrice = $purchaseInvoiceDetail['UnitPrice'];
 
                     $data['ReferenceNo'] = $guid;
                     $data['WarehouseNo'] = $purchaseInvoiceDetail['WarehouseNo'];
+                    
                     $data['ItemCode'] = $purchaseInvoiceDetail['ItemCode'];
 
 
@@ -206,12 +209,19 @@ class PurchaseInvoiceController extends Controller
                     $data['LineDisAmt'] = $purchaseInvoiceDetail['LineDisAmt'];
                     $data['LineTotalAmt'] = $purchaseInvoiceDetail['LineTotalAmt'];
                     $data['IsFOC'] = $purchaseInvoiceDetail['IsFOC'];
-
+                    $warehouseCode = $purchaseInvoiceDetail['WarehouseNo'];
+                    $ItemCode = $purchaseInvoiceDetail['ItemCode'];
+                    $totalViss = $purchaseInvoiceDetail['TotalViss'];
+                    
                     try {
 
                         $newPurchasesInvoicedetails = PurchaseInvoiceDetail::create($data);
 
                         Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
+                        // DB::statement("CALL stockcontrol_proc('$warehouseCode', '$ItemCode','$totalViss','Purchases');");
+                        //if want to make increase
+                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
+
 
                     } catch (QueryException $e) {
 
