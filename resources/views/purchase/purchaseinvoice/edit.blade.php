@@ -1557,6 +1557,8 @@
 
         });
 
+        DisplayTotalCharges();
+
     }
 
     // ========= End of Add Supplier Data ========= //
