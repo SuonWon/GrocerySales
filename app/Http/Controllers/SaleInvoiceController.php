@@ -119,9 +119,6 @@ class SaleInvoiceController extends Controller
     public function store()
     {
 
-
-
-
         // Retrieve the JSON data from the request body
         $jsonData = json_decode(request()->getContent(), true);
 
@@ -248,6 +245,8 @@ class SaleInvoiceController extends Controller
         ]);
     }
 
+    
+
     public function update(SaleInvoice $saleinvoice)
     {
 
@@ -309,6 +308,9 @@ class SaleInvoiceController extends Controller
 
                     try {
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
+
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);
@@ -335,21 +337,35 @@ class SaleInvoiceController extends Controller
         $data['DeletedDate'] = $this->datetime;
         $data['Status'] = 'D';
 
+        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo',$saleinvoice->InvoiceNo)->get();
+
         try {
 
             $deletesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
 
+        
+
+            if($deletesaleinvoice){
+
+                foreach ($saleinvoicedetails as $saleinvoicedetail) {
+                    
+                    StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['TotalViss']);
+                }
+                
+            }
+
             return redirect()->route('saleinvoices')->with('success', 'Delete sale invoices successful');
         } catch (QueryException $e) {
 
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
 
-            //return back()->with(['error' => $e->getMessage()]);
+            return back()->with(['error' => $e->getMessage()]);
         }
     }
 
     public function restore(SaleInvoice $saleinvoice)
     {
+
 
 
         $data = [];
@@ -358,16 +374,29 @@ class SaleInvoiceController extends Controller
         $data['DeletedDate'] = null;
         $data['Status'] = 'O';
 
+        
+       $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo',$saleinvoice->InvoiceNo)->get();
+
         try {
 
-            $deletesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
+            $restoresaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
+
+            if($restoresaleinvoice){
+
+                foreach ($saleinvoicedetails as $saleinvoicedetail) {
+                    
+                    StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
+                }
+                
+            }
 
             return redirect()->route('saleinvoices')->with('success', 'Restore sale invoices successful');
-            
+
         } catch (QueryException $e) {
 
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
 
+            return back()->with(['error' => $e->getMessage()]);
         }
     }
 

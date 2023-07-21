@@ -1,5 +1,18 @@
 <x-layout title="Create Item">
 
+    @php
+        $warehouseList = [];
+    @endphp
+
+    @foreach ($warehouses as $warehouse)
+        @php
+            $warehouseList[] = [
+                'WarehouseCode' => $warehouse->WarehouseCode,
+                'StockQty' => '0',
+            ];
+        @endphp
+    @endforeach
+
     <div class="container-fluid content-body mt-3">
 
         {{-- Section Title --}}
@@ -19,16 +32,6 @@
 
         {{-- End of Section Title --}}
 
-        {{-- Generate Id --}}
-
-        {{-- @php
-            require app_path('./utils/GenerateId.php');
-            $generateid = new GenerateId();
-            $id = $generateid->generatePrimaryKeyId('items','ItemCode','SI-');
-        @endphp --}}
-
-        {{-- End of Generate Id --}}
-
         {{-- Form Section --}}
 
         <form action="/item/add" method="POST" id="saveItemData" class="row form-card mt-3 needs-validation"
@@ -44,7 +47,7 @@
                     {{-- Item Name --}}
                     <div class="col-12 col-xl-6 mb-3">
                         <label for="itemName" class="form-label cust-label">Item Name</label>
-                        <input type="text" class="form-control cust-input-box" id="itemName" name="ItemName"
+                        <input type="text" class="form-control cust-input-box" id="cItemName" name="ItemName"
                             value="" required>
                         <div class="invalid-feedback">
                             Please fill item name.
@@ -55,7 +58,7 @@
                     <div class="col-2 mb-3">
                         <label class="cust-label form-label text-end" for="discontinued">Is Active</label>
                         <div class="col-sm-8 form-check form-switch ms-3">
-                            <input class="form-check-input" type="checkbox" role="switch" id="discontinued"
+                            <input class="form-check-input" type="checkbox" role="switch" id="cDiscontinued"
                                 name="Discontinued" checked>
                             <x-formerror name="Discontinued"></x-formerror>
                         </div>
@@ -65,7 +68,7 @@
                     {{-- Category Name --}}
                     <div class="col-12 col-xl-6 mb-3">
                         <label for="selectCategory" class="form-label cust-label">Category Name</label>
-                        <select name="ItemCategoryCode" class="form-select" id="selectCategory" required>
+                        <select name="ItemCategoryCode" class="form-select" id="cSelectCategory" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($categories as $category)
                                 <option value="{{ $category->ItemCategoryCode }}">{{ $category->ItemCategoryName }}
@@ -81,7 +84,7 @@
                     {{-- Base Unit --}}
                     <div class="col-6 mb-3">
                         <label for="custNRC" class="form-label cust-label">Base Unit</label>
-                        <select class="mb-3 form-select" id="selectUnit" name="BaseUnit" required>
+                        <select class="mb-3 form-select" id="cSelectUnit" name="BaseUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
                                 <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
@@ -98,7 +101,7 @@
                     <div class="col-6 col-lg-6 mb-3">
                         <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales
                             Unit</label>
-                        <select class="mb-3 form-select" id="defSalesUnit" name="DefSalesUnit" required>
+                        <select class="mb-3 form-select" id="cDefSalesUnit" name="DefSalesUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
                                 <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
@@ -112,7 +115,7 @@
                     {{-- Default Purchase Unit --}}
                     <div class="col-6 col-lg-6 mb-3">
                         <label for="defPurUnit" class="form-label cust-label text-end">Default Purchase Unit</label>
-                        <select class="mb-3 form-select" id="defPurUnit" name="DefPurUnit" required>
+                        <select class="mb-3 form-select" id="cDefPurUnit" name="DefPurUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
                                 <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
@@ -129,7 +132,7 @@
                     {{-- Unit Price --}}
                     <div class="col-6 mb-3">
                         <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                        <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice"
+                        <input type="number" class="form-control cust-input-box" id="cUnitPrice" name="UnitPrice"
                             value="0" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                         <div class="invalid-feedback">
                             Please fill unit price.
@@ -138,7 +141,7 @@
                     {{-- Weight By Price --}}
                     <div class="col-6 mb-3">
                         <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
-                        <input type="number" class="form-control cust-input-box" id="weightByPrice"
+                        <input type="number" class="form-control cust-input-box" id="cWeightByPrice"
                             name="WeightByPrice" value="1" required>
                         <div class="invalid-feedback">
                             Please fill weight by price.
@@ -147,7 +150,7 @@
                     {{-- Last Purchase Unit --}}
                     <div class="col-6 mb-3">
                         <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
-                        <input type="number" class="form-control cust-input-box" id="lastPurchasePrice"
+                        <input type="number" class="form-control cust-input-box" id="cLastPurchasePrice"
                             name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)"
                             value="0" required>
                         <div class="invalid-feedback">
@@ -162,7 +165,7 @@
                     {{-- Remark --}}
                     <div class="col-12 mb-3">
                         <label for="itemRemark" class="form-label cust-label text-end">Remark</label>
-                        <textarea type="email" class="form-control cust-textarea" id="itemRemark" name="Remark" rows="3"></textarea>
+                        <textarea type="email" class="form-control cust-textarea" id="cItemRemark" name="Remark" rows="3"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -182,7 +185,7 @@
                                             {{ $warehouse->WarehouseName }}
                                         </td>
                                         <td class="px-0 py-0">
-                                            <input type="number" class="text-end" id="stockQty" onfocus="AutoSelectValue(event)"
+                                            <input type="number" class="text-end"  id="{{$warehouse->WarehouseCode}}" onfocus="AutoSelectValue(event)" onblur="AddStock(event, this.id)"
                                                 value="0">
                                         </td>
                                     </tr>
@@ -211,20 +214,83 @@
 
 <script>
 
-    dselect(document.querySelector("#selectCategory"), config);
+    let stockList = @json($warehouseList);
 
-    dselect(document.querySelector("#selectUnit"), config);
+    dselect(document.querySelector("#cSelectCategory"), config);
 
-    dselect(document.querySelector("#defSalesUnit"), config);
+    dselect(document.querySelector("#cSelectUnit"), config);
 
-    dselect(document.querySelector("#defPurUnit"), config);
+    dselect(document.querySelector("#cDefSalesUnit"), config);
+
+    dselect(document.querySelector("#cDefPurUnit"), config);
+
+    function AddStock(event, warehouseCode) {
+
+        stockList.forEach(element => {
+            
+            if (warehouseCode == element.WarehouseCode) {
+
+                element.StockQty = event.target.value;
+                
+            }
+
+        });
+
+    }
 
     $("#saveItemData").on('submit', (event) => {
 
         event.preventDefault();
 
-        let stockItemData = [];
+        let data = {
+            ItemName : $("#cItemName").val(),
+            ItemCategoryCode : $("#cSelectCategory").val(),
+            BaseUnit : $("#cSelectUnit").val(),
+            UnitPrice : $("#cUnitPrice").val(),
+            LastPurPrice : $("#cLastPurchasePrice").val(),
+            WeightByPrice : $("#cWeightByPrice").val(),
+            DefSalesUnit : $("#cDefSalesUnit").val(),
+            DefPurUnit : $("#cDefPurUnit").val(),
+            Remark : $("#cItemRemark").val(),
+            Discontinued : document.getElementById("cDiscontinued").checked ? 'on' : 'off',
+            StockInWarehouses : stockList,
+        };
+
+        data = JSON.stringify(data);
+
+        console.log(data);
+
+        $.ajaxSetup({
+
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+
+        });
+
+        $.ajax({
+            url: '/item/add',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.message == "good") {
+
+                    sessionStorage.setItem('save', 'success');
+
+                    window.location.href = "/item/index";
+
+                }
+
+            },
+            error: function(error) {
+                console.log('no');
+                console.log(error.responseText);
+                res = JSON.parse(error.responseText);
+                console.log(res);
+            }
+        });
 
     });
-
 </script>
