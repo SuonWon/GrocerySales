@@ -39,31 +39,6 @@ class ItemController extends Controller
             ->selectRaw('CASE WHEN stock_in_warehouses.StockQty < 10 THEN "low" ELSE "high" END as StockAlert')
             ->orderBy('items.ItemCode')
             ->get();
-
-        // $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
-        //     ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
-        //     ->orderBy('items.ItemCode')
-        //     ->get();
-
-        // $stockLevels = [];
-
-        // foreach ($stockitems as $item) {
-
-        //     if ($item->StockQty <= 10) {
-
-        //         $stockLevels[] = $item->ItemCode ;
-                
-
-        //     } else {
-
-        //         $stockLevels[$item->ItemCode] = 'High';
-                
-        //     }
-            
-        // }
-
-                  
-                    // dd($stockLevels);
         
         $warehouses = Warehouse::all();
 

@@ -492,6 +492,8 @@ class PurchaseInvoiceController extends Controller
 
         $purchaseinvoice->purchaseinvoicedetails = $purchaseinvoicedetails;
 
+        $totalBags = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->sum('Quantity');
+
         $suppliers = Supplier::all();
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
@@ -508,6 +510,7 @@ class PurchaseInvoiceController extends Controller
             'warehouses' => $warehouses,
             'units' => $units,
             'companyinfo' => $companyinfo,
+            'totalBags' => $totalBags,
         ]);
     }
 
