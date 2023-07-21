@@ -402,8 +402,7 @@ class SaleInvoiceController extends Controller
             ->get();
 
         $saleinvoice->saleinvoicedetails = $saleinvoicedetails;
-
-
+        $totalBags = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)->sum('Quantity');
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
@@ -418,6 +417,7 @@ class SaleInvoiceController extends Controller
             'items' => $items,
             'units' => $units,
             'companyinfo' => $companyinfo,
+            'totalBags' => $totalBags,
         ]);
     }
 
@@ -432,8 +432,7 @@ class SaleInvoiceController extends Controller
             ->get();
 
         $saleinvoice->saleinvoicedetails = $saleinvoicedetails;
-
-
+        $totalBags = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)->sum('Quantity');
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
@@ -448,6 +447,7 @@ class SaleInvoiceController extends Controller
             'items' => $items,
             'units' => $units,
             'companyinfo' => $companyinfo,
+            'totalBags' => $totalBags,
         ]);
     }
 

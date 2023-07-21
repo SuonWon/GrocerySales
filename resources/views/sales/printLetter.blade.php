@@ -76,27 +76,40 @@
             <div class="title mb-1">
                 <div class="row">
                     <div class="col-7 d-flex flex-column">
-                        <span class="mb-2 default_fs">ဘောင်ချာနံပါတ်: <span id="vInvoiceNo">{{$saleinvoice->InvoiceNo}}</span></span>
-                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-3">&nbsp;: </span><span id="vPlateNo">{{$saleinvoice->PlateNo}}</span></span>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ဘောင်ချာနံပါတ်</span>
+                            <span class="col-6" id="vInvoiceNo">: {{$saleinvoice->InvoiceNo}}</span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ယာဉ်အမှတ်</span>
+                            <span class="col-6" id="vPlateNo">: {{$saleinvoice->PlateNo}}</span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">အိတ်အရေအတွက်</span>
+                            <span class="col-6" id="vTotalBags">: {{number_format($totalBags)}}</span>
+                        </div>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
-                        <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$saleinvoice->SalesDate}}</span></span>
-                        <span class="mb-2 default_fs">ဖောက်သည်
-                            <span>:
-                                <span id="vSupplier">
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">နေ့စွဲ</span>
+                            <span class="col-6" id="vPurchaseDate">: {{$saleinvoice->SalesDate}}</span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ဖောက်သည်</span>
+                            <span class="col-6" id="vSupplier">: 
 
-                                    @forelse ($customers as $customer)
+                                @forelse ($customers as $customer)
 
-                                        @if ($customer->CustomerCode == $saleinvoice->CustomerCode)
-                                            {{$customer->CustomerName}}
-                                        @endif
+                                    @if ($customer->CustomerCode == $saleinvoice->CustomerCode)
+                                        {{$customer->CustomerName}}
+                                    @endif
 
-                                        @empty
-                                                No Supplier Found
-                                    @endforelse
-                                </span>
+                                    @empty
+                                    
+                                @endforelse
+
                             </span>
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
