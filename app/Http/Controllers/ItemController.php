@@ -33,17 +33,50 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
 
+        $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+                    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
+                    ->orderBy('items.ItemCode')
+                    ->get();
+
+                    $stockLevels = [];
+
+                    foreach ($stockitems as $item) {
+
+                        if ($item->StockQty <= 10) {
+
+                            $stockLevels[$item->ItemCode] = 'Low';
+
+                        } else {
+
+                            $stockLevels[$item->ItemCode] = 'High';
+                            
+                        }
+                    }
+
+                  
+                    // dd($stockLevels);
+        
+        $warehouses = Warehouse::all();
+
         return view('setup.item.index',[
-            'items' => $items       
+            'items' => $items,
+            'warehouses' => $warehouses,
+            'stockLevels' => $stockLevels
         ]);
     }
 
     public function create(){
+
         $units = UnitMeasurement::all();
+
         $categories = ItemCategory::all();
+
+        $warehouses = Warehouse::all();
+        
         return view('setup.item.add',[
             'units' => $units,
-            'categories' => $categories
+            'categories' => $categories,
+            'warehouses' => $warehouses,
         ]);
     }
 
@@ -114,6 +147,14 @@ class ItemController extends Controller
 
     public function show(Item $item){
 
+        $stockitemsqty = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+                    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
+                    ->orderBy('items.ItemCode')
+                    ->where('items.ItemCode',$item->ItemCode)
+                    ->get();
+
+ 
+
         if ($item->Discontinued == 1) {
             $item->Discontinued = 'on';
         } else {
@@ -122,11 +163,14 @@ class ItemController extends Controller
 
         $units = UnitMeasurement::all();
         $categories = ItemCategory::all();
+        $warehouses = Warehouse::all();
 
         return view('setup.item.edit',[
             'item' => $item,
             'units' => $units,
-            'categories' => $categories
+            'categories' => $categories,
+            'stockitemsqty' => $stockitemsqty,
+            'warehouses' => $warehouses,
         ]);
     }
 

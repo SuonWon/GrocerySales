@@ -165,6 +165,58 @@
                               <textarea type="email" class="form-control cust-textarea" id="itemRemark" name="Remark" rows="3"></textarea>
                          </div>
                     </div>
+                    <div class="row">
+                         <div class="col-12 mb-2">
+                              <table class="table stockList">
+                                   <thead>
+                                        <tr>
+                                             <th style="width: 350px;">Warehouse Name</th>
+                                             <th style="width: 180px;">Stock Qty (ပိဿချိန်)</th>
+                                             <th></th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        {{-- <tr>
+                                             <td class="px-0 pb-0 pt-2">Mandalay Warehouse</td>
+                                             <td class="px-0 py-0">
+                                                  <input type="number" id="totalAmt"
+                                                  value="500" id="row"
+                                                  >
+                                             </td>
+                                             <td class="text-center px-0 pt-0 pb-1">
+                                                  <button type="button"
+                                                  class="btn btn-primary py-0 mt-1 px-1" onclick="AddStockQty()">
+                                                       <i class="bi bi-pencil-fill"></i>
+                                                  </button>
+                                             </td>
+                                        </tr> --}}
+                                        @foreach ($stockitemsqty as $key => $stockitem)
+                                             <tr>
+                                                  <td class="px-2 pb-0 pt-2">
+                                                       @foreach ($warehouses as $warehouse)
+                                                            @if ($stockitem->WarehouseCode == $warehouse->WarehouseCode)
+                                                                 {{$warehouse->WarehouseName}}
+                                                            @endif
+                                                       @endforeach
+                                                  </td>
+                                                  <td class="px-0 py-0">
+                                                       <input type="number" class="text-end" id="row_{{$key}}"
+                                                       value="{{ ($stockitem->StockQty) }}"
+                                                       disabled>
+                                                  </td>
+                                                  <td class="text-center px-0 pt-0 pb-1">
+                                                       <button type="button"
+                                                       class="btn btn-primary py-0 mt-1 px-1" onclick="AddStockQty(this.id)" id="{{$key}}">
+                                                            <i class="bi bi-pencil-fill"></i>
+                                                       </button>
+                                                  </td>
+                                             </tr>
+                                        @endforeach
+                                        
+                                   </tbody>
+                              </table>
+                         </div>
+                    </div>
                </div>
                <div class="row px-0">
                     <div class="col-12 px-0 text-end">
@@ -216,5 +268,19 @@
      dselect(document.querySelector("#defSalesUnit"), config);
 
      dselect(document.querySelector("#defPurUnit"), config);
+
+     function AddStockQty(inputId) {
+
+          event.preventDefault();
+
+          console.log(inputId);
+
+          inputBox = document.querySelector("#row_"+ inputId);
+          
+          inputBox.removeAttribute('disabled');
+
+          inputBox.select();
+
+     }
      
  </script>

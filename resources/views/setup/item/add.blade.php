@@ -1,10 +1,8 @@
-
-
 <x-layout title="Create Item">
 
     <div class="container-fluid content-body mt-3">
 
-    {{-- Section Title --}}
+        {{-- Section Title --}}
 
         <div class="row justify-content-between">
             {{-- Title --}}
@@ -19,9 +17,9 @@
             </div>
         </div>
 
-    {{-- End of Section Title --}}
+        {{-- End of Section Title --}}
 
-    {{-- Generate Id --}}
+        {{-- Generate Id --}}
 
         {{-- @php
             require app_path('./utils/GenerateId.php');
@@ -29,11 +27,12 @@
             $id = $generateid->generatePrimaryKeyId('items','ItemCode','SI-');
         @endphp --}}
 
-    {{-- End of Generate Id --}}
-        
-    {{-- Form Section --}}
+        {{-- End of Generate Id --}}
 
-        <form action="/item/add" method="POST" enctype="multipart/form-data" class="row form-card mt-3 needs-validation" novalidate>
+        {{-- Form Section --}}
+
+        <form action="/item/add" method="POST" id="saveItemData" class="row form-card mt-3 needs-validation"
+            novalidate>
             @csrf
             <div class="col-12 col-lg-6">
                 <div class="row">
@@ -45,7 +44,8 @@
                     {{-- Item Name --}}
                     <div class="col-12 col-xl-6 mb-3">
                         <label for="itemName" class="form-label cust-label">Item Name</label>
-                        <input type="text" class="form-control cust-input-box" id="itemName" name="ItemName" value="" required>
+                        <input type="text" class="form-control cust-input-box" id="itemName" name="ItemName"
+                            value="" required>
                         <div class="invalid-feedback">
                             Please fill item name.
                         </div>
@@ -55,7 +55,8 @@
                     <div class="col-2 mb-3">
                         <label class="cust-label form-label text-end" for="discontinued">Is Active</label>
                         <div class="col-sm-8 form-check form-switch ms-3">
-                            <input class="form-check-input" type="checkbox" role="switch" id="discontinued" name="Discontinued" checked>
+                            <input class="form-check-input" type="checkbox" role="switch" id="discontinued"
+                                name="Discontinued" checked>
                             <x-formerror name="Discontinued"></x-formerror>
                         </div>
                     </div>
@@ -67,9 +68,9 @@
                         <select name="ItemCategoryCode" class="form-select" id="selectCategory" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($categories as $category)
-                                <option value="{{$category->ItemCategoryCode}}">{{$category->ItemCategoryName}}</option>
+                                <option value="{{ $category->ItemCategoryCode }}">{{ $category->ItemCategoryName }}
+                                </option>
                             @empty
-                                    
                             @endforelse
                         </select>
                         <div class="invalid-feedback">
@@ -83,9 +84,8 @@
                         <select class="mb-3 form-select" id="selectUnit" name="BaseUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
-                                    <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                             @empty
-                                    
                             @endforelse
                         </select>
                         <div class="invalid-feedback">
@@ -96,13 +96,13 @@
                 <div class="row">
                     {{-- Default Sale Unit --}}
                     <div class="col-6 col-lg-6 mb-3">
-                        <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales Unit</label>
+                        <label for="defSalesUnit" class="form-label cust-label cust-label text-end">Default Sales
+                            Unit</label>
                         <select class="mb-3 form-select" id="defSalesUnit" name="DefSalesUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
-                                    <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                             @empty
-                                    
                             @endforelse
                         </select>
                         <div class="invalid-feedback">
@@ -115,22 +115,22 @@
                         <select class="mb-3 form-select" id="defPurUnit" name="DefPurUnit" required>
                             <option value="" selected disabled>Choose</option>
                             @forelse ($units as $unit)
-                                    <option value="{{$unit->UnitCode}}">{{$unit->UnitDesc}}</option>
+                                <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                             @empty
-                                    
                             @endforelse
                         </select>
                         <div class="invalid-feedback">
                             Please fill default purchase unit.
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row">
                     {{-- Unit Price --}}
                     <div class="col-6 mb-3">
                         <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                        <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice" value="0" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                        <input type="number" class="form-control cust-input-box" id="unitPrice" name="UnitPrice"
+                            value="0" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                         <div class="invalid-feedback">
                             Please fill unit price.
                         </div>
@@ -138,7 +138,8 @@
                     {{-- Weight By Price --}}
                     <div class="col-6 mb-3">
                         <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
-                        <input type="number" class="form-control cust-input-box" id="weightByPrice" name="WeightByPrice" value="1" required>
+                        <input type="number" class="form-control cust-input-box" id="weightByPrice"
+                            name="WeightByPrice" value="1" required>
                         <div class="invalid-feedback">
                             Please fill weight by price.
                         </div>
@@ -146,12 +147,14 @@
                     {{-- Last Purchase Unit --}}
                     <div class="col-6 mb-3">
                         <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
-                        <input type="number" class="form-control cust-input-box" id="lastPurchasePrice" name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" value="0" required>
+                        <input type="number" class="form-control cust-input-box" id="lastPurchasePrice"
+                            name="LastPurPrice" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)"
+                            value="0" required>
                         <div class="invalid-feedback">
                             Please fill last purchase price.
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="col-12 col-lg-6">
@@ -160,6 +163,33 @@
                     <div class="col-12 mb-3">
                         <label for="itemRemark" class="form-label cust-label text-end">Remark</label>
                         <textarea type="email" class="form-control cust-textarea" id="itemRemark" name="Remark" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-2">
+                        <table class="table stockList">
+                            <thead>
+                                <tr>
+                                    <th style="width: 350px;">Warehouse Name</th>
+                                    <th style="width: 180px;">Stock Qty (ပိဿချိန်)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($warehouses as $warehouse)
+                                    <tr>
+                                        <td class="px-2 pb-0 pt-2">
+                                            <input value="{{$warehouse->WarehouseCode}}" id="stockWHCode" hidden />
+                                            {{ $warehouse->WarehouseName }}
+                                        </td>
+                                        <td class="px-0 py-0">
+                                            <input type="number" class="text-end" id="stockQty" onfocus="AutoSelectValue(event)"
+                                                value="0">
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -173,10 +203,10 @@
             </div>
         </form>
 
-    {{-- End of Form Section --}}
+        {{-- End of Form Section --}}
 
     </div>
- 
+
 </x-layout>
 
 <script>
@@ -188,5 +218,13 @@
     dselect(document.querySelector("#defSalesUnit"), config);
 
     dselect(document.querySelector("#defPurUnit"), config);
-    
+
+    $("#saveItemData").on('submit', (event) => {
+
+        event.preventDefault();
+
+        let stockItemData = [];
+
+    });
+
 </script>

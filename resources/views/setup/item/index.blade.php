@@ -48,10 +48,12 @@
                         @forelse ($items as $item)
                             <tr>
                                 <td>
-                                    @if ($item->Discontinued == 1)
-                                            <span class="badge text-bg-success ">{{$item->ItemCode}}</span>
+                                    @if ($item->Discontinued == 1 && $stockLevels[$item->ItemCode] == "Low")
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span> <i class="bi bi-exclamation-circle-fill text-warning fs-6 ms-3"></i>
+                                    @elseif ($item->Discontinued == 1 && $stockLevels[$item->ItemCode] == 'High')
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span>
                                     @else
-                                            <span class="badge text-bg-danger ">{{$item->ItemCode}}</span>
+                                        <span class="badge text-bg-danger ">{{$item->ItemCode}}</span>
                                     @endif
                                 </td>
                                 <td>{{$item->ItemName}}</td>
