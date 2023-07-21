@@ -21,11 +21,22 @@
          
      {{-- Form Section --}}
 
+         {{-- @forelse ($stockitemsqty as $item)
+              
+         @empty
+              
+         @endforelse --}}
+
+         
+         
+
           <form action="/item/update/{{$item->ItemCode}}" method="POST" enctype="multipart/form-data" class="row form-card mt-3 needs-validation" novalidate>
              @csrf
                <div class="col-12 col-lg-6">
                     <input type="hidden" value="{{$item->ItemCode}}" name="ItemCode">
                     <div class="row">
+
+
                          {{-- Item Code --}}
                          <div class="col-5 col-md-6 col-xl-4 mb-3">
                               <label for="itemCode" class="form-label cust-label">Item Code</label>
@@ -216,5 +227,59 @@
      dselect(document.querySelector("#defSalesUnit"), config);
 
      dselect(document.querySelector("#defPurUnit"), config);
+
+//      var data = {
+//      "ItemCode" : "SI-0022",
+//     "ItemName" : "abc",
+//     "ItemCategoryCode" : "CT-0001",
+//     "BaseUnit" : "viss",
+//     "UnitPrice" : "400",
+//     "LastPurPrice" : "200",
+//     "WeightByPrice" : "399",
+//     "DefSalesUnit" : "viss",
+//     "DefPurUnit" : "viss",
+//     "Remark" : "hel",
+//     "Discontinued" : "on",
+//     "StockInWarehouses":[
+//     {"WarehouseNo":"WH-0001","StockQty": "100"},
+//     {"WarehouseNo":"WH-0003","StockQty": "150"},
+    
+// ]
+//      }
+
+//      data = JSON.stringify(data);
+//      $.ajaxSetup({
+
+//           headers: {
+//           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//           }
+
+//      });
+
+//      $.ajax({
+//             url: '/item/update/SI-0022',
+//             type: 'POST',
+//             data: data,
+//             dataType: 'json',
+//             success: function(response) {
+
+//                 console.log(response);
+
+//                 if (response.message == "good") {
+
+//                     alert('success');
+
+//                 }
+
+//             },
+//             error: function(error) {
+//                 console.log('no');
+//                 console.log(error.responseText);
+//                 res = JSON.parse(error.responseText);
+//                 console.log(res);
+//             }
+//      });
+
+
      
  </script>

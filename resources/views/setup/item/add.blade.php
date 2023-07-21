@@ -188,5 +188,57 @@
     dselect(document.querySelector("#defSalesUnit"), config);
 
     dselect(document.querySelector("#defPurUnit"), config);
+
+    //     var data = {
+    //     "ItemName" : "abc",
+    //     "ItemCategoryCode" : "CT-0001",
+    //     "BaseUnit" : "viss",
+    //     "UnitPrice" : "400",
+    //     "LastPurPrice" : "200",
+    //     "WeightByPrice" : "399",
+    //     "DefSalesUnit" : "viss",
+    //     "DefPurUnit" : "viss",
+    //     "Remark" : "hel",
+    //     "Discontinued" : "on",
+    //     "StockInWarehouses":[
+    //     {"WarehouseNo":"WH-0001","StockQty": "0"},
+    //     {"WarehouseNo":"WH-0002","StockQty": "44"},
+    //     {"WarehouseNo":"WH-0003","StockQty": "0"},
+        
+    // ]
+    // }
+
+    // data = JSON.stringify(data);
+    // $.ajaxSetup({
+
+    // headers: {
+    //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    // }
+
+    // });
+
+    // $.ajax({
+    //         url: '/item/add',
+    //         type: 'POST',
+    //         data: data,
+    //         dataType: 'json',
+    //         success: function(response) {
+
+    //             console.log(response);
+
+    //             if (response.message == "good") {
+
+    //                 alert('success');
+
+    //             }
+
+    //         },
+    //         error: function(error) {
+    //             console.log('no');
+    //             console.log(error.responseText);
+    //             res = JSON.parse(error.responseText);
+    //             console.log(res);
+    //         }
+    // });
     
 </script>

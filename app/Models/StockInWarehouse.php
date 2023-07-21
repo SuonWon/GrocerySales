@@ -16,6 +16,7 @@ class StockInWarehouse extends Model
         'WarehouseCode',
         'ItemCode',
         'StockQty',
+        'Status',
         'LastUpdatedDate'
     ];
 

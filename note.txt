@@ -99,3 +99,96 @@ CALL stockcontrol_proc2('WH-0001');
 CALL stockcontrol_proc('WH_0001','SI-0004');
 
 =================================================
+
+
+use App\Models\Item;
+use App\Models\StockInWarehouse;
+
+$items = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty')
+    ->orderBy('items.ItemCode')
+    ->get();
+
+$stockLevels = [];
+foreach ($items as $item) {
+    if ($item->StockQty <= 10) {
+        $stockLevels[$item->ItemCode] = 'Low';
+    } else {
+        $stockLevels[$item->ItemCode] = 'High';
+    }
+}
+
+// Displaying the stock levels
+foreach ($stockLevels as $itemCode => $stockLevel) {
+    echo "Item Code: $itemCode, Stock Level: $stockLevel<br>";
+}
+
+
+
+
+View File ဘက်မှာ စစ်ရမယ့် ပုံစံ
+@if ($stockLevels[$item->ItemCode] == "Low")
+        danger
+@endif
+
+
+Index Function အစားထိုးရမယ်
+public function index(){
+        
+        $items = Item::orderBy('items.CreatedDate','desc')
+        ->join('item_categories', 'items.ItemCategoryCode', '=', 'item_categories.ItemCategoryCode')
+        ->join('unit_measurements','items.BaseUnit','=','unit_measurements.UnitCode')
+        ->selectRaw('items.ItemCategoryCode,items.ItemName,items.ItemCode,items.BaseUnit,items.UnitPrice,items.WeightByPrice,items.DefSalesUnit,items.DefPurUnit,items.LastPurPrice,items.Discontinued,items.Remark,items.CreatedBy,items.CreatedDate,items.ModifiedDate,items.ModifiedBy')
+        ->selectRaw('item_categories.ItemCategoryCode, item_categories.ItemCategoryName')
+        ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
+        ->get();
+
+        $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+                    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
+                    ->orderBy('items.ItemCode')
+                    ->get();
+
+                    $stockLevels = [];
+                    foreach ($stockitems as $item) {
+                        if ($item->StockQty <= 10) {
+                            $stockLevels[$item->ItemCode] = 'Low';
+                        }
+                    }
+
+                  
+                    // dd($stockLevels);
+        
+
+        return view('setup.item.index',[
+            'items' => $items,
+            'stockLevels' => $stockLevels
+        ]);
+    }
+
+show Function အစားထိုးရမယ်
+public function show(Item $item){
+
+        $stockitemsqty = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+                    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
+                    ->orderBy('items.ItemCode')
+                    ->where('items.ItemCode',$item->ItemCode)
+                    ->get();
+
+ 
+
+        if ($item->Discontinued == 1) {
+            $item->Discontinued = 'on';
+        } else {
+            $item->Discontinued = "off";
+        }
+
+        $units = UnitMeasurement::all();
+        $categories = ItemCategory::all();
+
+        return view('setup.item.edit',[
+            'item' => $item,
+            'units' => $units,
+            'categories' => $categories,
+            'stockitemsqty' => $stockitemsqty
+        ]);
+    }
