@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\GenerateId;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseInvoiceController extends Controller
 {
@@ -461,6 +462,8 @@ class PurchaseInvoiceController extends Controller
 
         $purchaseinvoice->purchaseinvoicedetails = $purchaseinvoicedetails;
 
+        $totalBags = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->sum('Quantity');
+
         $suppliers = Supplier::all();
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
@@ -477,6 +480,7 @@ class PurchaseInvoiceController extends Controller
             'warehouses' => $warehouses,
             'units' => $units,
             'companyinfo' => $companyinfo,
+            'totalBags' => $totalBags,
         ]);
     }
 
