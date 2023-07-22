@@ -85,27 +85,46 @@
             <div class="title">
                 <div class="row">
                     <div class="col-7 d-flex flex-column">
-                        <span class="mb-2 default_fs">ဘောင်ချာနံပါတ် : <span id="vInvoiceNo">{{$purchaseinvoice->InvoiceNo}}</span></span>
-                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-4">&nbsp;: </span><span id="vArrivalCode">{{$purchaseinvoice->ArrivalCode}}</span></span>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ဘောင်ချာနံပါတ်</span>
+                            <span class="col-5" id="vInvoiceNo">: {{$purchaseinvoice->InvoiceNo}}</span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ယာဉ်အမှတ်</span>
+                            <span class="col-5" id="vArrivalCode"> :
+                                @foreach ($arrivals as $arrival)
+
+                                    @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
+                                        {{$arrival->PlateNo}}
+                                    @endif
+                                    
+                                @endforeach
+                            </span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">အိတ်အရေအတွက်</span>
+                            <span class="col-5" id="vtotalBags">: {{number_format($totalBags)}}</span>
+                        </div>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
-                        <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$purchaseinvoice->PurchaseDate}}</span></span>
-                        <span class="mb-2 default_fs">ကုန်သည်
-                            <span>:
-                                <span id="vSupplier">
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">နေ့စွဲ</span>
+                            <span class="col-8" id="vPurchaseDate">: {{$purchaseinvoice->PurchaseDate}}</span>
+                        </div>
+                        <div class="mb-2 default_fs row">
+                            <span class="col-4 pe-0">ကုန်သည်</span>
+                            <span class="col-8" id="vSupplier">: 
+                                @forelse ($suppliers as $supplier)
 
-                                    @forelse ($suppliers as $supplier)
+                                    @if ($supplier->SupplierCode == $purchaseinvoice->SupplierCode)
+                                        {{$supplier->SupplierName}}
+                                    @endif
 
-                                        @if ($supplier->SupplierCode == $purchaseinvoice->SupplierCode)
-                                            {{$supplier->SupplierName}}
-                                        @endif
-
-                                        @empty
-                                                No Supplier Found
-                                    @endforelse
-                                </span>
+                                    @empty
+                                            No Supplier Found
+                                @endforelse
                             </span>
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -238,7 +257,7 @@
 
         $(document).ready(function (){
 
-            toastr.options.timeOut = 5000;
+            toastr.options.timeOut = 500;
             toastr.options.closeButton = true;
             toastr.options.positionClass = "toast-top-right";
             toastr.options.showMethod = "fadeIn";

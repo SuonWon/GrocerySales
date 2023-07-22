@@ -23,6 +23,7 @@
                 'PackedUnit' => $purchaseinvoicedetail->PackedUnit,
                 'UnitName' => $purchaseinvoicedetail->UnitDesc,
                 'TotalViss' => $purchaseinvoicedetail->TotalViss,
+                'OldTotalViss' => $purchaseinvoicedetail->TotalViss,
                 'UnitPrice' => $purchaseinvoicedetail->UnitPrice,
                 'Amount' => $purchaseinvoicedetail->Amount,
                 'LineDisPer' => $purchaseinvoicedetail->LineDisPer,
@@ -1260,7 +1261,7 @@
 
     function PuEditCharges(event) {
 
-        let check = /^[0-9]+$/;
+        let check = /^[0-9/,]+$/;
 
         if (event.target.value < 0 || !check.test(event.target.value)) {
 
@@ -1343,6 +1344,7 @@
                     Quantity: element.Quantity,
                     PackedUnit: element.PackedUnit,
                     TotalViss: element.TotalViss,
+                    OldTotalViss: element.OldTotalViss,
                     UnitPrice: element.UnitPrice,
                     Amount: element.Amount,
                     LineDisPer: element.LineDisPer,
@@ -1556,6 +1558,8 @@
             }
 
         });
+
+        DisplayTotalCharges();
 
     }
 

@@ -1124,7 +1124,7 @@
 
     function PuCharges(event) {
 
-        let check = /^[0-9]+$/;
+        let check = /^[0-9/,]+$/;
 
         if (event.target.value < 0 || !check.test(event.target.value)) {
 
@@ -1414,6 +1414,8 @@
             }
 
         });
+
+        DisplayTotalCharges();
 
     }
 

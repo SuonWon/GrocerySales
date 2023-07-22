@@ -328,13 +328,61 @@ ul ul a {
 }
 
 .table-width {
+    position: relative;
     width: 100%;
     overflow: auto;
     height: 550px;
 }
 
+.column-sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 99999;
+}
+
+.first-column-th {
+    width: 150px;
+    min-width: 100px;
+    max-width: 150px;
+    left: 0px;
+    background-color: #36616d !important;
+    color: aliceblue;
+    border-right: 1px solid #fff !important;
+}
+
+.first-column-tb {
+    width: 150px;
+    min-width: 100px;
+    max-width: 150px;
+    left: 0px;
+    background-color: white !important;
+    border-right: 1px solid #fff !important;
+}
+
+.last-column-th {
+    width: 70px;
+    min-width: 70px;
+    max-width: 150px;
+    right: 0px;
+    background-color: #36616d !important;
+    color: aliceblue;
+    border-left: 1px solid #fff !important;
+}
+
+.last-column-tb {
+    width: 70px;
+    min-width: 70px;
+    max-width: 150px;
+    right: 0px;
+    background-color: white !important;
+    border-left: 1px solid #fff !important;
+}
+
 .table-card .table thead,
 .table-width .table thead {
+    background-color: #36616d; 
+    color: aliceblue; 
+    white-space: nowrap;
     font-size: 0.85rem;
 }
 
@@ -584,25 +632,30 @@ input[type="number"] {
 
 .purchaseTable table thead,
 .saleTable table thead,
-.details-table table thead {
+.details-table table thead,
+.stockList thead {
     background-color: #36616d;
     color: aliceblue;
     font-size: 0.9rem;
     border: 1px solid #36616d;
 }
 
-.details-table table tbody {
+.details-table table tbody,
+.stockList tbody {
     font-size: 0.8rem;
+    border: 1px solid #ddd;
 }
 
 .purchaseTable table thead tr th,
 .saleTable table thead tr th,
-.details-table table thead tr th {
+.details-table table thead tr th,
+.stockList thead tr th {
     border-right: 1px solid #ddd;
 }
 
 .purchaseTable table tbody tr td,
-.saleTable table tbody tr td {
+.saleTable table tbody tr td,
+.stockList tbody tr td {
     border-right: 1px solid #ddd;
 }
 
@@ -610,7 +663,8 @@ input[type="number"] {
 .purchaseTable table tbody tr td select,
 .saleTable table tbody tr td input,
 .saleTable table tbody tr td select,
-.input-icon input {
+.input-icon input,
+.stockList tbody tr td input {
     width: 100%;
     padding: 5px 5px;
     font-size: 0.85rem;
@@ -618,7 +672,8 @@ input[type="number"] {
 }
 
 .purchaseTable table tbody tr td input:focus,
-.saleTable table tbody tr td input:focus {
+.saleTable table tbody tr td input:focus,
+.stockList tbody tr td input:focus {
     outline: none !important;
     border-bottom: 1px solid #36616d !important;
 }
@@ -701,6 +756,22 @@ input[type="number"] {
     font-size: 17px;
 }
 
+.reportSection{
+    width: 1000px;
+    height: 1321px;
+    padding: 15px;
+    margin: 0;
+    font-size: 17px;
+}
+
+.landscapeReport{
+    width: 1321px;
+    height: 1000px;
+    padding: 15px;
+    margin: 0;
+    font-size: 17px;
+}
+
 .title_fs, .default_fs {
     font-size: 15px;
 }
@@ -708,11 +779,11 @@ input[type="number"] {
 .p-details-table table thead {
     background-color: black;
     color: aliceblue;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 .p-details-table table tbody {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
 }
 
 .report-title {

@@ -152,7 +152,7 @@ class PurchaseInvoiceController extends Controller
             'IsPaid' => ['required'],
             'PaidDate' => ['nullable'],
             'Remark' => ['nullable'],
-            'purchaseInvoiceDetails' => ['nullable']
+            'purchaseInvoiceDetails' => ['required']
         ])->validate();
 
         if ($formData['IsPaid'] == 0) {
@@ -217,9 +217,10 @@ class PurchaseInvoiceController extends Controller
 
                         $newPurchasesInvoicedetails = PurchaseInvoiceDetail::create($data);
 
-                        Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
+                        
                         // DB::statement("CALL stockcontrol_proc('$warehouseCode', '$ItemCode','$totalViss','Purchases');");
                         //if want to make increase
+                        Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
                         StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
 
 
@@ -335,6 +336,7 @@ class PurchaseInvoiceController extends Controller
         $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
 
         unset($formData['purchaseInvoiceDetails']);
+
         try {
 
             $updatesaleinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($formData);
@@ -367,7 +369,10 @@ class PurchaseInvoiceController extends Controller
                     try {
 
                         $newPurchaseInvoicedetails = PurchaseInvoiceDetail::create($data);
-                        // return response()->json(['message' => "good"]);
+
+                        Item::where('ItemCode', $purchaseInvoiceDetail['ItemCode'])->update(['LastPurPrice' =>  $purchaseInvoiceDetail['UnitPrice']]);
+                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->decrement('StockQty', $purchaseInvoiceDetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
 
                     } catch (QueryException $e) {
 
@@ -396,14 +401,53 @@ class PurchaseInvoiceController extends Controller
         $data['DeletedDate'] = $this->datetime;
         $data['Status'] = 'D';
 
+        $purchaseInvoiceDetails = PurchaseInvoiceDetail::where('InvoiceNo',$purchaseinvoice->InvoiceNo)->get();
+
         try {
 
-            $deletesaleinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
+            $deletepurchaseinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
+
+            if($deletepurchaseinvoice){
+                foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
+                    StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->decrement('StockQty', $purchaseInvoiceDetail['TotalViss']);
+                }
+            }
 
             return redirect()->route('purchaseinvoices')->with('success', 'Delete purchase invoices successful');
         } catch (QueryException $e) {
 
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
+            return back()->with(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function restore(PurchaseInvoice $purchaseinvoice)
+    {
+
+
+        $data = [];
+        $data['DeletedBy'] = null;
+        $data['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
+        $data['DeletedDate'] = null;
+        $data['Status'] = 'O';
+
+        $purchaseInvoiceDetails = PurchaseInvoiceDetail::where('InvoiceNo',$purchaseinvoice->InvoiceNo)->get();
+
+        try {
+
+            $restorepurchaseinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($data);
+
+            if($restorepurchaseinvoice){
+                foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
+                    StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
+                }
+            }
+
+            return redirect()->route('purchaseinvoices')->with('success', 'Delete purchase invoices successful');
+        } catch (QueryException $e) {
+
+            // return response()->json(['message' => $e->getMessage()]);
+            return back()->with(['error' => $e->getMessage()]);
         }
     }
 
@@ -448,6 +492,8 @@ class PurchaseInvoiceController extends Controller
 
         $purchaseinvoice->purchaseinvoicedetails = $purchaseinvoicedetails;
 
+        $totalBags = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->sum('Quantity');
+
         $suppliers = Supplier::all();
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
@@ -464,6 +510,7 @@ class PurchaseInvoiceController extends Controller
             'warehouses' => $warehouses,
             'units' => $units,
             'companyinfo' => $companyinfo,
+            'totalBags' => $totalBags,
         ]);
     }
 

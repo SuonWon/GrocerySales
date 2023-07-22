@@ -206,6 +206,7 @@ Route::prefix('salesinvoices')->middleware('mymiddleware:sales')->group(function
     Route::get('/edit/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'show'])->where('saleinvoice', '^SV-(\d+)$');
     Route::post('/update/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'update'])->where('saleinvoice', '^SV-(\d+)$');
     Route::get('/delete/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'destory'])->where('saleinvoice', '^SV-(\d+)$');
+    Route::get('/restore/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'restore'])->where('saleinvoice', '^SV-(\d+)$');
 
     Route::get('/details/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'viewDetails'])->where('saleinvoice', '^SV-(\d+)$');
 
@@ -216,6 +217,8 @@ Route::prefix('salesinvoices')->middleware('mymiddleware:sales')->group(function
     Route::get('/printLetter/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'printLetter'])->where('saleinvoice', '^SV-(\d+)$');
 
     Route::get('/reports', [SaleInvoiceController::class, 'salesinvoicesreports']);
+
+    Route::get('/restore/{saleinvoice:InvoiceNo}', [SaleInvoiceController::class, 'restore'])->where('saleinvoice', '^SV-(\d+)$');
 });
 
 //Purchase and Item Arrival
@@ -229,6 +232,7 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/edit/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'show'])->where('purchaseinvoice', '^PV-(\d+)$');
         Route::post('/update/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'update'])->where('purchaseinvoice', '^PV-(\d+)$');
         Route::get('/delete/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'destory'])->where('purchaseinvoice', '^PV-(\d+)$');
+        Route::get('/restore/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'restore'])->where('purchaseinvoice', '^PV-(\d+)$');
 
         Route::get('/details/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'viewDetails'])->where('purchaseinvoice', '^PV-(\d+)$');
 
@@ -237,6 +241,8 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/pudetailspreview/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'detailsPreview'])->where('purchaseinvoice', '^PV-(\d+)$');
 
         Route::get('/reports', [PurchaseInvoiceController::class, 'purchaseinvoicesreports']);
+
+        Route::get('/restore/{purchaseinvoice:InvoiceNo}', [PurchaseInvoiceController::class, 'restore'])->where('purchaseinvoice', '^PV-(\d+)$');
     });
 
     // Item Arrival routes

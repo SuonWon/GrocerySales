@@ -65,6 +65,7 @@ class WarehouseController extends Controller
                     $stockdata['WarehouseCode'] = $warehouseCode;
                     $stockdata['ItemCode'] = $ItemCode->ItemCode;
                     $stockdata['StockQty'] = 0;
+                    $stockdata['Status'] = 'N';
                     $stockdata['LastUpdatedDate'] = $this->datetime;
 
                     try {

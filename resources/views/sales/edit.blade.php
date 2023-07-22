@@ -21,6 +21,7 @@
                 'PackedUnit' => $saleinvoicedetail->PackedUnit,
                 'UnitName' => $saleinvoicedetail->UnitDesc,
                 'TotalViss' => $saleinvoicedetail->TotalViss,
+                'OldTotalViss' => $saleinvoicedetail->TotalViss,
                 'UnitPrice' => $saleinvoicedetail->UnitPrice,
                 'Amount' => $saleinvoicedetail->Amount,
                 'LineDisPer' => $saleinvoicedetail->LineDisPer,
@@ -1203,7 +1204,7 @@
 
     function SaleCharges(event) {
 
-        let check = /^[0-9]+$/;
+        let check = /^[0-9/,]+$/;
 
         if (event.target.value < 0 || !check.test(event.target.value)) {
 
@@ -1285,6 +1286,7 @@
                     Quantity: element.Quantity,
                     PackedUnit: element.PackedUnit,
                     TotalViss: element.TotalViss,
+                    OldTotalViss: element.OldTotalViss,
                     UnitPrice: element.UnitPrice,
                     Amount: element.Amount,
                     LineDisPer: element.LineDisPer,
@@ -1412,6 +1414,8 @@
         event.target.select();
 
     }
+
+    $("#SEShippingCharges").on('focus', SelectValue);
 
     $("#SELaborCharges").on('focus', SelectValue);
 
