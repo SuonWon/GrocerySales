@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
                         <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$saleinvoice->SalesDate}}</span></span>
-                        <span class="mb-2 default_fs">ဖောက်သည်
+                        <span class="mb-2 default_fs">ဝယ်ယူသူ
                             <span>:
                                 <span id="vSupplier">
 

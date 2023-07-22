@@ -77,12 +77,12 @@
                 <div class="row">
                     <div class="col-7 d-flex flex-column">
                         <span class="mb-2 default_fs">ဘောင်ချာနံပါတ်: <span id="vInvoiceNo">{{$saleinvoice->InvoiceNo}}</span></span>
-                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-3">&nbsp;: </span><span id="vPlateNo">{{$saleinvoice->PlateNo}}</span></span>
+                        <span class="mb-2 default_fs">ယာဉ်အမှတ်<span class="ms-3">&nbsp;&nbsp;: </span><span id="vPlateNo">{{$saleinvoice->PlateNo}}</span></span>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
-                        <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&nbsp;&nbsp;: <span id="vPurchaseDate"></span>{{$saleinvoice->SalesDate}}</span></span>
-                        <span class="mb-2 default_fs">ဖောက်သည်
-                            <span>:
+                        <span class="mb-2 default_fs">နေ့စွဲ <span class="ms-4">&emsp;&emsp;: <span id="vPurchaseDate"></span>{{$saleinvoice->SalesDate}}</span></span>
+                        <span class="mb-2 default_fs">ဝယ်ယူသူ
+                            <span>&nbsp; :
                                 <span id="vSupplier">
 
                                     @forelse ($customers as $customer)
