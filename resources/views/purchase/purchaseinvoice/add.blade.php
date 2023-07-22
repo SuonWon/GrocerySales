@@ -271,6 +271,13 @@
                                 <input type="text" class="form-control cust-input-box text-end" id="serviceCharges" name="ServiceCharges" value="0" rowNo="23" onblur="PuCharges(event);">
                             </div>
                         </div>
+                        {{-- Factory Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="factoryCharges" class="form-label text-end charges-label col-6">စက်ကြိတ်ခ :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end" id="factoryCharges" name="FactoryCharges" value="0" rowNo="23" onblur="PuCharges(event);">
+                            </div>
+                        </div>
                         <hr>
                     </div>
                     <div class="col-xl-6">
@@ -562,7 +569,7 @@
 
                         e.WeightPrice = element.weightByPrice;
 
-                        e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                        e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -666,7 +673,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -704,7 +711,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -740,7 +747,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
@@ -1114,7 +1121,9 @@
 
         let serviceCharge = Number($("#serviceCharges").val().replace(/,/g,""));
 
-        let totalCharges = shippingCharge + laborCharge + deliveryCharge + weightCharge + serviceCharge;
+        let factoryCharges = Number($("#factoryCharges").val().replace(/,/g,""));
+
+        let totalCharges = shippingCharge + laborCharge + deliveryCharge + weightCharge + serviceCharge + factoryCharges;
 
         $("#totalCharges").val(totalCharges.toLocaleString());
 
@@ -1258,6 +1267,7 @@
         data.DeliveryCharges = Number($("#deliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#weightCharges").val().replace(/,/g, ""));
         data.ServiceCharges = Number($("#serviceCharges").val().replace(/,/g, ""));
+        data.FactoryCharges = Number($("#factoryCharges").val().replace(/,/g, ""));
         data.TotalCharges = Number($("#totalCharges").val().replace(/,/g, ""));
         data.GrandTotal = Number($("#grandTotal").val().replace(/,/g, ""));
         data.Remark = $("#purchaseRemark").val();
@@ -1342,6 +1352,8 @@
 
     $("#serviceCharges").on('focus', PAddSelect);
 
+    $("#factoryCharges").on('focus', PAddSelect);
+
 
     // ========= End of Focus Functions ========= //
 
@@ -1409,7 +1421,7 @@
 
             if (e.supplierCode == supplierCode) {
 
-                document.querySelector("#serviceCharges").value = Math.round(subTotal * (e.profit / 100)).toLocaleString();
+                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100)).toLocaleString();
 
             }
 

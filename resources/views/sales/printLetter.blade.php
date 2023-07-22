@@ -50,6 +50,30 @@
 
 </head>
 <body>
+    @php
+        $salesList = [];
+    @endphp
+    @foreach ($saleinvoice->saleinvoicedetails as $key => $saleinvoicedetail)
+        @php
+            $salesList[] = [
+                'LineNo' => $key + 1,
+                'ItemCode' => $saleinvoicedetail->ItemCode,
+                'ItemName' => $saleinvoicedetail->ItemName,
+                'WeightPrice' => $saleinvoicedetail->WeightByPrice,
+                'Quantity' => $saleinvoicedetail->Quantity,
+                'PackedUnit' => $saleinvoicedetail->PackedUnit,
+                'UnitName' => $saleinvoicedetail->UnitDesc,
+                'TotalViss' => $saleinvoicedetail->TotalViss,
+                'UnitPrice' => $saleinvoicedetail->UnitPrice,
+                'Amount' => $saleinvoicedetail->Amount,
+                'LineDisPer' => $saleinvoicedetail->LineDisPer,
+                'LineDisAmt' => $saleinvoicedetail->LineDisAmt,
+                'LineTotalAmt' => $saleinvoicedetail->LineTotalAmt,
+                'IsFOC' => $saleinvoicedetail->IsFOC,
+                'LineTotal' => $saleinvoicedetail->IsFOC == 1 ? "FOC" : $saleinvoicedetail->LineTotalAmt,
+            ];
+        @endphp
+    @endforeach
     <section class="bg-secondary">
         <div class="voucherSection mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
@@ -86,16 +110,16 @@
                         </div>
                         <div class="mb-2 default_fs row">
                             <span class="col-4 pe-0">အိတ်အရေအတွက်</span>
-                            <span class="col-6" id="vTotalBags">: {{number_format($totalBags)}}</span>
+                            <span class="col-6" id="sLTotalBags"></span>
                         </div>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
                         <div class="mb-2 default_fs row">
-                            <span class="col-4 pe-0">နေ့စွဲ</span>
+                            <span class="col-5 pe-0">နေ့စွဲ</span>
                             <span class="col-6" id="vPurchaseDate">: {{$saleinvoice->SalesDate}}</span>
                         </div>
                         <div class="mb-2 default_fs row">
-                            <span class="col-4 pe-0">ဖောက်သည်</span>
+                            <span class="col-5 pe-0">ဝယ်သူအမည်</span>
                             <span class="col-6" id="vSupplier">: 
 
                                 @forelse ($customers as $customer)
@@ -107,7 +131,6 @@
                                     @empty
                                     
                                 @endforelse
-
                             </span>
                         </div>
                     </div>
@@ -123,15 +146,15 @@
                             <th>ပိဿာ</th>
                         </tr>
                     </thead>
-                    <tbody id="purchaseItemLists">
-                        @foreach ( $saleinvoice->saleinvoicedetails  as $key => $saleinvoicedetails )
+                    <tbody id="salesLetterList">
+                        {{-- @foreach ( $saleinvoice->saleinvoicedetails  as $key => $saleinvoicedetails )
                             <tr class="dataRow text-end mt-4">
                                 <td class="text-start">{{$key + 1}}</td>
                                 <td class="text-start">{{$saleinvoicedetails->ItemName}}</td>
-                                <td>{{number_format($saleinvoicedetails->Quantity)}} {{$saleinvoicedetails->PackedUnit}}</td>
+                                <td>{{number_format($saleinvoicedetails->Quantity)}} {{$saleinvoicedetails->UnitDesc}}</td>
                                 <td>{{$saleinvoicedetails->TotalViss}}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
@@ -155,6 +178,9 @@
                     </div>
                 </div>
             </div>
+            <div class="row default_fs text-end fixed-bottom">
+                <span id="printDate"></span>
+            </div>
         </div>
         <div class="sticky-bottom mx-auto text-end px-5 py-3" style="width: 934px;" id="newPuBtn">
             <a href="/salesinvoices/add" class="btn btn-primary" style="height: 40px; font-size: 1rem;"><span class="me-2"><i class="fa fa-plus"></i></span> New Purchase Invoice</a>
@@ -170,9 +196,31 @@
 
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
 
+    {{-- Myanmar Number CDN Link --}}
+    <script src="https://unpkg.com/myanmar-num-to-word@latest"></script>
+
     <script>
 
         $(document).ready(function (){
+
+            let salesList = @json($salesList);
+
+            let salesLetterList = ``;
+
+            document.getElementById("sLTotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}}));
+
+            salesList.forEach((e) => {
+
+                salesLetterList += `<tr class="dataRow text-end mt-4">
+                                <td class="text-start">`+ e.LineNo +`</td>
+                                <td class="text-start">`+ e.ItemName +`</td>
+                                <td>`+ myanmarNumToWord.convertToBurmeseNumber(Number(e.Quantity)) + " " + e.UnitName +`</td>
+                                <td>`+  myanmarNumToWord.convertToBurmeseNumber(e.TotalViss) +`</td>
+                            </tr>`;
+
+            });
+
+            document.getElementById("salesLetterList").innerHTML = salesLetterList;
 
             toastr.options.timeOut = 500;
             toastr.options.closeButton = true;
@@ -203,13 +251,25 @@
 
             $("#newPuBtn").css("display", "none");
 
+            let date = new Date();
+
+            let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+
+            let year = date.getFullYear();
+
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
+
+            let hour = date.getHours();
+
+            let minute = date.getMinutes();
+
+            document.getElementById("printDate").innerHTML = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+
             window.print();
 
             $("#buttons").css("display", "");
 
             $("#newPuBtn").css("display", "");
-
-
 
         });
 
