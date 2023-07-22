@@ -212,10 +212,12 @@
                                                   <th>Supplier Name</th>
                                                   <th>Arrival Code</th>
                                                   <th>Sub Total</th>
+                                                  <th>Shipping Charges</th>
                                                   <th>Labor Charges</th>
                                                   <th>Delivery Charges</th>
                                                   <th>Weight Charges</th>
                                                   <th>Service Charges</th>
+                                                  <th>Factory Charges</th>
                                                   <th>Total Charges</th>
                                                   <th>Grand Total</th>
                                                   <th>Paid Date</th>
@@ -254,10 +256,12 @@
                                                        <td>{{$deletepurchaseinvoice->SupplierName}}</td>
                                                        <td>{{$deletepurchaseinvoice->ArrivalCode}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->SubTotal)}}</td>
+                                                       <td class="text-end">{{number_format($deletepurchaseinvoice->ShippingCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->LaborCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->DeliveryCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->WeightCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->ServiceCharges)}}</td>
+                                                       <td class="text-end">{{number_format($deletepurchaseinvoice->FactoryCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->TotalCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->GrandTotal)}}</td>
                                                        <td>{{$deletepurchaseinvoice->PaidDate}}</td>
