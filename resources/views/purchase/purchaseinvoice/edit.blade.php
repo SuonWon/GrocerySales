@@ -195,7 +195,7 @@
                     {{-- Remarks --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-4 mb-2">
                         <label 6class="cust-label form-label text-end" for="purchaseRemark">Remark</label>
-                        <textarea class="form-control cust-textarea mt-2" name="" id="purchaseRemark" rows="2">{{ $purchaseinvoice->Remarks }}</textarea>
+                        <textarea class="form-control cust-textarea mt-2" name="" id="purchaseRemark" rows="2">{{ $purchaseinvoice->Remark }}</textarea>
                     </div>
                 </div>
 
@@ -427,6 +427,17 @@
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="serviceCharges" name="ServiceCharges"
                                     value="{{ number_format($purchaseinvoice->ServiceCharges) }}" rowNo="23"
+                                    onblur="PuEditCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Service Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="factoryCharges" class="form-label text-end charges-label col-6">စက်ကြိတ်ခ
+                                :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="factoryCharges" name="FactoryCharges"
+                                    value="{{ number_format($purchaseinvoice->FactoryCharges) }}" rowNo="23"
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
@@ -670,7 +681,7 @@
 
                         e.WeightPrice = element.weightPrice;
 
-                        e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                        e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -780,7 +791,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -820,7 +831,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -858,7 +869,7 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer);
 
@@ -1250,7 +1261,9 @@
 
         let serviceCharge = Number($("#serviceCharges").val().replace(/,/g, ""));
 
-        let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge + shippingCharges;
+        let factoryCharges = Number($("#factoryCharges").val().replace(/,/g, ""));
+
+        let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge + shippingCharges + factoryCharges;
 
         $("#totalCharges").val(totalCharges.toLocaleString());
 
@@ -1392,6 +1405,7 @@
         data.DeliveryCharges = Number($("#deliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#weightCharges").val().replace(/,/g, ""));
         data.ServiceCharges = Number($("#serviceCharges").val().replace(/,/g, ""));
+        data.FactoryCharges = Number($("#factoryCharges").val().replace(/,/g, ""));
         data.TotalCharges = Number($("#totalCharges").val().replace(/,/g, ""));
         data.GrandTotal = Number($("#grandTotal").val().replace(/,/g, ""));
         data.Remark = $("#purchaseRemark").val();
@@ -1481,6 +1495,8 @@
 
     $("#serviceCharges").on('focus', PEditSelect);
 
+    $("#factoryCharges").on('focus', PEditSelect);
+
 
     // ========= End of Focus Functions ========= //
 
@@ -1550,7 +1566,7 @@
 
             if (e.supplierCode == supplierCode) {
 
-                document.querySelector("#serviceCharges").value = Math.round(subTotal * (e.profit / 100))
+                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100))
                     .toLocaleString();
 
             }
