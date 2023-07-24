@@ -161,8 +161,8 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Total Viss</th>
+                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
                                     <th style="width: 60px;">Discount(%)</th>
                                     <th style="width: 120px;">Discount</th>
@@ -355,12 +355,12 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
+                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                            </td>
+                            <td class="px-0 py-0">
                                 <input type="number" class="unitprice_` + saleRowNo + `" value="0" id="` + saleRowNo +
             `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
             saleRowNo + `" >
-                            </td>
-                            <td class="px-0 py-0">
-                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -460,13 +460,13 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
+                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                            </td>
+                            <td class="px-0 py-0">
                                 <input type="text" class="unitprice_` + saleRowNo + ` text-end" value="0" id="` +
             saleRowNo +
             `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
             saleRowNo + `" >
-                            </td>
-                            <td class="px-0 py-0">
-                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -950,14 +950,14 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
+                                        <input type="number" class="saleviss_` + refNo + ` text-end" value="` +
+                    TotalViss + `" id="` + refNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                    </td>
+                                    <td class="px-0 py-0">
                                         <input type="text" class="unitprice_` + refNo + ` text-end" value="` +
                     UnitPrice.toLocaleString() + `" id="` + refNo +
                     `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
                     refNo + `" >
-                                    </td>
-                                    <td class="px-0 py-0">
-                                        <input type="number" class="saleviss_` + refNo + ` text-end" value="` +
-                    TotalViss + `" id="` + refNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="text-end" name="" id="itemAmount" value="` + Amount
