@@ -180,8 +180,8 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Total Viss</th>
+                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
                                     <th style="width: 60px;">Discount(%)</th>
                                     <th style="width: 120px;">Discount</th>
@@ -196,6 +196,7 @@
                                         {{-- <td class="px-0 py-0">
                                             <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
                                         </td> --}}
+                                        {{-- Item Name --}}
                                         <td class="px-0 py-0" id="sRow{{ $key + 1 }}">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="saleItemList_{{ $key + 1 }}"
@@ -215,6 +216,7 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Warehouse Name --}}
                                         <td class="px-0 py-0">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="saleWhList_{{ $key + 1 }}"
@@ -234,6 +236,7 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Quantity --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name=""
                                                 value="{{ number_format($saleinvoicedetail->Quantity) }}"
@@ -241,6 +244,7 @@
                                                 onblur="AddSaleQty(event,this.id,this.value);"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Unit --}}
                                         <td class="px-0 py-0">
                                             <select name="" class="saleUnitList_{{ $key + 1 }}"
                                                 id="{{ $key + 1 }}"
@@ -260,13 +264,7 @@
                                                 @endif
                                             </select>
                                         </td>
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="saleprice_{{ $key + 1 }}  text-end"
-                                                value="{{ number_format($saleinvoicedetail->UnitPrice) }}"
-                                                id="{{ $key + 1 }}" nextfocus="viss_{{ $key + 1 }}"
-                                                onfocus="FocusValue(event);"
-                                                onblur="AddSalePrice(event,this.id,this.value);">
-                                        </td>
+                                        {{-- Total Viss --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="viss_{{ $key + 1 }} text-end"
                                                 id="{{ $key + 1 }}"
@@ -274,10 +272,20 @@
                                                 value="{{ $saleinvoicedetail->TotalViss }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Unit Price --}}
+                                        <td class="px-0 py-0">
+                                            <input type="text" class="saleprice_{{ $key + 1 }}  text-end"
+                                                value="{{ number_format($saleinvoicedetail->UnitPrice) }}"
+                                                id="{{ $key + 1 }}" nextfocus="viss_{{ $key + 1 }}"
+                                                onfocus="FocusValue(event);"
+                                                onblur="AddSalePrice(event,this.id,this.value);">
+                                        </td>
+                                        {{-- Item Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name="" id="itemAmount"
                                                 value="{{ number_format($saleinvoicedetail->Amount) }}" disabled>
                                         </td>
+                                        {{-- Discount Rate --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="tableInput" name=""
                                                 id="{{ $key + 1 }}"
@@ -285,24 +293,28 @@
                                                 value="{{ $saleinvoicedetail->LineDisPer }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Discount Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" id="{{ $key + 1 }}"
                                                 onblur="AddSaleDisAmt(this.id, this.value);"
                                                 value="{{ number_format($saleinvoicedetail->LineDisAmt) }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Line Total Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="tableInput text-end" name=""
                                                 id="totalAmt"
                                                 value="{{ number_format($saleinvoicedetail->LineTotalAmt) }}"
                                                 disabled>
                                         </td>
+                                        {{-- Is Foc --}}
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2"
                                                 id="{{ $key + 1 }}"
                                                 {{ $saleinvoicedetail->IsFOC == 1 ? 'checked' : '' }}
                                                 onchange="AddSaleFoc(event, this.id)">
                                         </td>
+                                        {{-- Action Button --}}
                                         <td class="px-2 py-0">
                                             <button type="button" id="{{ $key + 1 }}"
                                                 class="btn delete-btn py-0 mt-1 px-1"
@@ -547,12 +559,12 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="saleprice_` + saleRowNo + ` text-end" value="0" id="` +
-            saleRowNo + `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + saleRowNo + `" onfocus="FocusValue(event);">
+                                <input type="number" class="viss_` + saleRowNo + ` text-end" value="1" id="` +
+            saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event);">
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="viss_` + saleRowNo + ` text-end" value="1" id="` +
-            saleRowNo + `" onblur="AddSaleTotalViss(this.id,this.value)" onfocus="FocusVale(event);">
+                                <input type="text" class="saleprice_` + saleRowNo + ` text-end" value="0" id="` +
+            saleRowNo + `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + saleRowNo + `" onfocus="FocusValue(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -1037,13 +1049,13 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
+                                        <input type="number" class="viss_` + refNo + ` text-end" id="` + refNo +
+                    `" value="` + TotalViss + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event)">
+                                    </td>
+                                    <td class="px-0 py-0">
                                         <input type="text" class="saleprice_` + refNo + ` text-end" name="" value="` +
                     Number(UnitPrice).toLocaleString() + `" id="` + refNo +
                     `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + refNo + `" onfocus="FocusValue(event);">
-                                    </td>
-                                    <td class="px-0 py-0">
-                                        <input type="number" class="viss_` + refNo + ` text-end" id="` + refNo +
-                    `" value="` + TotalViss + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event)">
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="text-end" name="" id="itemAmount" value="` + Amount
