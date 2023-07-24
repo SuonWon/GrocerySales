@@ -238,8 +238,8 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Total Viss</th>
+                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
                                     <th style="width: 60px;">Discount(%)</th>
                                     <th style="width: 120px;">Discount</th>
@@ -254,6 +254,7 @@
                                         {{-- <td class="px-0 py-0">
                                             <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
                                         </td> --}}
+                                        {{-- Item Name --}}
                                         <td class="px-0 py-0" id="row_{{ $key + 1 }}">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="itemCodeList_{{ $key + 1 }}"
@@ -273,6 +274,7 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Warehouse Name --}}
                                         <td class="px-0 py-0">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="warehouseList_{{ $key + 1 }}"
@@ -292,12 +294,14 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Quantity --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" id="{{ $key + 1 }}"
                                                 value="{{ number_format($purchaseinvoicedetail->Quantity) }}"
                                                 onblur="AddUnitQty(event,this.id,this.value);"
                                                 onfocus="PEditFocus(event)" nextFocus="puprice_{{ $key + 1 }}">
                                         </td>
+                                        {{-- Unit --}}
                                         <td class="px-0 py-0">
                                             <select name="" class="unitCodeList_{{ $key + 1 }}"
                                                 id="{{ $key + 1 }}" onchange="AddUnit(this.id, this.value);">
@@ -316,13 +320,7 @@
                                                 @endif
                                             </select>
                                         </td>
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="puprice_{{ $key + 1 }} text-end"
-                                                id="{{ $key + 1 }}"
-                                                value="{{ number_format($purchaseinvoicedetail->UnitPrice) }}"
-                                                onblur="AddUnitPrice(event,this.id, this.value)"
-                                                onfocus="PEditFocus(event)" nextFocus="puviss_{{ $key + 1 }}">
-                                        </td>
+                                        {{-- Total Viss --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="puviss_{{ $key + 1 }} text-end"
                                                 name="" id="{{ $key + 1 }}"
@@ -330,11 +328,21 @@
                                                 onblur="AddTotalViss(event,this.id,this.value)"
                                                 onfocus="PEditFocus(event)">
                                         </td>
+                                        {{-- Unit Price --}}
+                                        <td class="px-0 py-0">
+                                            <input type="text" class="puprice_{{ $key + 1 }} text-end"
+                                                id="{{ $key + 1 }}"
+                                                value="{{ number_format($purchaseinvoicedetail->UnitPrice) }}"
+                                                onblur="AddUnitPrice(event,this.id, this.value)"
+                                                onfocus="PEditFocus(event)" nextFocus="puviss_{{ $key + 1 }}">
+                                        </td>
+                                        {{-- Item Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="tableInput text-end" name=""
                                                 id="itemAmount"
                                                 value="{{ number_format($purchaseinvoicedetail->Amount) }}" disabled>
                                         </td>
+                                        {{-- Discount Rate --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="tableInput" name=""
                                                 id="{{ $key + 1 }}"
@@ -342,6 +350,7 @@
                                                 onblur="AddDiscountRate(this.id, this.value);"
                                                 onfocus="PEditFocus(event)">
                                         </td>
+                                        {{-- Discount Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name=""
                                                 id="{{ $key + 1 }}"
@@ -349,17 +358,20 @@
                                                 onblur="AddDiscountAmount(this.id, this.value);"
                                                 onfocus="PEditFocus(event)">
                                         </td>
+                                        {{-- Line Total Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" id="totalAmt"
                                                 value="{{ number_format($purchaseinvoicedetail->LineTotalAmt) }}"
                                                 disabled>
                                         </td>
+                                        {{-- Is Foc --}}
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2"
                                                 id="{{ $key + 1 }}"
                                                 {{ $purchaseinvoicedetail->IsFOC == 1 ? 'checked' : '' }}
                                                 onchange="AddFoc(event, this.id)">
                                         </td>
+                                        {{-- Action Button --}}
                                         <td class="px-2 py-0">
                                             <button type="button" id="{{ $key + 1 }}"
                                                 class="btn delete-btn py-0 mt-1 px-1"
@@ -617,12 +629,12 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
+                                <input type="number" class="text-end" id="` + rowNo + `" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event);">
+                            </td>
+                            <td class="px-0 py-0">
                                 <input type="text" class="puprice_` + rowNo + ` text-end" name="" id="` + rowNo +
             `" onblur="AddUnitPrice(event,this.id,this.value);" value="" onfocus="PEditFocus(event);" nextfocus="puviss_` +
             rowNo + `">
-                            </td>
-                            <td class="px-0 py-0">
-                                <input type="number" class="text-end" id="` + rowNo + `" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -1101,14 +1113,14 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
+                                        <input type="number" class="puviss_` + refNo + `" name="" id="` + refNo +
+                    `" value="` + TotalViss + `" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event);">
+                                    </td>
+                                    <td class="px-0 py-0">
                                         <input type="text" class="puprice_` + refNo + ` text-end" id="` + refNo +
                     `"  value="` + UnitPrice +
                     `" onblur="AddUnitPrice(event,this.id, this.value)" onfocus="PEditFocus(event);" nextfocus="puviss_` +
                     refNo + `">
-                                    </td>
-                                    <td class="px-0 py-0">
-                                        <input type="number" class="puviss_` + refNo + `" name="" id="` + refNo +
-                    `" value="` + TotalViss + `" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PEditFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="text-end" name="" id="itemAmount" value="` + Amount
