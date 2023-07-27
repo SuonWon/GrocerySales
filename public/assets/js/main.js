@@ -114,6 +114,7 @@ $(document).ready(function () {
     });
     $("#itemArrivalList").DataTable({
         scrollX: true,
+        order: [],
         fixedColumns: {
             right: 1,
         },

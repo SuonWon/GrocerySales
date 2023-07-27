@@ -21,6 +21,8 @@
 
      {{-- End of Section Title --}}
 
+     {{-- Filter Section --}}
+
           <div class="row mt-1">
                <div class="filter-box">
                     <form action="" method="GET" class="row justify-content-left">
@@ -78,6 +80,8 @@
                     </form>
                </div>
           </div>
+     
+     {{-- End of Filter Section --}}
 
     {{-- Sales List --}}
 

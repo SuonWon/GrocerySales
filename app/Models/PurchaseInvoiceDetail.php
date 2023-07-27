@@ -23,6 +23,7 @@ class PurchaseInvoiceDetail extends Model
         'ItemCode',
         'Quantity',
         'PackedUnit',
+        'QtyPerUnit',
         'TotalViss',
         'UnitPrice',
         'Amount',

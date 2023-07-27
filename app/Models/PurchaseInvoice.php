@@ -30,6 +30,7 @@ class PurchaseInvoice extends Model
         'DeliveryCharges',
         'WeightCharges',
         'ServiceCharges',
+        'FactoryCharges',
         'TotalCharges',
         'GrandTotal',
         'Remark',

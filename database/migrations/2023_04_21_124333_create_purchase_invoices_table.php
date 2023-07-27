@@ -21,11 +21,12 @@ return new class extends Migration
             $table->foreign('ArrivalCode')->references('ArrivalCode')->on('item_arrivals');
             $table->char('IsComplete', 1)->default(0)->nullable();
             $table->decimal('SubTotal',10,2);
-            $table->decimal('ShippingCharges',10,2)->nullable()->default(0);
+            $table->decimal('ShippingCharges',10)->nullable()->default(0);
             $table->decimal('LaborCharges',10,2)->nullable()->default(0);
             $table->decimal('DeliveryCharges',10,2)->nullable()->default(0);
             $table->decimal('WeightCharges',10,2)->nullable()->default(0);
             $table->decimal('ServiceCharges',10,2)->nullable()->default(0);
+            $table->decimal('FactoryCharges',10)->nullable()->default(0);
             $table->decimal('TotalCharges',10,2);
             $table->decimal('GrandTotal',10,2);
             $table->string('Remark',200);

@@ -102,7 +102,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::where('IsActive', '=', 1)->get();
         $warehouses = Warehouse::all();
         $items = Item::where('Discontinued', '=', 1)->get();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $currentDate = Carbon::now()->format('Y-m-d');
 
         return view('sales.add', [
@@ -181,6 +181,7 @@ class SaleInvoiceController extends Controller
                     $data['ItemCode'] = $saleDetails['ItemCode'];
                     $data['Quantity'] = $saleDetails['Quantity'];
                     $data['PackedUnit'] = $saleDetails['PackedUnit'];
+                    $data['QtyPerUnit'] = $saleDetails['QtyPerUnit'];
                     $data['TotalViss'] = $saleDetails['TotalViss'];
                     $data['UnitPrice'] = $saleDetails['UnitPrice'];
                     $data['Amount'] = $saleDetails['Amount'];
@@ -233,7 +234,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::where('IsActive', '=', 1)->get();
         $warehouses = Warehouse::all();
         $items = Item::where('Discontinued', '=', 1)->get();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
 
 
         return view('sales.edit', [
@@ -298,6 +299,7 @@ class SaleInvoiceController extends Controller
                     $data['ItemCode'] = $saleinvoicedetail['ItemCode'];
                     $data['Quantity'] = $saleinvoicedetail['Quantity'];
                     $data['PackedUnit'] = $saleinvoicedetail['PackedUnit'];
+                    $data['QtyPerUnit'] = $saleinvoicedetail['QtyPerUnit'];
                     $data['TotalViss'] = $saleinvoicedetail['TotalViss'];
                     $data['UnitPrice'] = $saleinvoicedetail['UnitPrice'];
                     $data['Amount'] = $saleinvoicedetail['Amount'];
@@ -416,8 +418,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
-
+        $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('sales.details', [
             'saleinvoice' => $saleinvoice,
@@ -443,7 +444,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $companyinfo = CompanyInformation::first();
 
 
@@ -473,7 +474,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $companyinfo = CompanyInformation::first();
 
 
@@ -504,7 +505,7 @@ class SaleInvoiceController extends Controller
         $customers = Customer::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $companyinfo = CompanyInformation::first();
 
 

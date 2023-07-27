@@ -751,7 +751,7 @@ input[type="number"] {
 .voucherSection {
     width: 672px;
     height: 816px;
-    padding: 10px;
+    padding: 15px;
     margin: 0;
     font-size: 17px;
 }
@@ -772,8 +772,12 @@ input[type="number"] {
     font-size: 17px;
 }
 
-.title_fs, .default_fs {
+.title_fs, .default_fs, .mf-header {
     font-size: 15px;
+}
+
+.mf-normal {
+    font-size: 14px;
 }
 
 .p-details-table table thead {

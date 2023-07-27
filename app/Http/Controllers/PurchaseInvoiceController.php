@@ -114,7 +114,7 @@ class PurchaseInvoiceController extends Controller
         $arrivals = ItemArrival::where('Status', 'N')->get();
         $warehouses = Warehouse::all();
         $items = Item::where('Discontinued', '=', 1)->get();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $currentDate = Carbon::now()->format('Y-m-d');
 
         return view('purchase.purchaseinvoice.add', [
@@ -139,7 +139,7 @@ class PurchaseInvoiceController extends Controller
 
             'PurchaseDate' => ['required'],
             'ArrivalCode' => ['required'],
-            'IsComplete' => ['required'],
+            'IsComplete' => ['nullable'],
             'SupplierCode' => ['required'],
             'SubTotal' => ['nullable'],
             'ShippingCharges' => ['nullable'],
@@ -147,6 +147,7 @@ class PurchaseInvoiceController extends Controller
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
             'ServiceCharges' => ['nullable'],
+            'FactoryCharges' => ['nullable'],
             'TotalCharges' => ['required'],
             'GrandTotal' => ['required'],
             'IsPaid' => ['required'],
@@ -163,13 +164,13 @@ class PurchaseInvoiceController extends Controller
         $InvoiceNo = $formData['InvoiceNo'];
         $ArrivalCode = $formData['ArrivalCode'];
 
-        if ($formData['IsComplete'] == 1) {
+        // if ($formData['IsComplete'] == 1) {
 
-            ItemArrival::where('ArrivalCode', $ArrivalCode)->update(['Status' => "O"]);
+        //     ItemArrival::where('ArrivalCode', $ArrivalCode)->update(['Status' => "O"]);
 
-            PurchaseInvoice::where('ArrivalCode', $ArrivalCode)->update(['IsComplete' => 1]);
+        //     PurchaseInvoice::where('ArrivalCode', $ArrivalCode)->update(['IsComplete' => 1]);
 
-        }
+        // }
 
 
         $purchaseInvoiceDetails = $formData['purchaseInvoiceDetails'];
@@ -182,6 +183,8 @@ class PurchaseInvoiceController extends Controller
         try {
             // Create a new sales invoice record
             $newPurchaseInvoice = PurchaseInvoice::create($formData);
+
+            ItemArrival::where('ArrivalCode', $ArrivalCode)->update(['Status' => "O"]);
 
             if (isset($newPurchaseInvoice)) {
 
@@ -198,10 +201,9 @@ class PurchaseInvoiceController extends Controller
                     $data['WarehouseNo'] = $purchaseInvoiceDetail['WarehouseNo'];
                     
                     $data['ItemCode'] = $purchaseInvoiceDetail['ItemCode'];
-
-
                     $data['Quantity'] = $purchaseInvoiceDetail['Quantity'];
                     $data['PackedUnit'] = $purchaseInvoiceDetail['PackedUnit'];
+                    $data['QtyPerUnit'] = $purchaseInvoiceDetail['QtyPerUnit'];
                     $data['TotalViss'] = $purchaseInvoiceDetail['TotalViss'];
                     $data['UnitPrice'] = $purchaseInvoiceDetail['UnitPrice'];
                     $data['Amount'] = $purchaseInvoiceDetail['Amount'];
@@ -213,6 +215,7 @@ class PurchaseInvoiceController extends Controller
                     $ItemCode = $purchaseInvoiceDetail['ItemCode'];
                     $totalViss = $purchaseInvoiceDetail['TotalViss'];
                     
+
                     try {
 
                         $newPurchasesInvoicedetails = PurchaseInvoiceDetail::create($data);
@@ -253,14 +256,19 @@ class PurchaseInvoiceController extends Controller
 
         $purchaseinvoice->purchaseinvoicedetails = $purchaseinvoicedetails;
 
+        $selectArrival = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
+            ->join('item_arrivals', 'purchase_invoices.SupplierCode', '=', 'item_arrivals.SupplierCode')
+            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode')
+            ->get();
+
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->orwhere('ArrivalCode', $purchaseinvoice->ArrivalCode)->get();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
-
+        $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('purchase.purchaseinvoice.edit', [
+            'selectArrival' => $selectArrival,
             'purchaseinvoice' => $purchaseinvoice,
             'suppliers' => $suppliers,
             'arrivals' => $arrivals,
@@ -280,7 +288,7 @@ class PurchaseInvoiceController extends Controller
 
             'PurchaseDate' => ['required'],
             'ArrivalCode' => ['required'],
-            'IsComplete' => ['required'],
+            'IsComplete' => ['nullable'],
             'SupplierCode' => ['required'],
             'SubTotal' => ['required'],
             'ShippingCharges' => ['nullable'],
@@ -288,6 +296,7 @@ class PurchaseInvoiceController extends Controller
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
             'ServiceCharges' => ['nullable'],
+            'FactoryCharges' => ['nullable'],
             'TotalCharges' => ['required'],
             'GrandTotal' => ['required'],
             'IsPaid' => ['required'],
@@ -300,35 +309,35 @@ class PurchaseInvoiceController extends Controller
         $oldArrivalCode = $purchaseinvoice->ArrivalCode;
         $newArrivalCode = $formData['ArrivalCode'];
 
-        if ($formData['IsComplete'] == 1) {
+        // if ($formData['IsComplete'] == 1) {
 
-            if ($oldArrivalCode != $newArrivalCode) {
+        //     if ($oldArrivalCode != $newArrivalCode) {
 
-                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
+        //         ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
 
-                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+        //         ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
 
-            }
+        //     }
 
-            ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
+        //     ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
 
-            PurchaseInvoice::where('ArrivalCode', $newArrivalCode)->update(['IsComplete' => 1]);
+        //     PurchaseInvoice::where('ArrivalCode', $newArrivalCode)->update(['IsComplete' => 1]);
 
-        } else {
+        // } else {
 
-            if ($oldArrivalCode != $newArrivalCode) {
+        //     if ($oldArrivalCode != $newArrivalCode) {
 
-                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "N"]);
+        //         ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "N"]);
 
-                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+        //         ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
 
-            }
+        //     }
 
-            ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+        //     ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
 
-            PurchaseInvoice::where('ArrivalCode', $oldArrivalCode)->update(['IsComplete' => 0]);
+        //     PurchaseInvoice::where('ArrivalCode', $oldArrivalCode)->update(['IsComplete' => 0]);
 
-        }
+        // }
 
         $formData['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
         $formData['ModifiedBy'] = auth()->user()->Username;
@@ -341,6 +350,10 @@ class PurchaseInvoiceController extends Controller
 
             $updatesaleinvoice = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->update($formData);
 
+            if ($oldArrivalCode != $newArrivalCode) {
+                ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
+                ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
+            }
 
             if (isset($updatesaleinvoice)) {
                 PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)->delete();
@@ -358,6 +371,7 @@ class PurchaseInvoiceController extends Controller
                     $data['ItemCode'] = $purchaseInvoiceDetail['ItemCode'];
                     $data['Quantity'] = $purchaseInvoiceDetail['Quantity'];
                     $data['PackedUnit'] = $purchaseInvoiceDetail['PackedUnit'];
+                    $data['QtyPerUnit'] = $purchaseInvoiceDetail['QtyPerUnit'];
                     $data['TotalViss'] = $purchaseInvoiceDetail['TotalViss'];
                     $data['UnitPrice'] = $purchaseInvoiceDetail['UnitPrice'];
                     $data['Amount'] = $purchaseInvoiceDetail['Amount'];
@@ -365,6 +379,8 @@ class PurchaseInvoiceController extends Controller
                     $data['LineDisAmt'] = $purchaseInvoiceDetail['LineDisAmt'];
                     $data['LineTotalAmt'] = $purchaseInvoiceDetail['LineTotalAmt'];
                     $data['IsFOC'] = $purchaseInvoiceDetail['IsFOC'];
+
+                    logger($data);
 
                     try {
 
@@ -414,6 +430,7 @@ class PurchaseInvoiceController extends Controller
             }
 
             return redirect()->route('purchaseinvoices')->with('success', 'Delete purchase invoices successful');
+            
         } catch (QueryException $e) {
 
             // return response()->json(['message' => $e->getMessage()]);
@@ -467,7 +484,7 @@ class PurchaseInvoiceController extends Controller
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
 
 
         return view('purchase.purchaseinvoice.details', [
@@ -498,7 +515,7 @@ class PurchaseInvoiceController extends Controller
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $companyinfo = CompanyInformation::first();
 
 
@@ -530,7 +547,7 @@ class PurchaseInvoiceController extends Controller
         $arrivals = ItemArrival::all();
         $warehouses = Warehouse::all();
         $items = Item::all();
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $companyinfo = CompanyInformation::first();
 
 
