@@ -37,7 +37,7 @@ class ItemController extends Controller
     }
 
     public function create(){
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
         return view('setup.item.add',[
             'units' => $units,
@@ -94,7 +94,7 @@ class ItemController extends Controller
             $item->Discontinued = "off";
         }
 
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
 
         return view('setup.item.edit',[
