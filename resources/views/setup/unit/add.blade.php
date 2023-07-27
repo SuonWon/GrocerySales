@@ -28,7 +28,7 @@
             <div class="col-12 col-lg-6">
                 <div class="row">
                     {{-- Unit Code --}}
-                    <div class="col-md-6 col-lg-12 col-xl-6 mb-3">
+                    <div class="col-md-5 col-lg-12 col-xl-5 mb-3">
                         <label for="UnitCode" class="form-label cust-label text-end">Unit Code</label>
                         <input type="text" class="form-control cust-input-box" id="UnitCode" name="UnitCode" value="{{old("UnitCode")}}" required>
                         <div class="invalid-feedback">
@@ -36,18 +36,25 @@
                         </div>
                     </div>
                     {{-- Unit Name --}}
-                    <div class="col-md-6 col-lg-12 col-xl-6 mb-3">
+                    <div class="col-sm-10 col-md-5 col-lg-9 col-xl-5 mb-3">
                         <label for="UnitDesc" class="form-label cust-label text-end">Unit Name</label>
                         <input type="text" class="form-control cust-input-box" id="UnitDesc" name="UnitDesc" value="{{old("UnitDesc")}}" required>
                         <div class="invalid-feedback">
                             Please fill unit name.
                         </div>
                     </div>
+                    {{-- Status --}}
+                    <div class="col-sm-2 col-md-2 col-lg-3 col-xl-2 mb-3">
+                        <label class="cust-label form-label text-end" for="isActive">Active</label>
+                        <div class="col-sm-8 form-check form-switch ">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isActive" name="IsActive" checked>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label for="unitRemark" class="form-label cust-label text-end">Remark</label>
-                        <textarea type="text" class="form-control cust-textarea" id="unitRemark" name="Remark" rows="3"></textarea>
+                        <textarea type="text" class="form-control cust-textarea" id="unitRemark" name="Remark" rows="3">{{old("Remark")}}</textarea>
                     </div>
                 </div>
                 <div class="row">  

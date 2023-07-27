@@ -161,6 +161,7 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
+                                    <th style="width: 80px;">QPU</th>
                                     <th style="width: 150px;">Total Viss</th>
                                     <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
@@ -181,7 +182,8 @@
                         <p class="p-0 content-title"><span>Charges</span></p>
                         {{-- Shipping Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleShippingCharges" class="form-label text-end charges-label col-6">တန်ဆာခ :</label>
+                            <label for="saleShippingCharges" class="form-label text-end charges-label col-6">တန်ဆာခ
+                                :</label>
                             <div class="col-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="saleShippingCharges" name="ShippingCharges" value="0"
@@ -190,7 +192,8 @@
                         </div>
                         {{-- Labor Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleLaborCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်အလုပ်သမာခ:</label>
+                            <label for="saleLaborCharges"
+                                class="form-label text-end charges-label col-6">ကမ်းတတ်အလုပ်သမာခ:</label>
                             <div class="col-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="saleLaborCharges" name="LaborCharges" value="0"
@@ -199,7 +202,8 @@
                         </div>
                         {{-- Delivery Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleDeliveryCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်ကားခ :</label>
+                            <label for="saleDeliveryCharges"
+                                class="form-label text-end charges-label col-6">ကမ်းတတ်ကားခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="saleDeliveryCharges" name="DeliveryCharges" value="0"
@@ -208,7 +212,8 @@
                         </div>
                         {{-- Weight Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleWeightCharges" class="form-label text-end charges-label col-6">ပွဲရုံအလုပ်သမားခ :</label>
+                            <label for="saleWeightCharges"
+                                class="form-label text-end charges-label col-6">ပွဲရုံအလုပ်သမားခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="saleWeightCharges" name="WeightCharges" value="0"
@@ -217,7 +222,8 @@
                         </div>
                         {{-- Service Charges --}}
                         <div class="row justify-content-end">
-                            <label for="saleServiceCharges" class="form-label text-end charges-label col-6">အကျိုးဆောင်ခ :</label>
+                            <label for="saleServiceCharges"
+                                class="form-label text-end charges-label col-6">အကျိုးဆောင်ခ :</label>
                             <div class="col-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="saleServiceCharges" name="ServiceCharges" value="0"
@@ -304,6 +310,7 @@
             WeightPrice: 1,
             Quantity: 1,
             PackedUnit: "",
+            QtyPerUnit: 0,
             UnitName: "",
             TotalViss: 1,
             UnitPrice: 0,
@@ -355,7 +362,10 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                <input type="number" id="` + saleRowNo + `" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="SAddFocusValue(event)" value="0">
+                            </td>
+                            <td class="px-0 py-0">
+                                <input type="number" class="saleviss_` + saleRowNo + `" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" value="0">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="unitprice_` + saleRowNo + `" value="0" id="` + saleRowNo +
@@ -409,6 +419,7 @@
             WeightPrice: 1,
             Quantity: 1,
             PackedUnit: "",
+            QtyPerUnit: 0,
             UnitName: "",
             TotalViss: 1,
             UnitPrice: 0,
@@ -458,6 +469,9 @@
                                         <option disabled>No Arrival Code Found</option>
                                     @endforelse
                                 </select>
+                            </td>
+                            <td class="px-0 py-0">
+                                <input type="number" id="` + saleRowNo + `" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="SAddFocusValue(event)" value="0">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="saleviss_` + saleRowNo + ` text-end" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
@@ -524,7 +538,7 @@
 
                         e.WeightPrice = element.weightPrice;
 
-                        //e.Amount = e.Quantity * e.UnitPrice;
+                        e.TotalViss = (e.QtyPerUnit * e.Quantity).toFixed(3);
 
                         e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -533,7 +547,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -571,7 +585,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -603,7 +617,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -637,7 +651,7 @@
 
                 }
 
-                //e.Amount = e.UnitPrice *  e.Quantity;
+                e.TotalViss = (e.QtyPerUnit * e.Quantity).toFixed(3);
 
                 e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -645,13 +659,11 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, nextFocus);
+                    e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit);
 
             }
 
         });
-
-
 
         SaleSubTotalAmt();
 
@@ -660,6 +672,46 @@
     }
 
     // ====== End of Add Unit Function ========== //
+
+    // ====== Add QtyPerUnit Function ========== //
+
+    function AddQtyPerUnit(event, refNo, inputValue) {
+
+        saleProductDataList.forEach(e => {
+
+            if (e.referenceNo == refNo) {
+
+                if (inputValue > 0) {
+
+                    e.QtyPerUnit = Number(inputValue.replace(/,/g, ''));
+
+                } else {
+
+                    e.QtyPerUnit = 0;
+
+                }
+
+                e.TotalViss = (e.Quantity * e.QtyPerUnit).toFixed(3);
+
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+
+                e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
+
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
+
+            }
+
+        });
+
+        SaleSubTotalAmt();
+
+        SaleGrandTotalAmt();
+
+    }
+
+    // ====== End of Add QtyPerUnit Function ========= //
 
     // ====== Add Unit Price Function ====== //
 
@@ -689,7 +741,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, nextFocus);
+                    e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit);
 
             }
 
@@ -727,7 +779,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -763,7 +815,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -799,7 +851,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", QtyPerUnit);
 
             }
 
@@ -829,7 +881,7 @@
 
                     SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                         .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
-                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 } else {
 
@@ -855,7 +907,7 @@
 
                     SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                         .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
-                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 }
 
@@ -876,7 +928,7 @@
     // ========= Row Replace Function ========== //
 
     function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName,
-        TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+        TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus, QtyPerUnit) {
 
         let checkFoc = "";
 
@@ -950,12 +1002,14 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="saleviss_` + refNo + ` text-end" value="` +
-                    TotalViss + `" id="` + refNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                        <input type="number" value="` + QtyPerUnit + `" id="` + refNo + `" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
+                                    </td>
+                                    <td class="px-0 py-0">
+                                        <input type="number" class="saleviss_` + refNo + `" value="` + TotalViss + `" id="` + refNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="SAddFocusValue(event)" >
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="unitprice_` + refNo + ` text-end" value="` +
-                    UnitPrice.toLocaleString() + `" id="` + refNo +
+                    Number(UnitPrice).toFixed(0) + `" id="` + refNo +
                     `" onblur="AddSalePrice(event,this.id,this.value);" onfocus="SAddFocusValue(event)" nextfocus="saleviss_` +
                     refNo + `" >
                                     </td>
@@ -1203,6 +1257,7 @@
                     ItemCode: element.ItemCode,
                     Quantity: element.Quantity,
                     PackedUnit: element.PackedUnit,
+                    QtyPerUnit: element.QtyPerUnit,
                     TotalViss: element.TotalViss,
                     UnitPrice: element.UnitPrice,
                     Amount: element.Amount,

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('unit_measurements', function (Blueprint $table) {
             $table->string('UnitCode',10)->primary();
             $table->string('UnitDesc',50);
+            $table->boolean('IsActive')->nullable()->default(1);
             $table->string('Remark',200)->nullable();
             $table->string('CreatedBy',50)->nullable();
             $table->string('ModifiedBy',50)->nullable();

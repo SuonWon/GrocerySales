@@ -101,6 +101,7 @@
                             <th style="width: 100px;">Arrival Code</th>
                             <th style="width: 100px;">Plate No/Name</th>
                             <th style="width: 120px;">Arrival Date</th>
+                            <th style="width: 120px;">Supplier Name</th>
                             <th style="width: 100px;">Status</th>
                             <th class="text-end" style="width: 150px;">Total Bags</th>
                             <th class="text-end" style="width: 150px;">Total Viss</th>
@@ -126,6 +127,7 @@
                                 </td>
                                 <td>{{$itemarrival->PlateNo}}</td>
                                 <td>{{$itemarrival->ArrivalDate}}</td>
+                                <td>{{$itemarrival->SupplierName}}</td>
                                 <td class="text-center">
                                     @if ($itemarrival->Status == 'N')
                                         <span class="badge text-bg-primary ">Ongoing</span>

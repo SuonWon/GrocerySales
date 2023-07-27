@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('Quantity',10,2);
             $table->string('PackedUnit',10);
             $table->foreign('PackedUnit')->references('UnitCode')->on('unit_measurements');
+            $table->decimal('QtyPerUnit', 10,3)->default(0);
             $table->decimal('TotalViss',10,3);
             $table->decimal('UnitPrice',10,2);
             $table->decimal('Amount',10,2);
