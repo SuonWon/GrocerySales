@@ -1272,7 +1272,7 @@
 
         document.getElementById("subTotal").value = subTotal.toLocaleString();
 
-        AddSupplierData();
+        //AddSupplierData();
 
     }
 
