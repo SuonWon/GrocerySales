@@ -199,7 +199,10 @@ class ItemArrivalController extends Controller
 
     public function itemarrivalreports()
     {
-        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->get();
+        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')
+            ->join('suppliers', 'item_arrivals.SupplierCode', '=', 'suppliers.SupplierCode')
+            ->select('item_arrivals.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+            ->get();
         $companyinfo = CompanyInformation::first();
 
         return view('reports.itemarrivalreports', [

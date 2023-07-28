@@ -255,7 +255,7 @@ class PurchaseInvoiceController extends Controller
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->orwhere('ArrivalCode', $purchaseinvoice->ArrivalCode)->get();
         $warehouses = Warehouse::all();
-        $items = Item::all();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('purchase.purchaseinvoice.edit', [
