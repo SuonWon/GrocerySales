@@ -112,7 +112,7 @@ class PurchaseInvoiceController extends Controller
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->get();
         $warehouses = Warehouse::all();
-        $items = Item::where('Discontinued', '=', 1)->get();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
         $currentDate = Carbon::now()->format('Y-m-d');
 
