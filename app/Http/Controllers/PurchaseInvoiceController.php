@@ -142,6 +142,7 @@ class PurchaseInvoiceController extends Controller
             'SupplierCode' => ['required'],
             'SubTotal' => ['nullable'],
             'ShippingCharges' => ['nullable'],
+            'OtherCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -249,7 +250,7 @@ class PurchaseInvoiceController extends Controller
 
         $selectArrival = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('item_arrivals', 'purchase_invoices.SupplierCode', '=', 'item_arrivals.SupplierCode')
-            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode')
+            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode', 'item_arrivals.Status')
             ->get();
 
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
@@ -283,6 +284,7 @@ class PurchaseInvoiceController extends Controller
             'SupplierCode' => ['required'],
             'SubTotal' => ['required'],
             'ShippingCharges' => ['nullable'],
+            'OtherCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],

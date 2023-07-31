@@ -22,6 +22,7 @@ return new class extends Migration
             $table->char('IsComplete', 1)->default(0)->nullable();
             $table->decimal('SubTotal',10,2);
             $table->decimal('ShippingCharges',10)->nullable()->default(0);
+            $table->decimal('OtherChares', 10)->nullable()->default(0);
             $table->decimal('LaborCharges',10,2)->nullable()->default(0);
             $table->decimal('DeliveryCharges',10,2)->nullable()->default(0);
             $table->decimal('WeightCharges',10,2)->nullable()->default(0);

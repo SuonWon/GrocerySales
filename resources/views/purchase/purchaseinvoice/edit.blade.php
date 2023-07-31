@@ -81,6 +81,7 @@
                 'supplierCode' => $arrival->SupplierCode,
                 'charges' => $arrival->TotalCharges,
                 'totalBags' => $arrival->TotalBags,
+                'otherCharges' => $arrival->OtherCharges,
             ];
         @endphp
     @endforeach
@@ -171,7 +172,7 @@
                                             <option value="{{ $arrival->ArrivalCode }}" selected>
                                                 {{ $arrival->PlateNo }}
                                             </option>
-                                        @else
+                                        @elseif ($arrival->Status == 'N')
                                             <option value="{{ $arrival->ArrivalCode }}">{{ $arrival->PlateNo }}
                                             </option>
                                         @endif
@@ -401,7 +402,26 @@
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="shippingCharges" name="ShippingCharges"
-                                    value="{{ number_format($purchaseinvoice->ShippingCharges) }}"
+                                    value=@foreach ($arrivals as $arrival)
+                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
+                                            {{number_format($arrival->TotalCharges)}}
+                                        @endif
+                                    @endforeach
+                                    onblur="PuEditCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Other Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="otherCharges" class="form-label text-end charges-label col-6">တန်ဆာခ
+                                :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="otherCharges" name="OtherCharges"
+                                    value=@foreach ($arrivals as $arrival)
+                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
+                                            {{number_format($arrival->OtherCharges)}}
+                                        @endif
+                                    @endforeach
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
@@ -569,6 +589,8 @@
             dselect(document.querySelector(".unitCodeList_" + e.referenceNo), config);
 
         });
+
+        DisplayTotalCharges();
 
     });
 
@@ -1271,7 +1293,7 @@
 
         document.getElementById("subTotal").value = subTotal.toLocaleString();
 
-        //AddSupplierData();
+        AddSupplierData();
 
     }
 
@@ -1332,8 +1354,10 @@
 
         let factoryCharges = Number($("#factoryCharges").val().replace(/,/g, ""));
 
+        let otherCharges = Number($("#otherCharges").val().replace(/,/g, ""));
+
         let totalCharges = laborCharge + deliveryCharge + weightCharge + serviceCharge + shippingCharges +
-            factoryCharges;
+            factoryCharges + otherCharges;
 
         $("#totalCharges").val(totalCharges.toLocaleString());
 
@@ -1472,6 +1496,7 @@
         //data.IsComplete = document.getElementById("isArrivalComplete").checked ? 1 : 0;
         data.SubTotal = Number($("#subTotal").val().replace(/,/g, ""));
         data.ShippingCharges = Number($("#shippingCharges").val().replace(/,/g, ""));
+        data.OtherCharges = Number($("#otherCharges").val().replace(/,/g, ""));
         data.LaborCharges = Number($("#laborCharges").val().replace(/,/g, ""));
         data.DeliveryCharges = Number($("#deliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#weightCharges").val().replace(/,/g, ""));
@@ -1556,6 +1581,8 @@
 
     }
 
+    $("#otherCharges").on('focus', PEditSelect);
+
     $("#shippingCharges").on('focus', PEditSelect);
 
     $("#laborCharges").on('focus', PEditSelect);
@@ -1614,6 +1641,7 @@
             if (e.arrivalCode == arrivalCode) {
 
                 document.querySelector("#shippingCharges").value = Number(e.charges).toLocaleString();
+                document.querySelector("#otherCharges").value = Number(e.otherCharges).toLocaleString();
 
             }
 
@@ -1631,6 +1659,8 @@
 
         let supplierCode = document.querySelector("#supplierCodeList").value;
 
+        let arrivalCodeCheck = document.querySelector("#arrivalCodeList").value;
+
         let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g, ""));
 
         let arrivalOptions = "<option value='' selected disabled>Choose</option>";
@@ -1646,25 +1676,29 @@
 
         });
 
-        let resultArrivals = itemArrival.filter(i => i.supplierCode == supplierCode);
+        if (arrivalCodeCheck == "") {
 
-        if (resultArrivals == "") {
+            let resultArrivals = itemArrival.filter(i => i.supplierCode == supplierCode);
 
-            arrivalOptions = "<option value=''>There is no arrival.</option>";
+            if (resultArrivals == "") {
 
-        } else {
+                arrivalOptions = "<option value=''>There is no arrival.</option>";
 
-            resultArrivals.forEach(i => {
+            } else {
 
-            arrivalOptions += `<option value="`+ i.arrivalCode +`">`+ i.plateNo +`</option>`;
+                resultArrivals.forEach(i => {
 
-            });
+                arrivalOptions += `<option value="`+ i.arrivalCode +`">`+ i.plateNo +`</option>`;
+
+                });
+
+            }
+
+            document.querySelector("#arrivalCodeList").innerHTML = arrivalOptions;
+
+            dselect(document.querySelector("#arrivalCodeList"), config);
 
         }
-
-        document.querySelector("#arrivalCodeList").innerHTML = arrivalOptions;
-
-        dselect(document.querySelector("#arrivalCodeList"), config);
 
         DisplayTotalCharges();
 
