@@ -26,6 +26,7 @@ class PurchaseInvoice extends Model
         'IsComplete',
         'SubTotal',
         'ShippingCharges',
+        'OtherCharges',
         'LaborCharges',
         'DeliveryCharges',
         'WeightCharges',

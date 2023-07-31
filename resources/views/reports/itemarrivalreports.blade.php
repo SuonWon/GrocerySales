@@ -60,9 +60,11 @@
                             <th style="width: 80px;">Code</th>
                             <th>Plate No</th>
                             <th>Arrival Date</th>
+                            <th>Supplier Name</th>
                             <th style="width: 50px;" class="text-center">Status</th>
-                            <th class="text-end">Charges Per Bag</th>
+                            <th class="text-end">Charges Per Bag/Viss</th>
                             <th class="text-end">Total Bag</th>
+                            <th class="text-end">Total Viss</th>
                             <th class="text-end">Other Charges</th>
                             <th class="text-end">Total Charges</th>
                             <th style="width: 120px;">Remark</th>
@@ -74,6 +76,7 @@
                                 <td>{{$itemarrival->ArrivalCode}}</td>
                                 <td>{{$itemarrival->PlateNo}}</td>
                                 <td>{{$itemarrival->ArrivalDate}}</td>
+                                <td>{{$itemarrival->SupplierName}}</td>
                                 <td class="text-center">
                                     @if ($itemarrival->Status == 'N')
                                         Ongoing
@@ -85,6 +88,7 @@
                                 </td>
                                 <td class="text-end">{{($itemarrival->ChargesPerBag)}}</td>
                                 <td class="text-end">{{$itemarrival->TotalBags}}</td>
+                                <td class="text-end">{{$itemarrival->TotalViss}}</td>
                                 <td class="text-end">{{($itemarrival->OtherCharges)}}</td>
                                 <td class="text-end">{{($itemarrival->TotalCharges)}}</td>
                                 <td>{{$itemarrival->Remark}}</td>

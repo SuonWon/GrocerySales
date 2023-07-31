@@ -34,7 +34,7 @@
     }
 
     .dataRow :nth-child(2){
-        width: 245px;
+        width: 210px;
     }
 
     .dataRow :nth-child(3){
@@ -42,7 +42,7 @@
     }
 
     .dataRow :nth-child(4){
-        width: 70px;
+        width: 105px;
     }
 
     .dataRow :nth-child(5){
@@ -195,14 +195,14 @@
                                 <span>:</span><span id="sVServiceCharges"></span>
                             </div>
                         </div>
-                        <div class="row justify-content-between p-0 m-0">
+                        {{-- <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
                                 <span>ကမ်းတက်ကားခ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
                                 <span>:</span><span id="sVDeliveryCharges"></span>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="border-bottom border-1 border-dark my-1 col-12"></div>
                         <div class="row justify-content-between m-0 p-0">
                             <div class="col-8 text-start p-0 m-0">
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row default_fs text-end fixed-bottom">
+                <div class="row px-3 default_fs text-end fixed-bottom">
                     <span id="printDate"></span>
                 </div>
             </div>
@@ -285,13 +285,13 @@
 
             let salesList = ``;
 
-            document.getElementById("sVTotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}}));
+            document.getElementById("sVTotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}}))+ " အိတ်";
 
             document.getElementById("sVShippingCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->ShippingCharges}}));
 
-            document.getElementById("sVServiceCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->ServiceCharges + $saleinvoice->WeightCharges + $saleinvoice->LaborCharges}}));
+            document.getElementById("sVServiceCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->ServiceCharges + $saleinvoice->WeightCharges + $saleinvoice->LaborCharges + $saleinvoice->DeliveryCharges}}));
 
-            document.getElementById("sVDeliveryCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->DeliveryCharges}}));
+            // document.getElementById("sVDeliveryCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->DeliveryCharges}}));
 
             document.getElementById("sVTotalChargesOne").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$saleinvoice->TotalCharges}}));
 
@@ -364,6 +364,8 @@
             $("#buttons").css("display", "");
 
             $("#newPuBtn").css("display", "");
+
+            document.getElementById("printDate").innerHTML = "";
 
         });
 

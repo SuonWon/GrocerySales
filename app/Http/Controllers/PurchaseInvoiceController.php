@@ -113,7 +113,7 @@ class PurchaseInvoiceController extends Controller
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->get();
         $warehouses = Warehouse::all();
-        $items = Item::where('Discontinued', '=', 1)->get();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
         $currentDate = Carbon::now()->format('Y-m-d');
 
@@ -143,6 +143,7 @@ class PurchaseInvoiceController extends Controller
             'SupplierCode' => ['required'],
             'SubTotal' => ['nullable'],
             'ShippingCharges' => ['nullable'],
+            'OtherCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],
@@ -258,13 +259,13 @@ class PurchaseInvoiceController extends Controller
 
         $selectArrival = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('item_arrivals', 'purchase_invoices.SupplierCode', '=', 'item_arrivals.SupplierCode')
-            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode')
+            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode', 'item_arrivals.Status')
             ->get();
 
         $suppliers = Supplier::where('IsActive', '=', 1)->get();
         $arrivals = ItemArrival::where('Status', 'N')->orwhere('ArrivalCode', $purchaseinvoice->ArrivalCode)->get();
         $warehouses = Warehouse::all();
-        $items = Item::all();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('purchase.purchaseinvoice.edit', [
@@ -292,6 +293,7 @@ class PurchaseInvoiceController extends Controller
             'SupplierCode' => ['required'],
             'SubTotal' => ['required'],
             'ShippingCharges' => ['nullable'],
+            'OtherCharges' => ['nullable'],
             'LaborCharges' => ['nullable'],
             'DeliveryCharges' => ['nullable'],
             'WeightCharges' => ['nullable'],

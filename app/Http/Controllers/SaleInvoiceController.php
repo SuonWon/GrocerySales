@@ -101,7 +101,7 @@ class SaleInvoiceController extends Controller
     {
         $customers = Customer::where('IsActive', '=', 1)->get();
         $warehouses = Warehouse::all();
-        $items = Item::where('Discontinued', '=', 1)->get();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
         $currentDate = Carbon::now()->format('Y-m-d');
 
@@ -233,7 +233,7 @@ class SaleInvoiceController extends Controller
 
         $customers = Customer::where('IsActive', '=', 1)->get();
         $warehouses = Warehouse::all();
-        $items = Item::where('Discontinued', '=', 1)->get();
+        $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
 
 

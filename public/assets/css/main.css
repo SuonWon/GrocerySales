@@ -751,7 +751,7 @@ input[type="number"] {
 .voucherSection {
     width: 672px;
     height: 816px;
-    padding: 15px;
+    padding: 5px 25px;
     margin: 0;
     font-size: 17px;
 }
@@ -767,9 +767,9 @@ input[type="number"] {
 .landscapeReport{
     width: 1321px;
     height: 1000px;
-    padding: 15px;
+    padding: 15px 30px;
     margin: 0;
-    font-size: 17px;
+    font-size: 0.95rem;
 }
 
 .title_fs, .default_fs, .mf-header {
@@ -780,14 +780,19 @@ input[type="number"] {
     font-size: 14px;
 }
 
+.p-details-table table {
+    background-color: black;
+}
+
 .p-details-table table thead {
     background-color: black;
     color: aliceblue;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .p-details-table table tbody {
-    font-size: 0.75rem;
+    background-color: white;
+    font-size: 0.85rem;
 }
 
 .report-title {

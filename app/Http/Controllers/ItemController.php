@@ -33,7 +33,7 @@ class ItemController extends Controller
         ->selectRaw('item_categories.ItemCategoryCode, item_categories.ItemCategoryName')
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
-
+        
         $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
             ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty', 'stock_in_warehouses.WarehouseCode')
             ->selectRaw('CASE WHEN stock_in_warehouses.StockQty < 10 THEN "low" ELSE "high" END as StockAlert')
@@ -41,11 +41,13 @@ class ItemController extends Controller
             ->get();
         
         $warehouses = Warehouse::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('setup.item.index',[
             'items' => $items,
             'warehouses' => $warehouses,
-            'stockitems' => $stockitems
+            'stockitems' => $stockitems,
+            'units' => $units,  
         ]);
     }
 
@@ -305,10 +307,12 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
         $companyinfo = CompanyInformation::first();
+        $units = UnitMeasurement::where("IsActive", 1)->get();
 
         return view('reports.itemreports',[
             'items' => $items,
-            'companyinfo' => $companyinfo,       
+            'companyinfo' => $companyinfo,
+            'units' => $units,   
         ]);
     }
 }

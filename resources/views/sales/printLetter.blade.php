@@ -207,7 +207,7 @@
 
             let salesLetterList = ``;
 
-            document.getElementById("sLTotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}}));
+            document.getElementById("sLTotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}})) + " အိတ်";
 
             salesList.forEach((e) => {
 
