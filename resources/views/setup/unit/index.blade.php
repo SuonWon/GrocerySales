@@ -41,22 +41,28 @@
                     <tbody>
                         @forelse ($units as $unit)
                             <tr>
-                            <td>{{$unit->UnitCode}}</td>
-                            <td>{{$unit->UnitDesc}}</td>
-                            <td>{{$unit->CreatedBy}}</td>
-                            <td>{{$unit->CreatedDate}}</td>
-                            <td>{{$unit->ModifiedBy}}</td>
-                            <td>{{$unit->ModifiedDate}}</td>
-                            <td>{{$unit->Remark}}</td>
-                            <td class="text-center">
-                                <a href="/unit/edit/{{$unit->UnitCode}}" class="btn btn-primary py-0 px-1 me-2">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </a>
-                                <button class="btn delete-btn py-0 px-1" id="{{$unit->UnitCode}}" onclick="PassUnitCode(this.id);" data-bs-toggle="modal" data-bs-target="#unitDeleteModal">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
+                                <td>
+                                    @if ($unit->IsActive == 1)
+                                        <span class="badge text-bg-success">{{$unit->UnitCode}}</span>
+                                    @else
+                                        <span class="badge text-bg-danger">{{$unit->UnitCode}}</span>
+                                    @endif
+                                </td>
+                                <td>{{$unit->UnitDesc}}</td>
+                                <td>{{$unit->CreatedBy}}</td>
+                                <td>{{$unit->CreatedDate}}</td>
+                                <td>{{$unit->ModifiedBy}}</td>
+                                <td>{{$unit->ModifiedDate}}</td>
+                                <td>{{$unit->Remark}}</td>
+                                <td class="text-center">
+                                    <a href="/unit/edit/{{$unit->UnitCode}}" class="btn btn-primary py-0 px-1 me-2">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <button class="btn delete-btn py-0 px-1" id="{{$unit->UnitCode}}" onclick="PassUnitCode(this.id);" data-bs-toggle="modal" data-bs-target="#unitDeleteModal">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
                         @empty
 
                         @endforelse

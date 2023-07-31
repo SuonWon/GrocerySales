@@ -34,7 +34,7 @@
     }
 
     .dataRow :nth-child(2){
-        width: 245px;
+        width: 210px;
     }
 
     .dataRow :nth-child(3){
@@ -42,7 +42,7 @@
     }
 
     .dataRow :nth-child(4){
-        width: 70px;
+        width: 105px;
     }
 
     .dataRow :nth-child(5){
@@ -53,12 +53,34 @@
         width: 101px;
     }
 
-
-
     </style>
 
 </head>
 <body>
+    @php
+        $purchaseProductDataList = [];
+    @endphp
+    @foreach ($purchaseinvoice->purchaseinvoicedetails as $key => $purchaseinvoicedetail)
+        @php
+            $purchaseProductDataList[] = [
+                'LineNo' => $key + 1,
+                'ItemCode' => $purchaseinvoicedetail->ItemCode,
+                'ItemName' => $purchaseinvoicedetail->ItemName,
+                'WeightPrice' => $purchaseinvoicedetail->WeightByPrice,
+                'Quantity' => $purchaseinvoicedetail->Quantity,
+                'PackedUnit' => $purchaseinvoicedetail->PackedUnit,
+                'UnitName' => $purchaseinvoicedetail->UnitDesc,
+                'TotalViss' => $purchaseinvoicedetail->TotalViss,
+                'UnitPrice' => $purchaseinvoicedetail->UnitPrice,
+                'Amount' => $purchaseinvoicedetail->Amount,
+                'LineDisPer' => $purchaseinvoicedetail->LineDisPer,
+                'LineDisAmt' => $purchaseinvoicedetail->LineDisAmt,
+                'LineTotalAmt' => $purchaseinvoicedetail->LineTotalAmt,
+                'IsFOC' => $purchaseinvoicedetail->IsFOC,
+                'LineTotal' => $purchaseinvoicedetail->IsFOC == 1 ? "FOC" : $purchaseinvoicedetail->LineTotalAmt, 
+            ];
+        @endphp
+    @endforeach
     <section class="bg-secondary">
         <div class="voucherSection mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
@@ -103,7 +125,7 @@
                         </div>
                         <div class="mb-2 default_fs row">
                             <span class="col-4 pe-0">အိတ်အရေအတွက်</span>
-                            <span class="col-5" id="vtotalBags">: {{number_format($totalBags)}}</span>
+                            <span class="col-5" id="pVtotalBags"></span>
                         </div>
                     </div>
                     <div class="col-5 d-flex flex-column px-4">
@@ -131,8 +153,8 @@
             <div class="purchaseInvoiceTable py-2 border-bottom border-black border-1">
                 <table>
                     <thead>
-                        <tr class="text-end border-top border-bottom border-black custom-header-h">
-                            <th class="text-start">No.</th>
+                        <tr class="text-end border-top border-bottom border-black custom-header-h mf-header">
+                            <th class="text-start py-1">No.</th>
                             <th class="text-start">အမျိုးအမည်</th>
                             <th>အရေအတွက်</th>
                             <th>ပိဿာ</th>
@@ -141,16 +163,16 @@
                         </tr>
                     </thead>
                     <tbody id="purchaseItemLists">
-                        @foreach ( $purchaseinvoice->purchaseinvoicedetails  as $key => $purchaseinvoicedetail )
+                        {{-- @foreach ( $purchaseinvoice->purchaseinvoicedetails  as $key => $purchaseinvoicedetail )
                             <tr class="dataRow text-end mt-4">
                                 <td class="text-start">{{$key + 1}}</td>
                                 <td class="text-start">{{$purchaseinvoicedetail->ItemName}}</td>
-                                <td>{{number_format($purchaseinvoicedetail->Quantity)}} {{$purchaseinvoicedetail->PackedUnit}}</td>
+                                <td>{{number_format($purchaseinvoicedetail->Quantity)}} {{$purchaseinvoicedetail->UnitDesc}}</td>
                                 <td>{{$purchaseinvoicedetail->TotalViss}}</td>
                                 <td>{{number_format($purchaseinvoicedetail->UnitPrice)}}</td>
                                 <td>{{$purchaseinvoicedetail->IsFOC == 1 ? "FOC" : number_format($purchaseinvoicedetail->LineTotalAmt)}}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
 
                     </tbody>
                 </table>
@@ -160,29 +182,37 @@
             <div class="chargesNetPrce mt-2 position-relative">
                 <div class="row">
                     <!-- Left Amount Calculation -->
-                    <div class="col-5 d-flex flex-column lh-md">
+                    <div class="col-5 d-flex flex-column lh-md mf-normal">
                         <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
-                                <span class="default_fs">တန်ဆာခ</span>
+                                <span>တန်ဆာခ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
-                                <span>:</span><span id="vShippingCharges"> {{number_format($purchaseinvoice->ShippingCharges)}}</span>
+                                <span>:</span><span id="pVShippingCharges"></span>
                             </div>
                         </div>
                         <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
-                                <span class="default_fs">ဝန်ဆောင်ခ</span>
+                                <span>ကြိုထုတ်ငွေ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
-                                <span>:</span><span id="vServiceCharges"> {{number_format($purchaseinvoice->ServiceCharges + $purchaseinvoice->WeightCharges + $purchaseinvoice->LaborCharges)}}</span>
+                                <span>:</span><span id="pVOtherCharges"></span>
                             </div>
                         </div>
                         <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
-                                <span class="default_fs">ကမ်းတက်ကားခ</span>
+                                <span>ဝန်ဆောင်ခ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
-                                <span>:</span><span id="vDeliveryCharges"> {{number_format($purchaseinvoice->DeliveryCharges)}}</span>
+                                <span>:</span><span id="pVServiceCharges"></span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span>စက်ကြိတ်ခ</span>
+                            </div>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="pVFactoryCharges"> </span>
                             </div>
                         </div>
                         <div class="border-bottom border-1 border-dark my-1 col-12"></div>
@@ -191,19 +221,19 @@
                                 <span class="p-0 m-0 default_fs">စုစုပေါင်းအသုံးစရိတ်</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
-                                <span>:</span><span id="vTotalChargesOne"> {{number_format($purchaseinvoice->TotalCharges)}}</span>
+                                <span>:</span><span id="pVTotalChargesOne"> {{number_format($purchaseinvoice->TotalCharges)}}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right Amount Calculation -->
-                    <div class="col-5 d-flex flex-column text-end offset-2 ps-0 lh-md">
+                    <div class="col-5 d-flex flex-column text-end offset-2 ps-0 lh-md mf-normal">
                         <div class="row justify-content-between">
                             <div class="col-7 offset-1 pe-0">
-                               <span class="default_fs"> စုစုပေါင်း :</span>
+                               <span> စုစုပေါင်း :</span>
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vSubTotal">{{number_format($purchaseinvoice->SubTotal)}}</span>
+                                <span id="pVSubTotal"></span>
                             </div>
                         </div>
                         <div class="row justify-content-between">
@@ -211,7 +241,7 @@
                                 စုစုပေါင်းအသုံးစရိတ် :
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vTotalChargesTwo">{{number_format($purchaseinvoice->TotalCharges)}}</span>
+                                <span id="pVTotalChargesTwo">{{number_format($purchaseinvoice->TotalCharges)}}</span>
                             </div>
                         </div>
                         <div class="border-bottom border-1 border-dark my-1 col-10 offset-2"></div>
@@ -220,7 +250,7 @@
                                 အသားတင်စုစုပေါင်း :
                             </div>
                             <div class="col-4 text-end ps-0">
-                                <span id="vGrandTotal">{{number_format($purchaseinvoice->GrandTotal)}}</span>
+                                <span id="pVGrandTotal">{{number_format($purchaseinvoice->GrandTotal)}}</span>
                             </div>
                         </div>
                     </div>
@@ -236,6 +266,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row default_fs text-end fixed-bottom px-3">
+                    <span id="printDate"></span>
                 </div>
             </div>
         </div>
@@ -253,9 +286,49 @@
 
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
 
+    {{-- Myanmar Number CDN Link --}}
+    <script src="https://unpkg.com/myanmar-num-to-word@latest"></script>
+
     <script>
 
         $(document).ready(function (){
+
+            let purchaseDataList = @json($purchaseProductDataList);
+
+            let purchaseList = ``;
+
+            document.getElementById("pVtotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}})) +" အိတ်";
+
+            document.getElementById("pVShippingCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->ShippingCharges}}));
+
+            document.getElementById("pVOtherCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->OtherCharges}}));
+
+            document.getElementById("pVServiceCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->ServiceCharges + $purchaseinvoice->WeightCharges + $purchaseinvoice->LaborCharges + $purchaseinvoice->DeliveryCharges}}));
+
+            document.getElementById("pVFactoryCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->FactoryCharges}}));
+
+            document.getElementById("pVTotalChargesOne").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->TotalCharges}}));
+
+            document.getElementById("pVSubTotal").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->SubTotal}}));
+
+            document.getElementById("pVTotalChargesTwo").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->TotalCharges}}));
+
+            document.getElementById("pVGrandTotal").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->GrandTotal}}));
+
+            purchaseDataList.forEach((e) => {
+                console.log(e.ItemName);
+
+                purchaseList += `<tr class="dataRow text-end mt-4 mf-normal">
+                                <td class="text-start">`+ e.LineNo +`</td>
+                                <td class="text-start">`+ e.ItemName +`</td>
+                                <td>`+ myanmarNumToWord.convertToBurmeseNumber(Number(e.Quantity)) + " " + e.UnitName +`</td>
+                                <td>`+  myanmarNumToWord.convertToBurmeseNumber(e.TotalViss) +`</td>
+                                <td>`+  myanmarNumToWord.convertToBurmeseNumber(Number(e.UnitPrice)) +`</td>
+                                <td>`+  myanmarNumToWord.convertToBurmeseNumber(Number(e.LineTotal)) +`</td>
+                            </tr>`;
+            });
+
+            document.getElementById("purchaseItemLists").innerHTML = purchaseList;
 
             toastr.options.timeOut = 500;
             toastr.options.closeButton = true;
@@ -286,13 +359,27 @@
 
             $("#newPuBtn").css("display", "none");
 
+            let date = new Date();
+
+            let month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+
+            let year = date.getFullYear();
+
+            let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
+
+            let hour = date.getHours();
+
+            let minute = date.getMinutes();
+
+            document.getElementById("printDate").innerHTML = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+
             window.print();
 
             $("#buttons").css("display", "");
 
             $("#newPuBtn").css("display", "");
 
-
+            document.getElementById("printDate").innerHTML = "";
 
         });
 

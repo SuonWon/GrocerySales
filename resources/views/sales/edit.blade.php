@@ -19,6 +19,7 @@
                 'WeightPrice' => $saleinvoicedetail->WeightByPrice,
                 'Quantity' => $saleinvoicedetail->Quantity,
                 'PackedUnit' => $saleinvoicedetail->PackedUnit,
+                'QtyPerUnit' => $saleinvoicedetail->QtyPerUnit,
                 'UnitName' => $saleinvoicedetail->UnitDesc,
                 'TotalViss' => $saleinvoicedetail->TotalViss,
                 'OldTotalViss' => $saleinvoicedetail->TotalViss,
@@ -181,8 +182,9 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 120px;">Unit Price</th>
+                                    <th style="width: 80px;">QPU</th>
                                     <th style="width: 150px;">Total Viss</th>
+                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
                                     <th style="width: 60px;">Discount(%)</th>
                                     <th style="width: 120px;">Discount</th>
@@ -197,6 +199,7 @@
                                         {{-- <td class="px-0 py-0">
                                             <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
                                         </td> --}}
+                                        {{-- Item Name --}}
                                         <td class="px-0 py-0" id="sRow{{ $key + 1 }}">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="saleItemList_{{ $key + 1 }}"
@@ -216,6 +219,7 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Warehouse Name --}}
                                         <td class="px-0 py-0">
                                             <select name="" id="{{ $key + 1 }}"
                                                 class="saleWhList_{{ $key + 1 }}"
@@ -235,6 +239,7 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- Quantity --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name=""
                                                 value="{{ number_format($saleinvoicedetail->Quantity) }}"
@@ -242,6 +247,7 @@
                                                 onblur="AddSaleQty(event,this.id,this.value);"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Unit --}}
                                         <td class="px-0 py-0">
                                             <select name="" class="saleUnitList_{{ $key + 1 }}"
                                                 id="{{ $key + 1 }}"
@@ -261,13 +267,11 @@
                                                 @endif
                                             </select>
                                         </td>
+                                        {{-- QtyPerUnit --}}
                                         <td class="px-0 py-0">
-                                            <input type="text" class="saleprice_{{ $key + 1 }}  text-end"
-                                                value="{{ number_format($saleinvoicedetail->UnitPrice) }}"
-                                                id="{{ $key + 1 }}" nextfocus="viss_{{ $key + 1 }}"
-                                                onfocus="FocusValue(event);"
-                                                onblur="AddSalePrice(event,this.id,this.value);">
+                                            <input type="number" id="{{ $key + 1 }}" onblur="AddQtyPerUnit(event,this.id,this.value)" value="{{ $saleinvoicedetail->QtyPerUnit }}" onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Total Viss --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="viss_{{ $key + 1 }} text-end"
                                                 id="{{ $key + 1 }}"
@@ -275,10 +279,20 @@
                                                 value="{{ $saleinvoicedetail->TotalViss }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Unit Price --}}
+                                        <td class="px-0 py-0">
+                                            <input type="text" class="saleprice_{{ $key + 1 }}  text-end"
+                                                value="{{ number_format($saleinvoicedetail->UnitPrice) }}"
+                                                id="{{ $key + 1 }}" nextfocus="viss_{{ $key + 1 }}"
+                                                onfocus="FocusValue(event);"
+                                                onblur="AddSalePrice(event,this.id,this.value);">
+                                        </td>
+                                        {{-- Item Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" name="" id="itemAmount"
                                                 value="{{ number_format($saleinvoicedetail->Amount) }}" disabled>
                                         </td>
+                                        {{-- Discount Rate --}}
                                         <td class="px-0 py-0">
                                             <input type="number" class="tableInput" name=""
                                                 id="{{ $key + 1 }}"
@@ -286,24 +300,28 @@
                                                 value="{{ $saleinvoicedetail->LineDisPer }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Discount Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="text-end" id="{{ $key + 1 }}"
                                                 onblur="AddSaleDisAmt(this.id, this.value);"
                                                 value="{{ number_format($saleinvoicedetail->LineDisAmt) }}"
                                                 onfocus="FocusValue(event);">
                                         </td>
+                                        {{-- Line Total Amount --}}
                                         <td class="px-0 py-0">
                                             <input type="text" class="tableInput text-end" name=""
                                                 id="totalAmt"
                                                 value="{{ number_format($saleinvoicedetail->LineTotalAmt) }}"
                                                 disabled>
                                         </td>
+                                        {{-- Is Foc --}}
                                         <td class="px-3 py-0">
                                             <input type="checkbox" class="form-check-input cust-form-check mt-2"
                                                 id="{{ $key + 1 }}"
                                                 {{ $saleinvoicedetail->IsFOC == 1 ? 'checked' : '' }}
                                                 onchange="AddSaleFoc(event, this.id)">
                                         </td>
+                                        {{-- Action Button --}}
                                         <td class="px-2 py-0">
                                             <button type="button" id="{{ $key + 1 }}"
                                                 class="btn delete-btn py-0 mt-1 px-1"
@@ -497,6 +515,7 @@
             WeightPrice: 1,
             Quantity: 1,
             PackedUnit: "",
+            QtyPerUnit: 0,
             UnitName: "",
             TotalViss: 1,
             UnitPrice: 0,
@@ -548,12 +567,14 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="saleprice_` + saleRowNo + ` text-end" value="0" id="` +
-            saleRowNo + `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + saleRowNo + `" onfocus="FocusValue(event);">
+                                <input type="number" value="0" id="` + saleRowNo + `" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="FocusValue(event);">
                             </td>
                             <td class="px-0 py-0">
-                                <input type="number" class="viss_` + saleRowNo + ` text-end" value="1" id="` +
-            saleRowNo + `" onblur="AddSaleTotalViss(this.id,this.value)" onfocus="FocusVale(event);">
+                                <input type="number" class="viss_` + saleRowNo + `" value="1" id="` + saleRowNo + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event);">
+                            </td>
+                            <td class="px-0 py-0">
+                                <input type="text" class="saleprice_` + saleRowNo + ` text-end" value="0" id="` +
+            saleRowNo + `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + saleRowNo + `" onfocus="FocusValue(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -611,7 +632,7 @@
 
                         e.WeightPrice = element.weightPrice;
 
-                        //e.Amount = e.Quantity * e.UnitPrice;
+                        e.TotalViss = (e.QtyPerUnit * e.Quantity).toFixed(3);
 
                         e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -620,7 +641,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -658,7 +679,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -690,7 +711,7 @@
 
                         SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e
                             .Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount,
-                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                            e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -724,7 +745,7 @@
 
                 }
 
-                //e.Amount = e.UnitPrice *  e.Quantity;
+                e.TotalViss = (e.QtyPerUnit * e.Quantity).toFixed(3);
 
                 e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -732,7 +753,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, nextFocus);
+                    e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit);
 
             }
 
@@ -745,6 +766,46 @@
     }
 
     // ====== End of Add Unit Function ========== //
+
+    // ====== Add QtyPerUnit Function ========== //
+
+    function AddQtyPerUnit(event, refNo, inputValue) {
+
+        saleProductDataList.forEach(e => {
+
+            if (e.referenceNo == refNo) {
+
+                if (inputValue > 0) {
+
+                    e.QtyPerUnit = Number(inputValue.replace(/,/g, ''));
+
+                } else {
+
+                    e.QtyPerUnit = 0;
+
+                }
+
+                e.TotalViss = (e.Quantity * e.QtyPerUnit).toFixed(3);
+
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+
+                e.LineTotalAmt = CheckSaleDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
+
+                SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
+                    .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
+
+            }
+
+        });
+
+        SaleSubTotalAmt();
+
+        SaleGrandTotalAmt();
+
+    }
+
+        // ====== End of Add QtyPerUnit Function ========= //
 
     // ====== Add Unit Price Function ====== //
 
@@ -774,7 +835,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, nextFocus);
+                    e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit);
 
             }
 
@@ -812,7 +873,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -844,11 +905,11 @@
 
                 }
 
-                e.LineTotalAmt = e.Amount - e.LineDisAmt; // Calcul
+                e.LineTotalAmt = e.Amount - e.LineDisAmt;
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -888,7 +949,7 @@
 
                 SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                     .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt,
-                    e.LineTotalAmt, e.IsFOC, "");
+                    e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -918,7 +979,7 @@
 
                     SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                         .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
-                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, );
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 } else {
 
@@ -944,7 +1005,7 @@
 
                     SaleRowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e
                         .PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e
-                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        .LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 }
 
@@ -965,7 +1026,7 @@
     // ========= Row Replace Function ========== //
 
     function SaleRowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName,
-        TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus = "") {
+        TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus = "", QtyPerUnit) {
 
         let checkFoc = "";
 
@@ -1038,13 +1099,15 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="saleprice_` + refNo + ` text-end" name="" value="` +
-                    Number(UnitPrice).toLocaleString() + `" id="` + refNo +
-                    `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + refNo + `" onfocus="FocusValue(event);">
+                                        <input type="number"  id="` + refNo + `" value="` + QtyPerUnit + `" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="FocusValue(event)">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="viss_` + refNo + ` text-end" id="` + refNo +
-                    `" value="` + TotalViss + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event)">
+                                        <input type="number" class="viss_` + refNo + ` text-end" id="` + refNo + `" value="` + TotalViss + `" onblur="AddSaleTotalViss(event,this.id,this.value)" onfocus="FocusValue(event)">
+                                    </td>
+                                    <td class="px-0 py-0">
+                                        <input type="text" class="saleprice_` + refNo + ` text-end" name="" value="` +
+                    Number(UnitPrice).toFixed(0) + `" id="` + refNo +
+                    `" onblur="AddSalePrice(event,this.id,this.value);" nextfocus="viss_` + refNo + `" onfocus="FocusValue(event);">
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="text-end" name="" id="itemAmount" value="` + Amount
@@ -1285,6 +1348,7 @@
                     ItemCode: element.ItemCode,
                     Quantity: element.Quantity,
                     PackedUnit: element.PackedUnit,
+                    QtyPerUnit: element.QtyPerUnit,
                     TotalViss: element.TotalViss,
                     OldTotalViss: element.OldTotalViss,
                     UnitPrice: element.UnitPrice,

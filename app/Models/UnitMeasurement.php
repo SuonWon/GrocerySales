@@ -20,6 +20,8 @@ class UnitMeasurement extends Model
     protected $fillable = [
         'UnitCode',
         'UnitDesc',
+        'IsActive',
+        'Remark',
         'CreatedBy',
         'CreatedDate',
         'ModifiedDate',

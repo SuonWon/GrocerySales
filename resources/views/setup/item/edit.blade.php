@@ -14,7 +14,7 @@
     @endforeach
 
     <div class="container-fluid content-body mt-3">
-
+        
         {{-- Section Title --}}
 
         <div class="row justify-content-between">
@@ -33,15 +33,6 @@
         {{-- End of Section Title --}}
 
         {{-- Form Section --}}
-
-        {{-- @forelse ($stockitemsqty as $item)
-              
-         @empty
-              
-         @endforelse --}}
-
-
-
 
         <form action="/item/update/{{ $item->ItemCode }}" id="updateItemData" method="POST" enctype="multipart/form-data"
             class="row form-card mt-3 needs-validation" novalidate>

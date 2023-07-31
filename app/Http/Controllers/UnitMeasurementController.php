@@ -38,8 +38,15 @@ class UnitMeasurementController extends Controller
         $formData = request()->validate([
             'UnitCode' => ['required'],
             'UnitDesc' => ['required'],
+            'Remark' => ['nullable'],
         ]);
 
+        $formData['IsActive'] = request('IsActive');
+        if ($formData['IsActive'] == 'on') {
+            $formData['IsActive'] = 1;
+        } else {
+            $formData['IsActive'] = 0;
+        }
         $formData['ModifiedDate'] = null;
         $formData['CreatedBy'] = auth()->user()->Username;
         // dd($formData);
@@ -69,9 +76,16 @@ class UnitMeasurementController extends Controller
         $formData = request()->validate([
 
             'UnitCode' => ['required'],
-            'UnitDesc' => ['required']
+            'UnitDesc' => ['required'],
+            'Remark' => ['nullable'],
         ]);
 
+        $formData['IsActive'] = request('IsActive');
+        if ($formData['IsActive'] == 'on') {
+            $formData['IsActive'] = 1;
+        } else {
+            $formData['IsActive'] = 0;
+        }
         $formData['ModifiedDate'] = $this->datetime;
         $formData['Modifiedby'] = auth()->user()->Username;
 

@@ -27,16 +27,23 @@
                 <div class="row">
                     {{-- Unit Code --}}
                     <input type="hidden" value="{{$unit->UnitCode}}" name="UnitCode">
-                    <div class="col-md-6 col-lg-12 col-xl-6 mb-3">
+                    <div class="col-sm-5 col-lg-12 col-xl-5 mb-3">
                         <label for="UnitCode" class="form-label cust-label text-end">Unit Code</label>
                         <input type="text" class="form-control cust-input-box" id="UnitCode" name="UnitCode" value="{{$unit->UnitCode}}" disabled>
                     </div>
                     {{-- Unit Name --}}
-                    <div class="col-md-6 col-lg-12 col-xl-6 mb-3">
+                    <div class="col-sm-10 col-md-5 col-lg-9 col-xl-5 mb-3">
                         <label for="UnitDesc" class="form-label cust-label text-end">Unit Name</label>
                         <input type="text" class="form-control cust-input-box" id="UnitDesc" name="UnitDesc" value="{{$unit->UnitDesc}}" required>
                         <div class="invalid-feedback">
                             Please fill unit name.
+                        </div>
+                    </div>
+                    {{-- Status --}}
+                    <div class="col-sm-2 col-lg-3 col-xl-2 mb-3">
+                        <label class="cust-label form-label text-end" for="isActive">Active</label>
+                        <div class="col-sm-8 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isActive" name="IsActive" {{$unit->IsActive == 1 ? 'checked' : ''}}>
                         </div>
                     </div>
                 </div>
