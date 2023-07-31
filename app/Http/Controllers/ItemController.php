@@ -31,13 +31,16 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
 
+        $units = UnitMeasurement::where('IsActive', 1)->get();
+
         return view('setup.item.index',[
-            'items' => $items       
+            'items' => $items,
+            'units' => $units,  
         ]);
     }
 
     public function create(){
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
         return view('setup.item.add',[
             'units' => $units,
@@ -94,7 +97,7 @@ class ItemController extends Controller
             $item->Discontinued = "off";
         }
 
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
 
         return view('setup.item.edit',[
@@ -178,10 +181,12 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
         $companyinfo = CompanyInformation::first();
+        $units = UnitMeasurement::where("IsActive", 1)->get();
 
         return view('reports.itemreports',[
             'items' => $items,
-            'companyinfo' => $companyinfo,       
+            'companyinfo' => $companyinfo,
+            'units' => $units,   
         ]);
     }
 }

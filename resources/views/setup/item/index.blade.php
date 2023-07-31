@@ -55,12 +55,24 @@
                                     @endif
                                 </td>
                                 <td>{{$item->ItemName}}</td>
-                                <td>{{$item->ItemCategoryCode}}</td>
+                                <td>{{$item->ItemCategoryName}}</td>
                                 <td class="text-center">{{$item->UnitDesc}}</td>
                                 <td class="text-end">{{number_format($item->UnitPrice)}}</td>
                                 <td class="text-end">{{$item->WeightByPrice}}</td>
-                                <td class="text-center">{{$item->DefSalesUnit}}</td>
-                                <td class="text-center">{{$item->DefPurUnit}}</td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefSalesUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefPurUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td class="text-end">{{number_format($item->LastPurPrice)}}</td>
                                 <td>{{$item->CreatedBy}}</td>
                                 <td>{{$item->CreatedDate}}</td>

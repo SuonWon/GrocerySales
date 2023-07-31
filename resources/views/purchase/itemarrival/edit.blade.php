@@ -56,6 +56,32 @@
                             Please fill Plate No.
                         </div>
                     </div>
+                    {{-- Supplier Name --}}
+                    <div class="col-12 col-md-6">
+                        <label for="supplierCodeList" class="form-label cust-label">Supplier Name</label>
+                        <select class="mb-3 form-select" id="supplierCodeList" name="SupplierCode" required>
+
+                            @if (isset($suppliers) && is_object($suppliers) && count($suppliers) > 0)
+
+                                @forelse ($suppliers as $supplier)
+                                    @if ($supplier->SupplierCode == $itemarrival->SupplierCode)
+                                        <option value="{{ $supplier->SupplierCode }}" selected>
+                                            {{ $supplier->SupplierName }}</option>
+                                    @else
+                                        <option value="{{ $supplier->SupplierCode }}">{{ $supplier->SupplierName }}
+                                        </option>
+                                    @endif
+
+                                @empty
+                                    <option disabled>No Supplier Found</option>
+                                @endforelse
+
+                            @endif
+                        </select>
+                        <div class="invalid-feedback">
+                            Please fill Supplier name.
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     {{-- Total Bags --}}
@@ -175,6 +201,9 @@
 </x-layout>
 
 <script>
+
+    dselect(document.querySelector("#supplierCodeList"), config);
+
     let calculateTotalAmt = () => {
 
         const chargesPerBag = Number(document.querySelector('#chargesPerBag').value);

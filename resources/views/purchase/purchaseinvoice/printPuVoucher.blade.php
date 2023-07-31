@@ -34,7 +34,7 @@
     }
 
     .dataRow :nth-child(2){
-        width: 245px;
+        width: 210px;
     }
 
     .dataRow :nth-child(3){
@@ -42,7 +42,7 @@
     }
 
     .dataRow :nth-child(4){
-        width: 70px;
+        width: 105px;
     }
 
     .dataRow :nth-child(5){
@@ -154,7 +154,7 @@
                 <table>
                     <thead>
                         <tr class="text-end border-top border-bottom border-black custom-header-h mf-header">
-                            <th class="text-start">No.</th>
+                            <th class="text-start py-1">No.</th>
                             <th class="text-start">အမျိုးအမည်</th>
                             <th>အရေအတွက်</th>
                             <th>ပိဿာ</th>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row default_fs text-end fixed-bottom">
+                <div class="row default_fs text-end fixed-bottom px-3">
                     <span id="printDate"></span>
                 </div>
             </div>
@@ -289,7 +289,7 @@
 
             let purchaseList = ``;
 
-            document.getElementById("pVtotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}}));
+            document.getElementById("pVtotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}})) +" အိတ်";
 
             document.getElementById("pVShippingCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->ShippingCharges}}));
 
@@ -369,7 +369,7 @@
 
             $("#newPuBtn").css("display", "");
 
-
+            document.getElementById("printDate").innerHTML = "";
 
         });
 

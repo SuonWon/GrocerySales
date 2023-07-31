@@ -22,6 +22,7 @@ class ItemArrival extends Model
         'ArrivalCode',
         'ArrivalDate',
         'PlateNo',
+        'SupplierCode',
         'ChargesPerBag',
         'TotalBags',
         'TotalViss',
