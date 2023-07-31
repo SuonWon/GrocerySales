@@ -131,7 +131,7 @@
                          {{-- Unit Price --}}
                          <div class="col-6 mb-3">
                               <label for="unitPrice" class="form-label cust-label">Unit Price</label>
-                              <input type="text" class="form-control cust-input-box text-end" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice ? number_format($item->UnitPrice) : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                              <input type="text" class="form-control cust-input-box text-end" id="unitPrice" name="UnitPrice" value="{{$item->UnitPrice ? number_format($item->UnitPrice, 0, '.', '') : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                               <div class="invalid-feedback">
                               Please fill unit price.
                               </div>
@@ -149,7 +149,7 @@
                          {{-- Last Purchase Unit --}}
                          <div class="col-6 mb-3">
                               <label for="lastPurchaseUnit" class="form-label cust-label text-end">Last Purchase Price</label>
-                              <input type="text" class="form-control cust-input-box text-end" id="lastPurchaseUnit" name="LastPurPrice" value="{{$item->LastPurPrice ? number_format($item->LastPurPrice) : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
+                              <input type="text" class="form-control cust-input-box text-end" id="lastPurchaseUnit" name="LastPurPrice" value="{{$item->LastPurPrice ? number_format($item->LastPurPrice, 0, '.', '') : 0}}" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                               <div class="invalid-feedback">
                                    Please fill last purchase price.
                               </div>

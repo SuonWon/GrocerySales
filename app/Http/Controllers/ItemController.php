@@ -31,8 +31,11 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
 
+        $units = UnitMeasurement::where('IsActive', 1)->get();
+
         return view('setup.item.index',[
-            'items' => $items       
+            'items' => $items,
+            'units' => $units,  
         ]);
     }
 
@@ -178,10 +181,12 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
         $companyinfo = CompanyInformation::first();
+        $units = UnitMeasurement::where("IsActive", 1)->get();
 
         return view('reports.itemreports',[
             'items' => $items,
-            'companyinfo' => $companyinfo,       
+            'companyinfo' => $companyinfo,
+            'units' => $units,   
         ]);
     }
 }
