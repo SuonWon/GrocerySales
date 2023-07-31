@@ -744,7 +744,7 @@ input[type="number"] {
 .voucherSection {
     width: 672px;
     height: 816px;
-    padding: 20px;
+    padding: 5px 25px;
     margin: 0;
     font-size: 17px;
 }
