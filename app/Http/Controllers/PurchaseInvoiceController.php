@@ -250,7 +250,7 @@ class PurchaseInvoiceController extends Controller
 
         $selectArrival = PurchaseInvoice::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('item_arrivals', 'purchase_invoices.SupplierCode', '=', 'item_arrivals.SupplierCode')
-            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode')
+            ->select('item_arrivals.ArrivalCode', 'item_arrivals.PlateNo', 'item_arrivals.SupplierCode', 'item_arrivals.Status')
             ->get();
 
         $suppliers = Supplier::where('IsActive', '=', 1)->get();

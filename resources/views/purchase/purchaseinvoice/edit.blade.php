@@ -172,7 +172,7 @@
                                             <option value="{{ $arrival->ArrivalCode }}" selected>
                                                 {{ $arrival->PlateNo }}
                                             </option>
-                                        @else
+                                        @elseif ($arrival->Status == 'N')
                                             <option value="{{ $arrival->ArrivalCode }}">{{ $arrival->PlateNo }}
                                             </option>
                                         @endif
