@@ -193,6 +193,14 @@
                         </div>
                         <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
+                                <span>ကြိုထုတ်ငွေ</span>
+                            </div>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="pVOtherCharges"></span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
                                 <span>ဝန်ဆောင်ခ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
@@ -292,6 +300,8 @@
             document.getElementById("pVtotalBags").innerHTML = ": "+myanmarNumToWord.convertToBurmeseNumber(Number({{$totalBags}})) +" အိတ်";
 
             document.getElementById("pVShippingCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->ShippingCharges}}));
+
+            document.getElementById("pVOtherCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->OtherCharges}}));
 
             document.getElementById("pVServiceCharges").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->ServiceCharges + $purchaseinvoice->WeightCharges + $purchaseinvoice->LaborCharges + $purchaseinvoice->DeliveryCharges}}));
 
