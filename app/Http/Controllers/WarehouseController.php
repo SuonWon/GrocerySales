@@ -7,6 +7,8 @@ use App\Models\CompanyInformation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use App\Models\Item;
+use App\Models\StockInWarehouse;
 
 class WarehouseController extends Controller
 {
@@ -39,7 +41,8 @@ class WarehouseController extends Controller
              
         ]);
 
-        $formData['WarehouseCode'] = GenerateId::generatePrimaryKeyId('warehouses', 'WarehouseCode', 'WH-');
+        $warehouseCode = GenerateId::generatePrimaryKeyId('warehouses', 'WarehouseCode', 'WH-');
+        $formData['WarehouseCode'] = $warehouseCode;
 
         $formData['Street'] = request('Street');
         $formData['Township'] = request('Township');
@@ -52,6 +55,27 @@ class WarehouseController extends Controller
         try{
 
             $newwarehouse = Warehouse::create($formData);
+
+            if($newwarehouse){
+                $ItemCodes = Item::select('ItemCode')->whereDiscontinued(1)->get();
+
+                foreach ($ItemCodes as $ItemCode) {
+                    $stockdata = [];
+
+                    $stockdata['WarehouseCode'] = $warehouseCode;
+                    $stockdata['ItemCode'] = $ItemCode->ItemCode;
+                    $stockdata['StockQty'] = 0;
+                    $stockdata['Status'] = 'N';
+                    $stockdata['LastUpdatedDate'] = $this->datetime;
+
+                    try {
+                        StockInWarehouse::create($stockdata);
+
+                    } catch (QueryException $e) {
+                        return back()->with(['error' => $e->getMessage()]);
+                    }
+                }
+            }
 
             return  redirect()->route('addwarehouse')->with('success','warehouse created successful');
 

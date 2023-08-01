@@ -632,25 +632,30 @@ input[type="number"] {
 
 .purchaseTable table thead,
 .saleTable table thead,
-.details-table table thead {
+.details-table table thead,
+.stockList thead {
     background-color: #36616d;
     color: aliceblue;
     font-size: 0.9rem;
     border: 1px solid #36616d;
 }
 
-.details-table table tbody {
+.details-table table tbody,
+.stockList tbody {
     font-size: 0.8rem;
+    border: 1px solid #ddd;
 }
 
 .purchaseTable table thead tr th,
 .saleTable table thead tr th,
-.details-table table thead tr th {
+.details-table table thead tr th,
+.stockList thead tr th {
     border-right: 1px solid #ddd;
 }
 
 .purchaseTable table tbody tr td,
-.saleTable table tbody tr td {
+.saleTable table tbody tr td,
+.stockList tbody tr td {
     border-right: 1px solid #ddd;
 }
 
@@ -658,7 +663,8 @@ input[type="number"] {
 .purchaseTable table tbody tr td select,
 .saleTable table tbody tr td input,
 .saleTable table tbody tr td select,
-.input-icon input {
+.input-icon input,
+.stockList tbody tr td input {
     width: 100%;
     padding: 5px 5px;
     font-size: 0.85rem;
@@ -666,7 +672,8 @@ input[type="number"] {
 }
 
 .purchaseTable table tbody tr td input:focus,
-.saleTable table tbody tr td input:focus {
+.saleTable table tbody tr td input:focus,
+.stockList tbody tr td input:focus {
     outline: none !important;
     border-bottom: 1px solid #36616d !important;
 }

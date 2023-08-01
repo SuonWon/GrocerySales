@@ -12,6 +12,8 @@ class CompanyInformation extends Model
     const CREATED_AT = 'CreatedDate';
     const UPDATED_AT = 'ModifiedDate';
 
+    
+
     protected $primaryKey = 'CompanyCode';
 
     protected $casts = [

@@ -9,6 +9,9 @@ use App\Models\CompanyInformation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use App\Models\StockInWarehouse;
+use App\Models\Warehouse;
+use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Expr\FuncCall;
 
 class ItemController extends Controller
@@ -30,11 +33,20 @@ class ItemController extends Controller
         ->selectRaw('item_categories.ItemCategoryCode, item_categories.ItemCategoryName')
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
-
+        
+        $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+            ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty', 'stock_in_warehouses.WarehouseCode')
+            ->selectRaw('CASE WHEN stock_in_warehouses.StockQty < 10 THEN "low" ELSE "high" END as StockAlert')
+            ->orderBy('items.ItemCode')
+            ->get();
+        
+        $warehouses = Warehouse::all();
         $units = UnitMeasurement::where('IsActive', 1)->get();
 
         return view('setup.item.index',[
             'items' => $items,
+            'warehouses' => $warehouses,
+            'stockitems' => $stockitems,
             'units' => $units,  
         ]);
     }
@@ -42,54 +54,112 @@ class ItemController extends Controller
     public function create(){
         $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
+
+        $warehouses = Warehouse::all();
+        
         return view('setup.item.add',[
             'units' => $units,
-            'categories' => $categories
+            'categories' => $categories,
+            'warehouses' => $warehouses,
         ]);
     }
 
     public function store(){
 
-        $formData = request()->validate([
-           
+        $jsonData = json_decode(request()->getContent(), true);
+
+        // return response()->json(['message' => $jsonData]);
+        $formData = Validator::make($jsonData, [
+
             'ItemName'=>['required'],
             'ItemCategoryCode' => ['required'],
             'BaseUnit' => ['required'],
             'UnitPrice' => ['required'],
             'LastPurPrice' => ['required'],
-        ]);
+            'WeightByPrice' => ['nullable'],
+            'DefSalesUnit' => ['nullable'],
+            'DefPurUnit' => ['nullable'],
+            'Remark' => ['nullable'],
+            'Discontinued' => ['nullable'],
+            'StockInWarehouses' => ['required']
 
-        $formData['ItemCode'] = GenerateId::generatePrimaryKeyId('items','ItemCode','SI-'); 
 
-        $formData['Discontinued'] = request('Discontinued');
+        ])->validate();
+
+        
+
+        $ItemCode = GenerateId::generatePrimaryKeyId('items','ItemCode','SI-'); 
+        $formData['ItemCode'] = $ItemCode;
+
+    
         if ($formData['Discontinued'] == "on") {
             $formData['Discontinued'] = 1;
         } else {
             $formData['Discontinued'] = 0;
         }
-        $formData['WeightByPrice'] = request('WeightByPrice');
-        $formData['DefSalesUnit'] = request('DefSalesUnit');
-        $formData['DefPurUnit'] = request('DefPurUnit');
-        $formData['Remark'] = request('Remark');
+ 
         $formData['ModifiedDate'] = null;
         $formData['CreatedBy'] = auth()->user()->Username;
-      
-        //dd($formData);
+
+        
+        $stockinwarehouses = $formData['StockInWarehouses'];
+        
         try{
 
             $newitem = Item::create($formData);
+         
+            if($newitem){
+               
 
-            return redirect('/item/add')->with('success','Item Create Successfully');
+                foreach ($stockinwarehouses as $stockinwarehouse) {
+                    $stockdata = [];
+                   
+                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseCode'];
+                    $stockdata['ItemCode'] = $ItemCode;
+                    $stockdata['StockQty'] = $stockinwarehouse['StockQty'];
+                    if($stockinwarehouse['StockQty'] <= 0){
+
+                        $stockdata['Status'] = 'N';
+                        
+                    }else if($stockinwarehouse['StockQty'] > 0){
+
+                        $stockdata['Status'] = 'O';
+                       
+                    }
+                    
+                    $stockdata['LastUpdatedDate'] = $this->datetime;
+                   
+                    try {
+
+                        StockInWarehouse::create($stockdata);
+
+                    } catch (QueryException $e) {
+
+                        return response()->json(['message' => $e->getMessage()]);
+                    }
+                
+                }
+            }
+
+            // return redirect('/item/add')->with('success','Item Create Successfully');
+            return response()->json(['message' => "good"]);
 
         }catch(QueryException $e){
 
-            return back()->with(['error' => $e->getMessage()]);
+            // return back()->with(['error' => $e->getMessage()]);
+            return response()->json(['message' => $e->getMessage()]);
             
         }
 
     }
 
     public function show(Item $item){
+
+        $stockitemsqty = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+                    ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode','stock_in_warehouses.Status')
+                    ->orderBy('items.ItemCode')
+                    ->where('items.ItemCode',$item->ItemCode)
+                    ->get();
 
         if ($item->Discontinued == 1) {
             $item->Discontinued = 'on';
@@ -99,48 +169,104 @@ class ItemController extends Controller
 
         $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
+        $warehouses = Warehouse::all();
 
         return view('setup.item.edit',[
             'item' => $item,
             'units' => $units,
-            'categories' => $categories
+            'categories' => $categories,
+            'stockitemsqty' => $stockitemsqty,
+            'warehouses' => $warehouses,
         ]);
     }
 
     public function update(Item $item){
-        $formData = request()->validate([
-          
-            'ItemCode' => ['required'],
+
+        $jsonData = json_decode(request()->getContent(), true);
+
+        $formData = Validator::make($jsonData, [
+            
             'ItemName'=>['required'],
             'ItemCategoryCode' => ['required'],
             'BaseUnit' => ['required'],
             'UnitPrice' => ['required'],
             'LastPurPrice' => ['required'],
-        ]);
+            'WeightByPrice' => ['nullable'],
+            'DefSalesUnit' => ['nullable'],
+            'DefPurUnit' => ['nullable'],
+            'Remark' => ['nullable'],
+            'Discontinued' => ['nullable'],
+            'StockInWarehouses' => ['required']
 
-        $formData['Discontinued'] = request('Discontinued');
+
+        ])->validate();
+
+        $stockinwarehouses = $formData['StockInWarehouses'];
+        unset($formData['StockInWarehouses']);
+        $ItemCode = $item->ItemCode;
+
         if ($formData['Discontinued'] == "on") {
             $formData['Discontinued'] = 1;
         } else {
             $formData['Discontinued'] = 0;
         }
-        $formData['WeightByPrice'] = request('WeightByPrice');
-        $formData['DefSalesUnit'] = request('DefSalesUnit');
-        $formData['DefPurUnit'] = request('DefPurUnit');
-        $formData['Remark'] = request('Remark');
+
         $formData['ModifiedDate'] = $this->datetime;
         $formData['Modifiedby'] = auth()->user()->Username;
+
         
         try{
 
             $newunit = Item::where('ItemCode',$item->ItemCode)->update($formData);
 
-            return redirect('/item/index')->with('success','Update Item Successfully');
+            if($newunit == 1){
+
+                foreach ($stockinwarehouses as $stockinwarehouse) {
+
+                    $stockdata = [];
+                   
+                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseCode'];
+                    $stockdata['ItemCode'] = $item->ItemCode;
+                    $stockdata['StockQty'] = $stockinwarehouse['StockQty'];
+
+                    if($stockinwarehouse['StockQty'] <= 0){
+
+                        $stockdata['Status'] = 'N';
+
+                    }else if($stockinwarehouse['StockQty'] > 0){
+
+                        $stockdata['Status'] = 'O';
+
+                    }
+                    
+                    
+                    $stockdata['LastUpdatedDate'] = $this->datetime;
+                   
+                    try {
+
+                        $updateitem = StockInWarehouse::where('ItemCode',$item->ItemCode)->where('WarehouseCode',$stockinwarehouse['WarehouseCode'])->update($stockdata);
+
+                        
+
+                    } catch (QueryException $e) {
+
+                        return response()->json(['message' => $e->getMessage()]);
+                    }
+
+                
+                }
+            } else {
+
+                return response()->json(['message' => $newunit]);
+                
+            }
+
+            return response()->json(['message' => "good"]);
 
         } catch(QueryException $e){
 
-            return back()->with(['error' => $e->getMessage()]);
-
+            
+            return response()->json(['message' => $e->getMessage()]);
         }
     }
 

@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\GenerateId;
+use App\Models\StockInWarehouse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -187,11 +189,17 @@ class SaleInvoiceController extends Controller
                     $data['LineDisAmt'] = $saleDetails['LineDisAmt'];
                     $data['LineTotalAmt'] = $saleDetails['LineTotalAmt'];
                     $data['IsFOC'] = $saleDetails['IsFOC'];
+                    $warehouseCode = $saleDetails['WarehouseNo'];
+                    $ItemCode = $saleDetails['ItemCode'];
+                    $totalViss = $saleDetails['TotalViss'];
 
                     try {
 
                         //logger($data);
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
+
+                        // DB::statement("CALL stockcontrol_proc('$warehouseCode', '$ItemCode','$totalViss','Sales');");
+                        StockInWarehouse::where('WarehouseCode',$saleDetails['WarehouseNo'])->where('ItemCode',$saleDetails['ItemCode'])->decrement('StockQty', $saleDetails['TotalViss']);
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);
@@ -237,6 +245,8 @@ class SaleInvoiceController extends Controller
             'units' => $units
         ]);
     }
+
+    
 
     public function update(SaleInvoice $saleinvoice)
     {
@@ -300,6 +310,9 @@ class SaleInvoiceController extends Controller
 
                     try {
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
+
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);
@@ -326,21 +339,35 @@ class SaleInvoiceController extends Controller
         $data['DeletedDate'] = $this->datetime;
         $data['Status'] = 'D';
 
+        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo',$saleinvoice->InvoiceNo)->get();
+
         try {
 
             $deletesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
 
+        
+
+            if($deletesaleinvoice){
+
+                foreach ($saleinvoicedetails as $saleinvoicedetail) {
+                    
+                    StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['TotalViss']);
+                }
+                
+            }
+
             return redirect()->route('saleinvoices')->with('success', 'Delete sale invoices successful');
         } catch (QueryException $e) {
 
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
 
-            //return back()->with(['error' => $e->getMessage()]);
+            return back()->with(['error' => $e->getMessage()]);
         }
     }
 
     public function restore(SaleInvoice $saleinvoice)
     {
+
 
 
         $data = [];
@@ -349,16 +376,29 @@ class SaleInvoiceController extends Controller
         $data['DeletedDate'] = null;
         $data['Status'] = 'O';
 
+        
+       $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo',$saleinvoice->InvoiceNo)->get();
+
         try {
 
-            $deletesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
+            $restoresaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($data);
+
+            if($restoresaleinvoice){
+
+                foreach ($saleinvoicedetails as $saleinvoicedetail) {
+                    
+                    StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
+                }
+                
+            }
 
             return redirect()->route('saleinvoices')->with('success', 'Restore sale invoices successful');
-            
+
         } catch (QueryException $e) {
 
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
 
+            return back()->with(['error' => $e->getMessage()]);
         }
     }
 

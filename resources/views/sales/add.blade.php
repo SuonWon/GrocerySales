@@ -1315,7 +1315,7 @@
         data.saleinvoicedetails = saleInvoiceDetailsArr;
 
         data = JSON.stringify(data);
-
+        
 
 
         $.ajax({
@@ -1359,7 +1359,7 @@
                 console.log(res);
             }
         });
-    };
+    };                                      
 
     // ========= End of Save Data to Database ========== //
 
