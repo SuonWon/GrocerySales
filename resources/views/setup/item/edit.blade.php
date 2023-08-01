@@ -194,9 +194,9 @@
                         <table class="table stockList">
                             <thead>
                                 <tr>
-                                    <th style="width: 350px;">Warehouse Name</th>
-                                    <th style="width: 180px;">Stock Qty (ပိဿချိန်)</th>
-                                    <th></th>
+                                    <th>Warehouse Name</th>
+                                    <th style="width: 180px; text-align: right;">Stock Qty (ပိဿာချိန်)</th>
+                                    <th style="width: 80px;"></th>
                                 </tr>
                             </thead>
                             <tbody>
