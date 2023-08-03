@@ -23,7 +23,61 @@ class ItemArrivalController extends Controller
 
     public function index(Request $request)
     {
-        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->get();
+        $query = ItemArrival::orderBy('ArrivalDate', 'desc');
+
+        if ($request->input('StartDate') !== null && $request->input('EndDate') !== null) {
+            $startDate = $request->input('StartDate');
+            $endDate = $request->input('EndDate');
+
+            
+
+            if($endDate < $startDate){
+                return back()->with('warning','start date must be lower than end date');
+            }
+
+            $query->whereBetween('ArrivalDate', [$startDate, $endDate]);
+
+           
+
+        } else if ($request->input('StartDate') !== null && $request->input('EndDate') == null) {
+
+            $query->where('ArrivalDate', '>=', $request->input('StartDate'));
+
+            
+
+        } else if ($request->input('StartDate') == null && $request->input('EndDate') !== null) {
+
+            $query->where('ArrivalDate', '<=', $request->input('EndDate'));
+
+          
+
+        } else {
+            // If both startDate and endDate are null, retrieve records for the current month
+       
+            $query->where('ArrivalDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+                  ->where('ArrivalDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+
+        
+        }
+
+        $CompleteStatus = $request->input('CompleteStatus');
+        if ($CompleteStatus === 'complete') {
+            $query->where('Status', 'O');
+        } elseif ($CompleteStatus === 'ongoing') {
+            $query->where('Status', 'N');
+        }else if($CompleteStatus == "delete"){
+
+        }else if($CompleteStatus == "all"){
+            $query->where('Status', 'N')->orwhere('Status', 'O')->orwhere('Status','D');
+        }
+
+        $PlateNo = $request->input('PlateNo');
+
+        if($PlateNo != null){
+             $query->where('PlateNo', 'LIKE', '%' . $PlateNo . '%');
+        }
+
+        $itemarrivals = $query->get();
 
         return view('purchase.itemarrival.index', [
             'itemarrivals' => $itemarrivals
