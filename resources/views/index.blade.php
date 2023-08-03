@@ -10,7 +10,7 @@
 
 
     <!-- bootstrap css 1 js1 -->
-    hello
+    
     <link href="{{ asset('./assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href={{ asset('./assets/css/login_form.css') }} type="text/css">

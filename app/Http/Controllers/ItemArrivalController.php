@@ -7,7 +7,7 @@ use App\Models\GenerateId;
 use App\Models\ItemArrival;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class ItemArrivalController extends Controller
 {
@@ -22,8 +22,9 @@ class ItemArrivalController extends Controller
 
     public function index()
     {
-        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->get();
+        $itemarrivals = ItemArrival::orderBy('ArrivalDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->where('ArrivalDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())->where('ArrivalDate', '<=', Carbon::now()->endOfMonth()->toDateString())->get();
 
+       
         return view('purchase.itemarrival.index', [
             'itemarrivals' => $itemarrivals
         ]);
