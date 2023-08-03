@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('ArrivalCode',12)->primary();
             $table->date('ArrivalDate');
             $table->string('PlateNo',20)->nullable();
+            $table->string('SupplierCode',10);
+            $table->foreign('SupplierCode')->references('SupplierCode')->on('suppliers');
             $table->decimal('ChargesPerBag',10,2);
             $table->float('TotalBags',10,2)->default(0);
-            $table->decimal('TotalViss',10,2)->default(0);
+            $table->decimal('TotalViss',10,3)->default(0);
             $table->char('IsBag',1)->default('T');
             $table->decimal('OtherCharges',10,2);
             $table->decimal('TotalCharges',10,2);

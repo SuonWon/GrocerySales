@@ -60,8 +60,11 @@
         @php
             $itemArrival[] = [
                 'arrivalCode' => $arrival->ArrivalCode,
+                'plateNo' => $arrival->PlateNo,
+                'supplierCode' => $arrival->SupplierCode,
                 'charges' => $arrival->TotalCharges,
                 'totalBags' => $arrival->TotalBags,
+                'otherCharges' => $arrival->OtherCharges,
             ]
         @endphp
         
@@ -123,7 +126,7 @@
                     {{-- Supplier Code --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="supplierCodeList" class="form-label cust-label">Supplier Name</label>
-                        <select class="mb-3 form-select" id="supplierCodeList" name="SupplierCode" onchange="AddSupplierData();" required>
+                        <select class="mb-3 form-select" id="supplierCodeList" name="SupplierCode" onchange="AddSupplierData(event);" required>
                             <option selected disabled value="">Choose</option>
                             @if(isset($suppliers) && is_object($suppliers) && count($suppliers) > 0)
                                 @forelse ($suppliers as $supplier)
@@ -147,13 +150,13 @@
                         </div>
                     </div>
                     {{-- Arrival Code --}}
-                    <div class="col-12 col-md-6 col-xl-4 col-xxl-3 mb-2">
+                    <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
                         <label for="arrivalCodeList" class="form-label cust-label">Plate No/Name</label>
                         <div class="d-flex">
-                            <div class="col-10">
+                            <div class="col-12">
                                 <select class="mb-3 me-2 form-select" id="arrivalCodeList" name="ArrivalCode" onchange="AddArrivalData(event);" required>
-                                    <option value="" selected disabled>Choose</option>
-                                    @if(isset($arrivals) && is_object($arrivals) && count($arrivals) > 0)
+                                    <option value="" selected disabled>Choose supplier first</option>
+                                    {{-- @if(isset($arrivals) && is_object($arrivals) && count($arrivals) > 0)
                                         @forelse ($arrivals as $arrival)
                                             
                                             <option value="{{$arrival->ArrivalCode}}">{{$arrival->PlateNo}}</option>
@@ -165,13 +168,13 @@
                                         @endforelse
                                     @else
                                         <option disabled></option>
-                                    @endif
+                                    @endif --}}
                                 </select>
                                 <div class="invalid-feedback">
                                     Please fill Arrival Code.
                                 </div>
                             </div>
-                            <input class="form-check-input cust-form-check col-2" type="checkbox" value="" name="IsArrivalComplete" id="isArrivalComplete">
+                            {{-- <input class="form-check-input cust-form-check col-2" type="checkbox" value="" name="IsArrivalComplete" id="isArrivalComplete"> --}}
                         </div>
                         
                         
@@ -217,8 +220,9 @@
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Quantity</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 120px;">Unit Price</th>
+                                    <th style="width: 80px;">QPU</th>
                                     <th style="width: 150px;">Total Viss</th>
+                                    <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
                                     <th style="width: 60px;">Discount(%)</th>
                                     <th style="width: 120px;">Discount</th>
@@ -241,6 +245,13 @@
                             <label for="shippingCharges" class="form-label text-end charges-label col-6">တန်ဆာခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="shippingCharges" name="ShippingCharges" value="0" onblur="PuCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Other Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="otherCharges" class="form-label text-end charges-label col-6">ကြိုထုတ်ငွေ :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end" id="otherCharges" name="OtherCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
                         {{-- Labor Charges --}}
@@ -269,6 +280,13 @@
                             <label for="serviceCharges" class="form-label text-end charges-label col-6">အကျိုးဆောင်ခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="serviceCharges" name="ServiceCharges" value="0" rowNo="23" onblur="PuCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Factory Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="factoryCharges" class="form-label text-end charges-label col-6">စက်ကြိတ်ခ :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end" id="factoryCharges" name="FactoryCharges" value="0" rowNo="23" onblur="PuCharges(event);">
                             </div>
                         </div>
                         <hr>
@@ -349,6 +367,7 @@
             WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
+            QtyPerUnit : 0,
             UnitName : "",
             TotalViss : 1,
             UnitPrice : 0,
@@ -398,10 +417,13 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="puprice_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddUnitPrice(event,this.id,this.value);" value="" onfocus="PAddFocus(event);" nextfocus="puviss_`+ rowNo +`">
+                                <input type="number" class="qtyunit_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="PAddFocus(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="puviss_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PAddFocus(event);">
+                            </td>
+                            <td class="px-0 py-0">
+                                <input type="text" class="puprice_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddUnitPrice(event,this.id,this.value);" value="" onfocus="PAddFocus(event);" nextfocus="puviss_`+ rowNo +`">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -451,6 +473,7 @@
             WeightPrice: 1,
             Quantity : 1,
             PackedUnit : "",
+            QtyPerUnit : 0,
             UnitName : "",
             TotalViss : 1,
             UnitPrice : 0,
@@ -500,10 +523,13 @@
                                 </select>
                             </td>
                             <td class="px-0 py-0">
-                                <input type="text" class="puprice_`+ rowNo +` text-end" id="`+ rowNo +`" onblur="AddUnitPrice(event,this.id,this.value);" value="" onfocus="PAddFocus(event);" nextfocus="puviss_`+ rowNo +`">
+                                <input type="number" class="qtyunit_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="PAddFocus(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="puviss_`+ rowNo +` text-end" name="" id="`+ rowNo +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PAddFocus(event);">
+                            </td>
+                            <td class="px-0 py-0">
+                                <input type="text" class="puprice_`+ rowNo +` text-end" id="`+ rowNo +`" onblur="AddUnitPrice(event,this.id,this.value);" value="" onfocus="PAddFocus(event);" nextfocus="puviss_`+ rowNo +`">
                             </td>
                             <td class="px-0 py-0">
                                 <input type="number" class="tableInput" name="" id="itemAmount" disabled>
@@ -562,11 +588,13 @@
 
                         e.WeightPrice = element.weightByPrice;
 
-                        e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                        e.TotalViss = (e.QtyPerUnit * e.Quantity).toFixed(3);
+
+                        e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                         e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -602,7 +630,7 @@
 
                         e.WarehouseName = element.warehouseName;
 
-                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -632,7 +660,7 @@
 
                         e.UnitName = element.unitName;
 
-                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                        RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                     }
 
@@ -666,11 +694,13 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.TotalViss = (e.Quantity * e.QtyPerUnit).toFixed(3);
+
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus);
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit);
 
             }
 
@@ -683,6 +713,44 @@
     }
 
     // ====== End of Add Unit Function ========== //
+
+    // ====== Add QtyPerUnit Function ========== //
+
+    function AddQtyPerUnit(event, refNo, inputValue) {
+
+        purchaseProductDataList.forEach(e => {
+
+            if (e.referenceNo == refNo) {
+
+                if (inputValue > 0) {
+
+                    e.QtyPerUnit = Number(inputValue.replace(/,/g, ''));
+
+                } else {
+
+                    e.QtyPerUnit = 0;
+
+                }
+
+                e.TotalViss = (e.Quantity * e.QtyPerUnit).toFixed(3);
+
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+
+                e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
+
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
+
+            }
+
+        });
+
+        SubTotalAmount();
+
+        GrandTotalAmount();
+
+    }
+
+    // ====== End of Add QtyPerUnit Function ========= //
 
     // ====== Add Unit Price Function ====== //
 
@@ -704,11 +772,11 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus); 
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, nextFocus, e.QtyPerUnit); 
 
             }
 
@@ -740,11 +808,11 @@
 
                 }
 
-                e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
+                e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
                 e.LineTotalAmt = CheckDiscount(e.Amount, e.LineDisAmt, e.LineDisPer, e.IsFOC);
 
-                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -779,7 +847,7 @@
                 
                 e.LineTotalAmt = e.Amount - e.LineDisAmt;
 
-                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -817,7 +885,7 @@
                 
                 e.LineTotalAmt = e.Amount - ((inputValue / 100) * e.Amount);
 
-                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
             }
 
@@ -845,7 +913,7 @@
 
                     e.LineTotalAmt = 0;
 
-                    RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                    RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 } else {
 
@@ -869,7 +937,7 @@
 
                     }
 
-                    RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "");
+                    RowReplace(refNo, e.WarehouseNo, e.WarehouseName, e.ItemCode, e.ItemName, e.Quantity, e.PackedUnit, e.UnitName, e.TotalViss, e.UnitPrice, e.Amount, e.LineDisPer, e.LineDisAmt, e.LineTotalAmt, e.IsFOC, "", e.QtyPerUnit);
 
                 }
                 
@@ -888,7 +956,7 @@
 
     // ========= Row Replace Function ========== //
 
-    function RowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus) {
+    function RowReplace(refNo, WarehouseNo, WarehouseName, ItemCode, ItemName, Quantity, PackedUnit, UnitName, TotalViss, UnitPrice, Amount, LineDisPer, LineDisAmt, LineTotalAmt, IsFoc, nextFocus, QtyPerUnit) {
 
         let checkFoc = "";
 
@@ -959,10 +1027,13 @@
                                         </select>
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="puprice_`+ refNo +` text-end" id="`+ refNo +`"  value="`+ UnitPrice.toLocaleString() +`" onblur="AddUnitPrice(event,this.id, this.value)" onfocus="PAddFocus(event);" nextfocus="puviss_`+ rowNo +`">
+                                        <input type="number" class="qtyunit_`+ refNo +`" name="" id="`+ refNo +`" value="`+ QtyPerUnit +`" onblur="AddQtyPerUnit(event,this.id,this.value)" onfocus="PAddFocus(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="number" class="puviss_`+ rowNo +`" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(this.id,this.value)" onfocus="PAddFocus(event);">
+                                        <input type="number" class="puviss_`+ refNo +`" id="`+ refNo +`" value="`+ TotalViss +`" onblur="AddTotalViss(event,this.id,this.value)" onfocus="PAddFocus(event);">
+                                    </td>
+                                    <td class="px-0 py-0">
+                                        <input type="text" class="puprice_`+ refNo +` text-end" id="`+ refNo +`"  value="`+ UnitPrice.toLocaleString() +`" onblur="AddUnitPrice(event,this.id, this.value)" onfocus="PAddFocus(event);" nextfocus="puviss_`+ refNo +`">
                                     </td>
                                     <td class="px-0 py-0">
                                         <input type="text" class="text-end" name="" id="itemAmount" value="`+ Amount.toLocaleString() +`" disabled>
@@ -1114,7 +1185,11 @@
 
         let serviceCharge = Number($("#serviceCharges").val().replace(/,/g,""));
 
-        let totalCharges = shippingCharge + laborCharge + deliveryCharge + weightCharge + serviceCharge;
+        let factoryCharges = Number($("#factoryCharges").val().replace(/,/g,""));
+
+        let otherCharges = Number($("#otherCharges").val().replace(/,/g,""));
+
+        let totalCharges = shippingCharge + laborCharge + deliveryCharge + weightCharge + serviceCharge + factoryCharges + otherCharges;
 
         $("#totalCharges").val(totalCharges.toLocaleString());
 
@@ -1124,7 +1199,7 @@
 
     function PuCharges(event) {
 
-        let check = /^[0-9]+$/;
+        let check = /^[0-9/,]+$/;
 
         if (event.target.value < 0 || !check.test(event.target.value)) {
 
@@ -1206,6 +1281,7 @@
                     ItemCode : element.ItemCode,
                     Quantity : element.Quantity,
                     PackedUnit : element.PackedUnit,
+                    QtyPerUnit : element.QtyPerUnit,
                     TotalViss : element.TotalViss,
                     UnitPrice : element.UnitPrice,
                     Amount : element.Amount,
@@ -1250,14 +1326,16 @@
         data.PurchaseDate = $("#purchaseDate").val();
         data.SupplierCode = supplierCode;
         data.ArrivalCode = arrivalCode;
-        data.IsComplete = document.getElementById("isArrivalComplete").checked ? 1 : 0;
+        //data.IsComplete = document.getElementById("isArrivalComplete").checked ? 1 : 0;
         // console.log(data.IsArrivalComplete);
         data.SubTotal = Number($("#subTotal").val().replace(/,/g, ""));
         data.ShippingCharges = Number($("#shippingCharges").val().replace(/,/g, ""));
+        data.OtherCharges = Number($("#otherCharges").val().replace(/,/g, ""));
         data.LaborCharges = Number($("#laborCharges").val().replace(/,/g, ""));
         data.DeliveryCharges = Number($("#deliveryCharges").val().replace(/,/g, ""));
         data.WeightCharges = Number($("#weightCharges").val().replace(/,/g, ""));
         data.ServiceCharges = Number($("#serviceCharges").val().replace(/,/g, ""));
+        data.FactoryCharges = Number($("#factoryCharges").val().replace(/,/g, ""));
         data.TotalCharges = Number($("#totalCharges").val().replace(/,/g, ""));
         data.GrandTotal = Number($("#grandTotal").val().replace(/,/g, ""));
         data.Remark = $("#purchaseRemark").val();
@@ -1267,7 +1345,7 @@
 
         data = JSON.stringify(data);
 
-        console.log(data);
+        // console.log(data);
 
         $.ajax({
             url: '/purchaseinvoices/add' ,
@@ -1332,15 +1410,19 @@
 
     }
 
-    $("#shippingCharges").on('focus', PAddSelect)
+    $("#otherCharges").on('focus', PAddSelect);
 
-    $("#laborCharges").on('focus', PAddSelect)
+    $("#shippingCharges").on('focus', PAddSelect);
+
+    $("#laborCharges").on('focus', PAddSelect);
 
     $("#weightCharges").on('focus', PAddSelect);
 
     $("#deliveryCharges").on('focus', PAddSelect);
 
     $("#serviceCharges").on('focus', PAddSelect);
+
+    $("#factoryCharges").on('focus', PAddSelect);
 
 
     // ========= End of Focus Functions ========= //
@@ -1386,6 +1468,7 @@
             if(e.arrivalCode == arrivalCode) {
 
                 document.querySelector("#shippingCharges").value = Number(e.charges).toLocaleString();
+                document.querySelector("#otherCharges").value = Number(e.otherCharges).toLocaleString();
 
             }
 
@@ -1399,21 +1482,51 @@
 
     // ========= Add Supplier Data ========= //
 
-    function AddSupplierData() {
+    function AddSupplierData(event) {
 
         let supplierCode = document.querySelector("#supplierCodeList").value;
 
+        let arrivalCodeCheck = document.querySelector("#arrivalCodeList").value;
+
         let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g,""));
+
+        let arrivalOptions = "<option value='' selected disabled>Choose</option>";
 
         supplierList.forEach((e) => {
 
             if (e.supplierCode == supplierCode) {
 
-                document.querySelector("#serviceCharges").value = Math.round(subTotal * (e.profit / 100)).toLocaleString();
+                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100)).toLocaleString();
 
             }
 
         });
+
+        if (arrivalCodeCheck == '') {
+
+            let resultArrivals = itemArrival.filter(i => i.supplierCode == supplierCode);
+
+            if (resultArrivals == "") {
+
+                arrivalOptions = "<option value=''>There is no arrival.</option>";
+
+            } else {
+
+                resultArrivals.forEach(i => {
+
+                arrivalOptions += `<option value="`+ i.arrivalCode +`">`+ i.plateNo +`</option>`;
+
+                });
+
+            }
+
+            document.querySelector("#arrivalCodeList").innerHTML = arrivalOptions;
+
+            dselect(document.querySelector("#arrivalCodeList"), config);
+
+        }
+
+        DisplayTotalCharges();
 
     }
 

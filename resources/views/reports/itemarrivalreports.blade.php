@@ -35,13 +35,16 @@
 </head>
 <body style="font-size: 0.85rem">
     <section class="w-100 bg-secondary">
-        <div class="voucherSection mx-auto bg-light text-dark">
+        <div class="landscapeReport mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
                 <button class="btn btn-primary me-2" id="printPuVoucher"><i class="fa fa-print"></i></button>
                 <a href="/report/index/" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
             </div>
             <div class="w-100 text-center mb-3">
-                
+                <div>
+                    <h5 class="mb-2 title_fs ">ဦးသာဆင့် + ဒေါ်တင်ကြည်</h5>
+                    <h5 class="title_fs mb-0">( သ္မီး )ကိုစန်းဝေ + မမြင့်မြင့်ထွေး</h5>
+                </div>
                 <div class="col-6 lh-lg offset-3 fs-6">
                     @if ($companyinfo)
                         <span class="p-title">{{$companyinfo->CompanyName}}</span>
@@ -57,9 +60,11 @@
                             <th style="width: 80px;">Code</th>
                             <th>Plate No</th>
                             <th>Arrival Date</th>
+                            <th>Supplier Name</th>
                             <th style="width: 50px;" class="text-center">Status</th>
-                            <th class="text-end">Charges Per Bag</th>
+                            <th class="text-end">Charges Per Bag/Viss</th>
                             <th class="text-end">Total Bag</th>
+                            <th class="text-end">Total Viss</th>
                             <th class="text-end">Other Charges</th>
                             <th class="text-end">Total Charges</th>
                             <th style="width: 120px;">Remark</th>
@@ -71,6 +76,7 @@
                                 <td>{{$itemarrival->ArrivalCode}}</td>
                                 <td>{{$itemarrival->PlateNo}}</td>
                                 <td>{{$itemarrival->ArrivalDate}}</td>
+                                <td>{{$itemarrival->SupplierName}}</td>
                                 <td class="text-center">
                                     @if ($itemarrival->Status == 'N')
                                         Ongoing
@@ -82,6 +88,7 @@
                                 </td>
                                 <td class="text-end">{{($itemarrival->ChargesPerBag)}}</td>
                                 <td class="text-end">{{$itemarrival->TotalBags}}</td>
+                                <td class="text-end">{{$itemarrival->TotalViss}}</td>
                                 <td class="text-end">{{($itemarrival->OtherCharges)}}</td>
                                 <td class="text-end">{{($itemarrival->TotalCharges)}}</td>
                                 <td>{{$itemarrival->Remark}}</td>

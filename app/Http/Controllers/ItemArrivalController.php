@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyInformation;
 use App\Models\GenerateId;
 use App\Models\ItemArrival;
+use App\Models\Supplier;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -20,11 +21,10 @@ class ItemArrivalController extends Controller
         $this->datetime = Date('Y-m-d H:i:s');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $itemarrivals = ItemArrival::orderBy('ArrivalDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->where('ArrivalDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())->where('ArrivalDate', '<=', Carbon::now()->endOfMonth()->toDateString())->get();
+        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->where('Status', 'N')->orwhere('Status', 'O')->get();
 
-       
         return view('purchase.itemarrival.index', [
             'itemarrivals' => $itemarrivals
         ]);
@@ -32,8 +32,10 @@ class ItemArrivalController extends Controller
 
     public function create()
     {
+        $suppliers = Supplier::where('IsActive', 1)->get();
         $todayDate = Carbon::now()->format('Y-m-d');
         return view('purchase.itemarrival.add', [
+            'suppliers' => $suppliers,
             'todayDate' => $todayDate
         ]);
     }
@@ -44,6 +46,7 @@ class ItemArrivalController extends Controller
 
             'ArrivalDate' => ['required'],
             'PlateNo' => ['nullable'],
+            'SupplierCode' => ['required'],
             'ChargesPerBag' => ['required'],
             'TotalBags' => ['required'],
             'OtherCharges' => ['required'],
@@ -76,7 +79,9 @@ class ItemArrivalController extends Controller
 
     public function show(ItemArrival $itemarrival)
     {
+        $suppliers = Supplier::where('IsActive', 1)->get();
         return view('purchase.itemarrival.edit', [
+            'suppliers' => $suppliers,
             'itemarrival' => $itemarrival
         ]);
     }
@@ -87,6 +92,7 @@ class ItemArrivalController extends Controller
 
             'ArrivalDate' => ['required'],
             'PlateNo' => ['nullable'],
+            'SupplierCode' => ['required'],
             'ChargesPerBag' => ['required'],
             'TotalBags' => ['required'],
             'OtherCharges' => ['required'],
@@ -144,7 +150,10 @@ class ItemArrivalController extends Controller
 
     public function itemarrivalreports()
     {
-        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')->get();
+        $itemarrivals = ItemArrival::orderBy('CreatedDate', 'desc')
+            ->join('suppliers', 'item_arrivals.SupplierCode', '=', 'suppliers.SupplierCode')
+            ->select('item_arrivals.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+            ->get();
         $companyinfo = CompanyInformation::first();
 
         return view('reports.itemarrivalreports', [

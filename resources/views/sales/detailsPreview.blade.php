@@ -35,17 +35,25 @@
 </head>
 <body style="font-size: 0.85rem">
     <section class="w-100 bg-secondary">
-        <div class="voucherSection mx-auto bg-light text-dark">
+        <div class="landscapeReport mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
                 <button class="btn btn-primary me-2" id="printPuVoucher"><i class="fa fa-print"></i></button>
                 <a href="/salesinvoices/details/{{$saleinvoice->InvoiceNo}}" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
             </div>
             <div class="w-100 text-center mb-3">
-                <div class="col-6 lh-lg offset-3 fs-6">
+                <div class="col-12 lh-lg fs-6">
+                    <div>
+                        <h5 class="mb-2 title_fs ">ဦးသာဆင့် + ဒေါ်တင်ကြည်</h5>
+                        <h5 class="title_fs mb-0">( သ္မီး )ကိုစန်းဝေ + မမြင့်မြင့်ထွေး</h5>
+                    </div>
                     @if ($companyinfo)
-                        <span class="p-title">{{$companyinfo->CompanyName}}</span>
-                        <span class="d-block">{{$companyinfo->Street}}</span>
-                        <span class=""> <i class="fa-solid fa-phone"></i> {{$companyinfo->HotLineNo}} <i class="fa-solid fa-phone mx-1"></i>{{$companyinfo->OfficeNo}}</span>
+                        <span class="p-title fs-2 fw-bold">{{$companyinfo->CompanyName}}</span>
+                        <div>
+                            <span>{{$companyinfo->Street}}</span>၊<span> {{$companyinfo->City}}။</span>
+                        </div>
+                        <div class="row">
+                            <span class="col-8 offset-2"><i class="fa-solid fa-phone"></i> {{$companyinfo->HotLineNo}}, {{$companyinfo->OfficeNo}}</span>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -117,7 +125,7 @@
                 </div>
             </div>
             <div class="row p-details-table">
-                <table class="table table-boderless">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -125,13 +133,14 @@
                             <th>Warehouse Code</th>
                             <th class="text-end">Quantity</th>
                             <th class="text-center">Unit</th>
-                            <th class="text-end">Unit Price</th>
+                            <th class="text-end">QPU</th>
                             <th class="text-end">Total Viss</th>
+                            <th class="text-end">Unit Price</th>
                             <th class="text-end">Amount</th>
                             <th class="text-end">Discount(%)</th>
                             <th class="text-end">Discount</th>
-                            <th class="text-center">FOC</th>
                             <th class="text-end">Total Amount</th>
+                            <th class="text-center">FOC</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -141,9 +150,10 @@
                                 <td>{{$saleinvoicedetail->ItemName}}</td>
                                 <td>{{$saleinvoicedetail->WarehouseName}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->Quantity)}}</td>
-                                <td class="text-center">{{$saleinvoicedetail->PackedUnit}}</td>
-                                <td class="text-end">{{number_format($saleinvoicedetail->UnitPrice)}}</td>
+                                <td class="text-center">{{$saleinvoicedetail->UnitDesc}}</td>
+                                <td class="text-end">{{$saleinvoicedetail->QtyPerUnit}}</td>
                                 <td class="text-end">{{$saleinvoicedetail->TotalViss}}</td>
+                                <td class="text-end">{{number_format($saleinvoicedetail->UnitPrice)}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->Amount)}}</td>
                                 <td class="text-end">{{$saleinvoicedetail->LineDisPer}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->LineDisAmt)}}</td>

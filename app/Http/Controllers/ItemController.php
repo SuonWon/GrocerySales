@@ -33,33 +33,34 @@ class ItemController extends Controller
         ->selectRaw('item_categories.ItemCategoryCode, item_categories.ItemCategoryName')
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
-
-        $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
-                            ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode')
-                            ->orderBy('items.ItemCode')
-                            ->get();    
-
-                    $stockLevels = [];
-                    foreach ($stockitems as $item) {
-                        if ($item->StockQty <= 10) {
-                            $stockLevels[$item->ItemCode] = 'Low';
-                        }
-                    }
         
+        $stockitems = Item::join('stock_in_warehouses', 'items.ItemCode', '=', 'stock_in_warehouses.ItemCode')
+            ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty', 'stock_in_warehouses.WarehouseCode')
+            ->selectRaw('CASE WHEN stock_in_warehouses.StockQty < 10 THEN "low" ELSE "high" END as StockAlert')
+            ->orderBy('items.ItemCode')
+            ->get();
+        
+        $warehouses = Warehouse::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
+
         return view('setup.item.index',[
             'items' => $items,
-            'stockLevels' => $stockLevels
+            'warehouses' => $warehouses,
+            'stockitems' => $stockitems,
+            'units' => $units,  
         ]);
     }
 
     public function create(){
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
+
         $warehouses = Warehouse::all();
+        
         return view('setup.item.add',[
             'units' => $units,
             'categories' => $categories,
-            'warehouses' => $warehouses
+            'warehouses' => $warehouses,
         ]);
     }
 
@@ -113,13 +114,15 @@ class ItemController extends Controller
                 foreach ($stockinwarehouses as $stockinwarehouse) {
                     $stockdata = [];
                    
-                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseNo'];
+                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseCode'];
                     $stockdata['ItemCode'] = $ItemCode;
                     $stockdata['StockQty'] = $stockinwarehouse['StockQty'];
                     if($stockinwarehouse['StockQty'] <= 0){
+
                         $stockdata['Status'] = 'N';
                         
                     }else if($stockinwarehouse['StockQty'] > 0){
+
                         $stockdata['Status'] = 'O';
                        
                     }
@@ -127,9 +130,11 @@ class ItemController extends Controller
                     $stockdata['LastUpdatedDate'] = $this->datetime;
                    
                     try {
+
                         StockInWarehouse::create($stockdata);
 
                     } catch (QueryException $e) {
+
                         return response()->json(['message' => $e->getMessage()]);
                     }
                 
@@ -154,11 +159,7 @@ class ItemController extends Controller
                     ->select('items.ItemCode', 'items.ItemName', 'stock_in_warehouses.StockQty','stock_in_warehouses.WarehouseCode','stock_in_warehouses.Status')
                     ->orderBy('items.ItemCode')
                     ->where('items.ItemCode',$item->ItemCode)
-                    ->where('stock_in_warehouses.Status',"N")
-                    ->where('stock_in_warehouses.StockQty',"0")
                     ->get();
-
-
 
         if ($item->Discontinued == 1) {
             $item->Discontinued = 'on';
@@ -166,18 +167,16 @@ class ItemController extends Controller
             $item->Discontinued = "off";
         }
 
-        $units = UnitMeasurement::all();
+        $units = UnitMeasurement::where('IsActive', 1)->get();
         $categories = ItemCategory::all();
-       
-
-       
+        $warehouses = Warehouse::all();
 
         return view('setup.item.edit',[
             'item' => $item,
             'units' => $units,
             'categories' => $categories,
             'stockitemsqty' => $stockitemsqty,
-           
+            'warehouses' => $warehouses,
         ]);
     }
 
@@ -214,38 +213,52 @@ class ItemController extends Controller
 
         $formData['ModifiedDate'] = $this->datetime;
         $formData['Modifiedby'] = auth()->user()->Username;
+
         
         try{
 
             $newunit = Item::where('ItemCode',$item->ItemCode)->update($formData);
 
-            if($newunit){
+            if($newunit == 1){
+
                 foreach ($stockinwarehouses as $stockinwarehouse) {
+
                     $stockdata = [];
                    
-                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseNo'];
+                    $stockdata['WarehouseCode'] = $stockinwarehouse['WarehouseCode'];
                     $stockdata['ItemCode'] = $item->ItemCode;
                     $stockdata['StockQty'] = $stockinwarehouse['StockQty'];
 
                     if($stockinwarehouse['StockQty'] <= 0){
+
                         $stockdata['Status'] = 'N';
+
                     }else if($stockinwarehouse['StockQty'] > 0){
+
                         $stockdata['Status'] = 'O';
+
                     }
                     
                     
                     $stockdata['LastUpdatedDate'] = $this->datetime;
                    
                     try {
-                        $updateitem = StockInWarehouse::where('ItemCode',$item->ItemCode)->where('WarehouseCode',$stockinwarehouse['WarehouseNo'])->update($stockdata);
+
+                        $updateitem = StockInWarehouse::where('ItemCode',$item->ItemCode)->where('WarehouseCode',$stockinwarehouse['WarehouseCode'])->update($stockdata);
 
                         
 
                     } catch (QueryException $e) {
+
                         return response()->json(['message' => $e->getMessage()]);
                     }
+
                 
                 }
+            } else {
+
+                return response()->json(['message' => $newunit]);
+                
             }
 
             return response()->json(['message' => "good"]);
@@ -294,10 +307,12 @@ class ItemController extends Controller
         ->selectRaw('unit_measurements.UnitCode, unit_measurements.UnitDesc')
         ->get();
         $companyinfo = CompanyInformation::first();
+        $units = UnitMeasurement::where("IsActive", 1)->get();
 
         return view('reports.itemreports',[
             'items' => $items,
-            'companyinfo' => $companyinfo,       
+            'companyinfo' => $companyinfo,
+            'units' => $units,   
         ]);
     }
 }

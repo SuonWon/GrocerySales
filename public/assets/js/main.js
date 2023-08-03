@@ -114,6 +114,7 @@ $(document).ready(function () {
     });
     $("#itemArrivalList").DataTable({
         scrollX: true,
+        order: [],
         fixedColumns: {
             right: 1,
         },
@@ -245,13 +246,18 @@ function PassSaleInNo(invoiceNo) {
 
 function CheckNumber(event) {
 
-    allowNum = /^[0-9]+$/;
+    allowNum = /^[0-9/,]+$/;
 
     if (event.target.value < 0 || !allowNum.test(event.target.value)) {
 
-        event.target.value = 0;
+        $("#"+event.target.id).val(0);
 
     }
+
+    let inputValue = Number((event.target.value).replace(/,/g, ""));
+
+    $("#"+event.target.id).val(inputValue);
+
 
 }
 

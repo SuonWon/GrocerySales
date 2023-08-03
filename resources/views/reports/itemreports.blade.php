@@ -35,13 +35,16 @@
 </head>
 <body style="font-size: 0.85rem">
     <section class="w-100 bg-secondary">
-        <div class="voucherSection mx-auto bg-light text-dark">
+        <div class="landscapeReport mx-auto bg-light text-dark">
             <div id="buttons" class="text-end">
                 <button class="btn btn-primary me-2" id="printPuVoucher"><i class="fa fa-print"></i></button>
                 <a href="/report/index" class="btn btn-danger" id="backButton"><i class="fa fa-xmark"></i></a>
             </div>
             <div class="w-100 text-center mb-3">
-                
+                <div>
+                    <h5 class="mb-2 title_fs ">ဦးသာဆင့် + ဒေါ်တင်ကြည်</h5>
+                    <h5 class="title_fs mb-0">( သ္မီး )ကိုစန်းဝေ + မမြင့်မြင့်ထွေး</h5>
+                </div>
                 <div class="col-6 lh-lg offset-3 fs-6">
                     @if ($companyinfo)
                         <span class="p-title">{{$companyinfo->CompanyName}}</span>
@@ -73,8 +76,20 @@
                                 <td>{{$item->ItemCategoryName}}</td>
                                 <td class="text-center">{{$item->UnitDesc}}</td>
                                 <td class="text-end">{{number_format($item->UnitPrice)}}</td>
-                                <td class="text-center">{{$item->DefSalesUnit}}</td>
-                                <td class="text-center">{{$item->DefPurUnit}}</td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefSalesUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefPurUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td class="text-end">{{number_format($item->LastPurPrice)}}</td>
                                 <td>{{$item->Remark}}</td>
                             </tr>

@@ -47,20 +47,53 @@
                     <tbody>
                         @forelse ($items as $item)
                             <tr>
+                                {{-- <td>
+                                    @if ($item->Discontinued == 1 && $stockLevels[$item->ItemCode] == "Low")
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span> <i class="bi bi-exclamation-circle-fill text-warning fs-6 ms-3"></i>
+                                    @elseif ($item->Discontinued == 1 && $stockLevels[$item->ItemCode] == 'High')
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span>
+                                    @else
+                                        <span class="badge text-bg-danger ">{{$item->ItemCode}}</span>
+                                    @endif
+                                </td> --}}
                                 <td>
                                     @if ($item->Discontinued == 1)
-                                            <span class="badge text-bg-success ">{{$item->ItemCode}}</span>
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span> 
+
+                                        @forelse ($stockitems as $stockitem)
+                                                @if ($stockitem['ItemCode'] == $item->ItemCode && $stockitem['StockAlert'] == "low")
+                                                    <i class="bi bi-exclamation-circle-fill text-warning fs-6 ms-3"></i>
+                                                    @break
+                                                @endif
+                                        @empty
+
+                                        @endforelse
+
+                                    @elseif ($item->Discontinued == 1 && $stockitems[$item->ItemCode] == 'High')
+                                        <span class="badge text-bg-success ">{{$item->ItemCode}} </span>
                                     @else
-                                            <span class="badge text-bg-danger ">{{$item->ItemCode}}</span>
+                                        <span class="badge text-bg-danger ">{{$item->ItemCode}}</span>
                                     @endif
                                 </td>
                                 <td>{{$item->ItemName}}</td>
-                                <td>{{$item->ItemCategoryCode}}</td>
+                                <td>{{$item->ItemCategoryName}}</td>
                                 <td class="text-center">{{$item->UnitDesc}}</td>
                                 <td class="text-end">{{number_format($item->UnitPrice)}}</td>
                                 <td class="text-end">{{$item->WeightByPrice}}</td>
-                                <td class="text-center">{{$item->DefSalesUnit}}</td>
-                                <td class="text-center">{{$item->DefPurUnit}}</td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefSalesUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($units as $unit)
+                                        @if ($unit->UnitCode == $item->DefPurUnit)
+                                            {{$unit->UnitDesc}}
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td class="text-end">{{number_format($item->LastPurPrice)}}</td>
                                 <td>{{$item->CreatedBy}}</td>
                                 <td>{{$item->CreatedDate}}</td>
