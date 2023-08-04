@@ -131,9 +131,11 @@
                             <th>No</th>
                             <th>Item Code</th>
                             <th>Warehouse Code</th>
-                            <th class="text-end">Quantity</th>
+                            <th class="text-end">Qty</th>
+                            <th class="text-end">NQty</th>
                             <th class="text-center">Unit</th>
                             <th class="text-end">QPU</th>
+                            <th class="text-end">ExViss</th>
                             <th class="text-end">Total Viss</th>
                             <th class="text-end">Unit Price</th>
                             <th class="text-end">Amount</th>
@@ -150,8 +152,10 @@
                                 <td>{{$saleinvoicedetail->ItemName}}</td>
                                 <td>{{$saleinvoicedetail->WarehouseName}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->Quantity)}}</td>
+                                <td class="text-end">{{number_format($saleinvoicedetail->NewQuantity)}}</td>
                                 <td class="text-center">{{$saleinvoicedetail->UnitDesc}}</td>
                                 <td class="text-end">{{$saleinvoicedetail->QtyPerUnit}}</td>
+                                <td class="text-end">{{$saleinvoicedetail->ExtraViss}}</td>
                                 <td class="text-end">{{$saleinvoicedetail->TotalViss}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->UnitPrice)}}</td>
                                 <td class="text-end">{{number_format($saleinvoicedetail->Amount)}}</td>
