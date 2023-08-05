@@ -316,7 +316,6 @@
             document.getElementById("pVGrandTotal").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->GrandTotal}}));
 
             purchaseDataList.forEach((e) => {
-                console.log(e.ItemName);
 
                 purchaseList += `<tr class="dataRow text-end mt-4 mf-normal">
                                 <td class="text-start">`+ e.LineNo +`</td>

@@ -160,7 +160,7 @@
                         <label for="eWeightByPrice" class="form-label cust-label">Weight By Price</label>
                         <input type="number" class="form-control cust-input-box" id="eWeightByPrice"
                             name="WeightByPrice"
-                            value="{{ $item->WeightByPrice ? number_format($item->WeightByPrice, 0, '.', '') : 1 }}"
+                            value="{{ $item->WeightByPrice ? number_format($item->WeightByPrice, 0, '.', '') : 0 }}"
                             onfocus="AutoSelectValue(event)" required>
                         <div class="invalid-feedback">
                             Please fill weight by price.
@@ -316,61 +316,74 @@
 
      $("#updateItemData").on('submit', (event) => {
 
-          event.preventDefault();
+        event.preventDefault();
 
-          let data = {
+        let weightByPrice = $("#eWeightByPrice").val();
+
+        if (weightByPrice > 0) {
+
+            let data = {
                ItemName: $("#eItemName").val(),
                ItemCategoryCode: $("#eSelectCategory").val(),
                BaseUnit: $("#eSelectUnit").val(),
                UnitPrice: $("#eUnitPrice").val().replace(/,/,''),
                LastPurPrice: $("#eLastPurchasePrice").val().replace(/,/,''),
-               WeightByPrice: $("#eWeightByPrice").val(),
+               WeightByPrice: weightByPrice,
                DefSalesUnit: $("#eDefSalesUnit").val(),
                DefPurUnit: $("#eDefPurUnit").val(),
                Remark: $("#eItemRemark").val(),
                Discontinued: document.getElementById("eDiscontinued").checked ? 'on' : 'off',
                StockInWarehouses: stockQtyList,
-          };
+            };
 
-          data = JSON.stringify(data);
+            data = JSON.stringify(data);
 
-          console.log(data);
+            console.log(data);
 
-          $.ajaxSetup({
+            $.ajaxSetup({
 
-               headers: {
+                headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
+                }
 
-          });
+            });
 
-          let url = $("#updateItemData").attr("action")
+            let url = $("#updateItemData").attr("action")
 
-          $.ajax({
-               url: url,
-               type: 'POST',
-               data: data,
-               dataType: 'json',
-               success: function(response) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function(response) {
 
                     console.log(response.message);
 
                     if (response.message == "good") {
 
-                         sessionStorage.setItem('update', 'success');
+                        sessionStorage.setItem('update', 'success');
 
-                         window.location.href = "/item/index";
+                        window.location.href = "/item/index";
 
                     }
 
-               },
-               error: function(error) {
+                },
+                error: function(error) {
+
                     console.log('no');
                     console.log(error.responseText);
                     res = JSON.parse(error.responseText);
                     console.log(res);
-               }
-          });
+                }
+            });
+
+        } else {
+
+            document.getElementById("cWeightByPrice").classList.add("warning-input");
+
+            toastr.warning("Weight By Price is 0 or less than 0.");
+
+        }
 
     });
 </script>

@@ -488,6 +488,10 @@ ul ul a {
     border-bottom: 2px solid #36616d;
 }
 
+.warning-input {
+    border: 2px solid orange !important;
+}
+
 .cust-label {
     font-size: 0.95rem;
 }
