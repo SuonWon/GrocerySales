@@ -249,13 +249,6 @@
                                 <input type="text" class="form-control cust-input-box text-end" id="shippingCharges" name="ShippingCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
-                        {{-- Other Charges --}}
-                        <div class="row justify-content-end">
-                            <label for="otherCharges" class="form-label text-end charges-label col-6">ကြိုထုတ်ငွေ :</label>
-                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end" id="otherCharges" name="OtherCharges" value="0" onblur="PuCharges(event);">
-                            </div>
-                        </div>
                         {{-- Labor Charges --}}
                         <div class="row justify-content-end">
                             <label for="laborCharges" class="form-label text-end charges-label col-6">ကမ်းတတ်အလုပ်သမားခ :</label>
@@ -289,6 +282,13 @@
                             <label for="factoryCharges" class="form-label text-end charges-label col-6">စက်ကြိတ်ခ :</label>
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end" id="factoryCharges" name="FactoryCharges" value="0" rowNo="23" onblur="PuCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Other Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="otherCharges" class="form-label text-end charges-label col-6">ကြိုထုတ်ငွေ :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end" id="otherCharges" name="OtherCharges" value="0" onblur="PuCharges(event);">
                             </div>
                         </div>
                         <hr>

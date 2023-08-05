@@ -430,21 +430,6 @@
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
-                        {{-- Other Charges --}}
-                        <div class="row justify-content-end">
-                            <label for="otherCharges" class="form-label text-end charges-label col-6">ကြိုထုတ်ငွေ
-                                :</label>
-                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
-                                <input type="text" class="form-control cust-input-box text-end"
-                                    id="otherCharges" name="OtherCharges"
-                                    value=@foreach ($arrivals as $arrival)
-                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
-                                            {{number_format($arrival->OtherCharges)}}
-                                        @endif
-                                    @endforeach
-                                    onblur="PuEditCharges(event);">
-                            </div>
-                        </div>
                         {{-- Labor Charges --}}
                         <div class="row justify-content-end">
                             <label for="laborCharges"
@@ -495,6 +480,21 @@
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="factoryCharges" name="FactoryCharges"
                                     value="{{ number_format($purchaseinvoice->FactoryCharges) }}" rowNo="23"
+                                    onblur="PuEditCharges(event);">
+                            </div>
+                        </div>
+                        {{-- Other Charges --}}
+                        <div class="row justify-content-end">
+                            <label for="otherCharges" class="form-label text-end charges-label col-6">ကြိုထုတ်ငွေ
+                                :</label>
+                            <div class="col-5 col-xl-5 col-xxl-6 mb-2">
+                                <input type="text" class="form-control cust-input-box text-end"
+                                    id="otherCharges" name="OtherCharges"
+                                    value=@foreach ($arrivals as $arrival)
+                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
+                                            {{number_format($arrival->OtherCharges)}}
+                                        @endif
+                                    @endforeach
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
