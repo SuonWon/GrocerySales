@@ -183,7 +183,7 @@
                                     <th style="width: 200px;">Item Name</th>
                                     <th style="width: 200px;">Warehouse Name</th>
                                     <th style="width: 120px;">Qty</th>
-                                    <th style="width: 120px;">NQty</th>
+                                    {{-- <th style="width: 120px;">NQty</th> --}}
                                     <th style="width: 80px;">Unit</th>
                                     <th style="width: 80px;">QPU</th>
                                     <th style="width: 150px;">ExViss</th>
@@ -252,11 +252,11 @@
                                                 onfocus="FocusValue(event);">
                                         </td>
                                         {{-- New Quantity --}}
-                                        <td class="px-0 py-0">
+                                        {{-- <td class="px-0 py-0">
                                             <input type="text" class="text-end" value="{{ number_format($saleinvoicedetail->NewQuantity) }}"
                                                 id="{{ $key + 1 }}" onblur="AddNewQty(event,this.id,this.value);"
                                                 onfocus="FocusValue(event);">
-                                        </td>
+                                        </td> --}}
                                         {{-- Unit --}}
                                         <td class="px-0 py-0">
                                             <select name="" class="saleUnitList_{{ $key + 1 }}"
@@ -573,9 +573,6 @@
                             </td>
                             <td class="px-0 py-0">
                                 <input type="text" class="saleunit_` + saleRowNo + ` text-end" name="" id="` + saleRowNo + `" value="0" onblur="AddSaleQty(event,this.id,this.value);" nextfocus="saleUnitList_` + saleRowNo + `" onfocus="FocusValue(event);">
-                            </td>
-                            <td class="px-0 py-0">
-                                <input type="text" class="text-end" id="` + saleRowNo + `" value="0" onblur="AddNewQty(event,this.id,this.value);" onfocus="FocusValue(event);">
                             </td>
                             <td class="px-0 py-0">
                                 <select name="" class="saleUnitList_` + saleRowNo + `" id="` + saleRowNo + `" onchange="AddSaleUnit(this.id, this.value);">
@@ -1189,9 +1186,6 @@
                                         <input type="text" class="text-end" name="" id="` + refNo + `" value="`+ Number(Quantity).toLocaleString() +`" onblur="AddSaleQty(event,this.id,this.value);" nextfocus="saleprice_` + refNo + `" onfocus="FocusValue(event);">
                                     </td>
                                     <td class="px-0 py-0">
-                                        <input type="text" class="text-end" name="" id="` + refNo + `" value="`+ Number(NewQuantity).toLocaleString() +`" onblur="AddNewQty(event,this.id,this.value);" onfocus="FocusValue(event);">
-                                    </td>
-                                    <td class="px-0 py-0">
                                         <select name="" class="saleUnitList_` + refNo + `" id="` + refNo + `" onchange="AddSaleUnit(this.id, this.value);">
                                             <option value="` + PackedUnit + `" selected disabled>` + UnitName + `</option>
                                             @forelse ($units as $unit) 
@@ -1454,7 +1448,7 @@
                     WarehouseNo: element.WarehouseNo,
                     ItemCode: element.ItemCode,
                     Quantity: element.Quantity,
-                    NewQuantity: element.NewQuantity,
+                    NewQuantity: 0,
                     PackedUnit: element.PackedUnit,
                     QtyPerUnit: element.QtyPerUnit,
                     ExtraViss: element.ExtraViss,
@@ -1631,3 +1625,14 @@
 
     // ========= End of Paid Check Functions ========= //
 </script>
+
+
+{{-- 
+<td class="px-0 py-0">
+    <input type="text" class="text-end" id="` + saleRowNo + `" value="0" onblur="AddNewQty(event,this.id,this.value);" onfocus="FocusValue(event);">
+</td> 
+
+<td class="px-0 py-0">
+    <input type="text" class="text-end" name="" id="` + refNo + `" value="`+ Number(NewQuantity).toLocaleString() +`" onblur="AddNewQty(event,this.id,this.value);" onfocus="FocusValue(event);">
+</td>
+--}}
