@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sale_invoice_details', function (Blueprint $table) {
             $table->string('InvoiceNo',12);
             $table->string('ReferenceNo',50)->primary();
-            $table->string('LineNo', 5);
+            $table->smallInteger('LineNo');
             $table->foreign('InvoiceNo')->references('InvoiceNo')->on('sale_invoices');
             $table->string('WarehouseNo',10);
             $table->string('ItemCode',10);
