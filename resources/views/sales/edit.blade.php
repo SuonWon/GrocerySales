@@ -766,7 +766,7 @@
 
                 }
 
-                e.TotalViss = ((e.QtyPerUnit * e.NewQuantity) + Number(e.ExtraViss)).toFixed(3);
+                e.TotalViss = ((e.QtyPerUnit * e.Quantity) + Number(e.ExtraViss)).toFixed(3);
 
                 e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -806,7 +806,7 @@
 
                 }
 
-                e.TotalViss = ((e.QtyPerUnit * e.NewQuantity) + Number(e.ExtraViss)).toFixed(3);
+                e.TotalViss = ((e.QtyPerUnit * e.Quantity) + Number(e.ExtraViss)).toFixed(3);
 
                 e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -846,7 +846,7 @@
 
                 }
 
-                e.TotalViss = ((e.NewQuantity * e.QtyPerUnit) + Number(e.ExtraViss)).toFixed(3);
+                e.TotalViss = ((e.Quantity * e.QtyPerUnit) + Number(e.ExtraViss)).toFixed(3);
 
                 e.Amount = Math.floor(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
@@ -926,7 +926,7 @@
 
                 }
 
-                e.TotalViss = ((e.NewQuantity * e.QtyPerUnit) + e.ExtraViss).toFixed(3)
+                e.TotalViss = ((e.Quantity * e.QtyPerUnit) + e.ExtraViss).toFixed(3)
 
                 e.Amount = Math.round(e.UnitPrice * (e.TotalViss / e.WeightPrice));
 
