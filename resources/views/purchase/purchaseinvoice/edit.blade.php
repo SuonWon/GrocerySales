@@ -236,11 +236,11 @@
                                     {{-- <th style="width: 50px;">No</th> --}}
                                     <th style="width: 200px;">Item Name</th>
                                     <th style="width: 200px;">Warehouse Name</th>
-                                    <th style="width: 120px;">Qty</th>
-                                    <th style="width: 120px;">NQty</th>
+                                    <th style="width: 120px;">Quantity</th>
+                                    <th style="width: 120px;">New Qty</th>
                                     <th style="width: 80px;">Unit</th>
-                                    <th style="width: 80px;">QPU</th>
-                                    <th style="width: 150px;">ExViss</th>
+                                    <th style="width: 80px;">Qty Per Unit</th>
+                                    <th style="width: 150px;">Extra Viss</th>
                                     <th style="width: 150px;">Total Viss</th>
                                     <th style="width: 120px;">Unit Price</th>
                                     <th style="width: 150px;">Amount</th>
