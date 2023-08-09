@@ -229,187 +229,189 @@
                 <button class="btn btn-noBorder" id="addNewRow" type="button"><span class="me-2"><i
                             class="bi bi-plus-circle"></i></span>New</button>
                 <div class="row">
-                    <div class="purchaseTable">
-                        <table class="table" id="purchaseProdList">
-                            <thead class="sticky-top">
-                                <tr id="0">
-                                    {{-- <th style="width: 50px;">No</th> --}}
-                                    <th style="width: 200px;">Item Name</th>
-                                    <th style="width: 200px;">Warehouse Name</th>
-                                    <th style="width: 120px;">Quantity</th>
-                                    <th style="width: 120px;">New Qty</th>
-                                    <th style="width: 80px;">Unit</th>
-                                    <th style="width: 80px;">Qty Per Unit</th>
-                                    <th style="width: 150px;">Extra Viss</th>
-                                    <th style="width: 150px;">Total Viss</th>
-                                    <th style="width: 120px;">Unit Price</th>
-                                    <th style="width: 150px;">Amount</th>
-                                    <th style="width: 60px;">Discount(%)</th>
-                                    <th style="width: 120px;">Discount</th>
-                                    <th style="width: 170px;">Total Amount</th>
-                                    <th style="width: 50px;">FOC</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="displaySelectedItems">
-                                @foreach ($purchaseinvoice->purchaseinvoicedetails as $key => $purchaseinvoicedetail)
-                                    <tr id="{{ $key + 1 }}">
-                                        {{-- <td class="px-0 py-0">
-                                            <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
-                                        </td> --}}
-                                        {{-- Item Name --}}
-                                        <td class="px-0 py-0" id="row_{{ $key + 1 }}">
-                                            <select name="" id="{{ $key + 1 }}"
-                                                class="itemCodeList_{{ $key + 1 }}"
-                                                onchange="AddProduct(this.id,this.value)">
-                                                @if (isset($items) && is_object($items) && count($items) > 0)
-                                                    @forelse ($items as $item)
-                                                        @if ($item->ItemCode == $purchaseinvoicedetail->ItemCode)
-                                                            <option value="{{ $item->ItemCode }}" selected>
-                                                                {{ $item->ItemName }}</option>
-                                                        @else
-                                                            <option value="{{ $item->ItemCode }}">
-                                                                {{ $item->ItemName }}</option>
-                                                        @endif
-                                                    @empty
-                                                        <option disabled>No Item</option>
-                                                    @endforelse
-                                                @endif
-                                            </select>
-                                        </td>
-                                        {{-- Warehouse Name --}}
-                                        <td class="px-0 py-0">
-                                            <select name="" id="{{ $key + 1 }}"
-                                                class="warehouseList_{{ $key + 1 }}"
-                                                onchange="AddWarehouse(this.id,this.value);">
-                                                @if (isset($warehouses) && is_object($warehouses) && count($warehouses) > 0)
-                                                    @forelse ($warehouses as $warehouse)
-                                                        @if ($warehouse->WarehouseCode == $purchaseinvoicedetail->WarehouseCode)
-                                                            <option value="{{ $warehouse->WarehouseCode }}" selected>
-                                                                {{ $warehouse->WarehouseName }}</option>
-                                                        @else
-                                                            <option value="{{ $warehouse->WarehouseCode }}">
-                                                                {{ $warehouse->WarehouseName }}</option>
-                                                        @endif
-                                                    @empty
-                                                        <option disabled>No Warehouse Code Found</option>
-                                                    @endforelse
-                                                @endif
-                                            </select>
-                                        </td>
-                                        {{-- Quantity --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="text-end" id="{{ $key + 1 }}"
-                                                value="{{ number_format($purchaseinvoicedetail->Quantity) }}"
-                                                onblur="AddUnitQty(event,this.id,this.value);"
-                                                onfocus="PEditFocus(event)" nextFocus="puprice_{{ $key + 1 }}">
-                                        </td>
-                                        {{-- New Quantity --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="text-end" id="{{ $key + 1 }}"
-                                                value="{{ number_format($purchaseinvoicedetail->NewQuantity) }}"
-                                                onblur="AddNewQty(event,this.id,this.value);"
-                                                onfocus="PEditFocus(event)" nextFocus="puprice_{{ $key + 1 }}">
-                                        </td>
-                                        {{-- Unit --}}
-                                        <td class="px-0 py-0">
-                                            <select name="" class="unitCodeList_{{ $key + 1 }}"
-                                                id="{{ $key + 1 }}" onchange="AddUnit(this.id, this.value);">
-                                                @if (isset($units) && is_object($units) && count($units) > 0)
-                                                    @forelse ($units as $unit)
-                                                        @if ($unit->UnitCode == $purchaseinvoicedetail->UnitCode)
-                                                            <option value="{{ $unit->UnitCode }}" selected>
-                                                                {{ $unit->UnitDesc }}</option>
-                                                        @else
-                                                            <option value="{{ $unit->UnitCode }}">
-                                                                {{ $unit->UnitDesc }}</option>
-                                                        @endif
-                                                    @empty
-                                                        <option disabled>No Unit Code Found</option>
-                                                    @endforelse
-                                                @endif
-                                            </select>
-                                        </td>
-                                        {{-- QtyPerUnit --}}
-                                        <td class="px-0 py-0">
-                                            <input type="number" class="qtyunit_{{ $key + 1 }}" name=""
-                                                id="{{ $key + 1 }}"
-                                                value="{{ $purchaseinvoicedetail->QtyPerUnit }}"
-                                                onblur="AddQtyPerUnit(event,this.id,this.value)"
-                                                onfocus="PEditFocus(event)">
-                                        </td>
-                                        {{-- Extra Viss --}}
-                                        <td class="px-0 py-0">
-                                            <input type="number" class="" name=""
-                                                id="{{ $key + 1 }}"
-                                                value="{{ $purchaseinvoicedetail->ExtraViss }}"
-                                                onblur="AddExtraViss(event,this.id,this.value)"
-                                                onfocus="PEditFocus(event)">
-                                        </td>
-                                        {{-- Total Viss --}}
-                                        <td class="px-0 py-0">
-                                            <input type="number" class="puviss_{{ $key + 1 }}" name=""
-                                                id="{{ $key + 1 }}"
-                                                value="{{ $purchaseinvoicedetail->TotalViss }}"
-                                                onblur="AddTotalViss(event,this.id,this.value)"
-                                                onfocus="PEditFocus(event)">
-                                        </td>
-                                        {{-- Unit Price --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="puprice_{{ $key + 1 }} text-end"
-                                                id="{{ $key + 1 }}"
-                                                value="{{ number_format($purchaseinvoicedetail->UnitPrice) }}"
-                                                onblur="AddUnitPrice(event,this.id, this.value)"
-                                                onfocus="PEditFocus(event)" nextFocus="puviss_{{ $key + 1 }}">
-                                        </td>
-                                        {{-- Item Amount --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="tableInput text-end" name=""
-                                                id="itemAmount"
-                                                value="{{ number_format($purchaseinvoicedetail->Amount) }}" disabled>
-                                        </td>
-                                        {{-- Discount Rate --}}
-                                        <td class="px-0 py-0">
-                                            <input type="number" class="tableInput" name=""
-                                                id="{{ $key + 1 }}"
-                                                value="{{ $purchaseinvoicedetail->LineDisPer }}"
-                                                onblur="AddDiscountRate(this.id, this.value);"
-                                                onfocus="PEditFocus(event)">
-                                        </td>
-                                        {{-- Discount Amount --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="text-end" name=""
-                                                id="{{ $key + 1 }}"
-                                                value="{{ number_format($purchaseinvoicedetail->LineDisAmt) }}"
-                                                onblur="AddDiscountAmount(this.id, this.value);"
-                                                onfocus="PEditFocus(event)">
-                                        </td>
-                                        {{-- Line Total Amount --}}
-                                        <td class="px-0 py-0">
-                                            <input type="text" class="text-end" id="totalAmt"
-                                                value="{{ number_format($purchaseinvoicedetail->LineTotalAmt) }}"
-                                                disabled>
-                                        </td>
-                                        {{-- Is Foc --}}
-                                        <td class="px-3 py-0">
-                                            <input type="checkbox" class="form-check-input cust-form-check mt-2"
-                                                id="{{ $key + 1 }}"
-                                                {{ $purchaseinvoicedetail->IsFOC == 1 ? 'checked' : '' }}
-                                                onchange="AddFoc(event, this.id)">
-                                        </td>
-                                        {{-- Action Button --}}
-                                        <td class="px-2 py-0">
-                                            <button type="button" id="{{ $key + 1 }}"
-                                                class="btn delete-btn py-0 mt-1 px-1"
-                                                onclick="DeletePurInvoiceRow(this.id)">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </td>
+                    <div class="col-12">
+                        <div class="purchaseTable">
+                            <table class="table" id="purchaseProdList">
+                                <thead class="sticky-top">
+                                    <tr id="0">
+                                        {{-- <th style="width: 50px;">No</th> --}}
+                                        <th style="width: 180px;">Item Name</th>
+                                        <th style="width: 180px;">Warehouse Name</th>
+                                        <th style="width: 80px;" class="text-end">Quantity</th>
+                                        <th style="width: 80px;" class="text-end">New Qty</th>
+                                        <th style="width: 120px;">Unit</th>
+                                        <th style="width: 100px;" class="text-end">Qty Per Unit</th>
+                                        <th style="width: 100px;" class="text-end">Extra Viss</th>
+                                        <th style="width: 130px;" class="text-end">Total Viss</th>
+                                        <th style="width: 120px;" class="text-end">Unit Price</th>
+                                        <th style="width: 150px;" class="text-end">Amount</th>
+                                        <th style="width: 100px;" class="text-end">Discount(%)</th>
+                                        <th style="width: 100px;" class="text-end">Discount</th>
+                                        <th style="width: 150px;" class="text-end">Total Amount</th>
+                                        <th style="width: 50px;">FOC</th>
+                                        <th style="width: 40px;"></th>
                                     </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody id="displaySelectedItems">
+                                    @foreach ($purchaseinvoice->purchaseinvoicedetails as $key => $purchaseinvoicedetail)
+                                        <tr id="{{ $key + 1 }}">
+                                            {{-- <td class="px-0 py-0">
+                                                <input type="text" class="tableInput" name="" id="referenceNo" value="{{$key + 1}}" disabled>
+                                            </td> --}}
+                                            {{-- Item Name --}}
+                                            <td class="px-0 py-0" id="row_{{ $key + 1 }}">
+                                                <select name="" id="{{ $key + 1 }}"
+                                                    class="itemCodeList_{{ $key + 1 }}"
+                                                    onchange="AddProduct(this.id,this.value)">
+                                                    @if (isset($items) && is_object($items) && count($items) > 0)
+                                                        @forelse ($items as $item)
+                                                            @if ($item->ItemCode == $purchaseinvoicedetail->ItemCode)
+                                                                <option value="{{ $item->ItemCode }}" selected>
+                                                                    {{ $item->ItemName }}</option>
+                                                            @else
+                                                                <option value="{{ $item->ItemCode }}">
+                                                                    {{ $item->ItemName }}</option>
+                                                            @endif
+                                                        @empty
+                                                            <option disabled>No Item</option>
+                                                        @endforelse
+                                                    @endif
+                                                </select>
+                                            </td>
+                                            {{-- Warehouse Name --}}
+                                            <td class="px-0 py-0">
+                                                <select name="" id="{{ $key + 1 }}"
+                                                    class="warehouseList_{{ $key + 1 }}"
+                                                    onchange="AddWarehouse(this.id,this.value);">
+                                                    @if (isset($warehouses) && is_object($warehouses) && count($warehouses) > 0)
+                                                        @forelse ($warehouses as $warehouse)
+                                                            @if ($warehouse->WarehouseCode == $purchaseinvoicedetail->WarehouseCode)
+                                                                <option value="{{ $warehouse->WarehouseCode }}" selected>
+                                                                    {{ $warehouse->WarehouseName }}</option>
+                                                            @else
+                                                                <option value="{{ $warehouse->WarehouseCode }}">
+                                                                    {{ $warehouse->WarehouseName }}</option>
+                                                            @endif
+                                                        @empty
+                                                            <option disabled>No Warehouse Code Found</option>
+                                                        @endforelse
+                                                    @endif
+                                                </select>
+                                            </td>
+                                            {{-- Quantity --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="text-end" id="{{ $key + 1 }}"
+                                                    value="{{ number_format($purchaseinvoicedetail->Quantity) }}"
+                                                    onblur="AddUnitQty(event,this.id,this.value);"
+                                                    onfocus="PEditFocus(event)" nextFocus="puprice_{{ $key + 1 }}">
+                                            </td>
+                                            {{-- New Quantity --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="text-end" id="{{ $key + 1 }}"
+                                                    value="{{ number_format($purchaseinvoicedetail->NewQuantity) }}"
+                                                    onblur="AddNewQty(event,this.id,this.value);"
+                                                    onfocus="PEditFocus(event)" nextFocus="puprice_{{ $key + 1 }}">
+                                            </td>
+                                            {{-- Unit --}}
+                                            <td class="px-0 py-0">
+                                                <select name="" class="unitCodeList_{{ $key + 1 }}"
+                                                    id="{{ $key + 1 }}" onchange="AddUnit(this.id, this.value);">
+                                                    @if (isset($units) && is_object($units) && count($units) > 0)
+                                                        @forelse ($units as $unit)
+                                                            @if ($unit->UnitCode == $purchaseinvoicedetail->UnitCode)
+                                                                <option value="{{ $unit->UnitCode }}" selected>
+                                                                    {{ $unit->UnitDesc }}</option>
+                                                            @else
+                                                                <option value="{{ $unit->UnitCode }}">
+                                                                    {{ $unit->UnitDesc }}</option>
+                                                            @endif
+                                                        @empty
+                                                            <option disabled>No Unit Code Found</option>
+                                                        @endforelse
+                                                    @endif
+                                                </select>
+                                            </td>
+                                            {{-- QtyPerUnit --}}
+                                            <td class="px-0 py-0">
+                                                <input type="number" class="qtyunit_{{ $key + 1 }}" name=""
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ $purchaseinvoicedetail->QtyPerUnit }}"
+                                                    onblur="AddQtyPerUnit(event,this.id,this.value)"
+                                                    onfocus="PEditFocus(event)">
+                                            </td>
+                                            {{-- Extra Viss --}}
+                                            <td class="px-0 py-0">
+                                                <input type="number" class="" name=""
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ $purchaseinvoicedetail->ExtraViss }}"
+                                                    onblur="AddExtraViss(event,this.id,this.value)"
+                                                    onfocus="PEditFocus(event)">
+                                            </td>
+                                            {{-- Total Viss --}}
+                                            <td class="px-0 py-0">
+                                                <input type="number" class="puviss_{{ $key + 1 }}" name=""
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ $purchaseinvoicedetail->TotalViss }}"
+                                                    onblur="AddTotalViss(event,this.id,this.value)"
+                                                    onfocus="PEditFocus(event)">
+                                            </td>
+                                            {{-- Unit Price --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="puprice_{{ $key + 1 }} text-end"
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ number_format($purchaseinvoicedetail->UnitPrice) }}"
+                                                    onblur="AddUnitPrice(event,this.id, this.value)"
+                                                    onfocus="PEditFocus(event)" nextFocus="puviss_{{ $key + 1 }}">
+                                            </td>
+                                            {{-- Item Amount --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="tableInput text-end" name=""
+                                                    id="itemAmount"
+                                                    value="{{ number_format($purchaseinvoicedetail->Amount) }}" disabled>
+                                            </td>
+                                            {{-- Discount Rate --}}
+                                            <td class="px-0 py-0">
+                                                <input type="number" class="tableInput" name=""
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ $purchaseinvoicedetail->LineDisPer }}"
+                                                    onblur="AddDiscountRate(this.id, this.value);"
+                                                    onfocus="PEditFocus(event)">
+                                            </td>
+                                            {{-- Discount Amount --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="text-end" name=""
+                                                    id="{{ $key + 1 }}"
+                                                    value="{{ number_format($purchaseinvoicedetail->LineDisAmt) }}"
+                                                    onblur="AddDiscountAmount(this.id, this.value);"
+                                                    onfocus="PEditFocus(event)">
+                                            </td>
+                                            {{-- Line Total Amount --}}
+                                            <td class="px-0 py-0">
+                                                <input type="text" class="text-end" id="totalAmt"
+                                                    value="{{ number_format($purchaseinvoicedetail->LineTotalAmt) }}"
+                                                    disabled>
+                                            </td>
+                                            {{-- Is Foc --}}
+                                            <td class="px-3 py-0">
+                                                <input type="checkbox" class="form-check-input cust-form-check mt-2"
+                                                    id="{{ $key + 1 }}"
+                                                    {{ $purchaseinvoicedetail->IsFOC == 1 ? 'checked' : '' }}
+                                                    onchange="AddFoc(event, this.id)">
+                                            </td>
+                                            {{-- Action Button --}}
+                                            <td class="px-2 py-0">
+                                                <button type="button" id="{{ $key + 1 }}"
+                                                    class="btn delete-btn py-0 mt-1 px-1"
+                                                    onclick="DeletePurInvoiceRow(this.id)">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="row mt-3 justify-content-between">
