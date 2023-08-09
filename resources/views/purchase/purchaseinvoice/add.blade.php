@@ -211,32 +211,34 @@
                 <p class="p-0 content-title"><span>Details</span></p>
                 <button class="btn btn-noBorder" id="addNewRow" type="button"><span class="me-2"><i class="bi bi-plus-circle"></i></span>New</button>
                 <div class="row">
-                    <div class="purchaseTable">
-                        <table class="table" id="purchaseProdList">
-                            <thead class="sticky-top">
-                                <tr id="0">
-                                    {{-- <th style="width: 50px;">No</th> --}}
-                                    <th style="width: 200px;">Item Name</th>
-                                    <th style="width: 200px;">Warehouse Name</th>
-                                    <th style="width: 120px;">Quantity</th>
-                                    <th style="width: 120px;">New Qty</th>
-                                    <th style="width: 80px;">Unit</th>
-                                    <th style="width: 80px;">Qty Per Unit</th>
-                                    <th style="width: 150px;">Extra Viss</th>
-                                    <th style="width: 150px;">Total Viss</th>
-                                    <th style="width: 120px;">Unit Price</th>
-                                    <th style="width: 300px;">Amount</th>
-                                    <th style="width: 60px;">Discount(%)</th>
-                                    <th style="width: 120px;">Discount</th>
-                                    <th style="width: 170px;">Total Amount</th>
-                                    <th style="width: 50px;">FOC</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="displaySelectedItems">
-
-                            </tbody>
-                        </table>
+                    <div class="col-12">
+                        <div class="purchaseTable">
+                            <table class="table" id="purchaseProdList">
+                                <thead class="sticky-top">
+                                    <tr id="0">
+                                        {{-- <th style="width: 50px;">No</th> --}}
+                                        <th style="width: 180px;">Item Name</th>
+                                        <th style="width: 180px;">Warehouse Name</th>
+                                        <th style="width: 80px;" class="text-end">Quantity</th>
+                                        <th style="width: 80px;" class="text-end">New Qty</th>
+                                        <th style="width: 120px;">Unit</th>
+                                        <th style="width: 100px;" class="text-end">Qty Per Unit</th>
+                                        <th style="width: 100px;" class="text-end">Extra Viss</th>
+                                        <th style="width: 130px;" class="text-end">Total Viss</th>
+                                        <th style="width: 120px;" class="text-end">Unit Price</th>
+                                        <th style="width: 150px;" class="text-end">Amount</th>
+                                        <th style="width: 100px;" class="text-end">Discount(%)</th>
+                                        <th style="width: 100px;" class="text-end">Discount</th>
+                                        <th style="width: 150px;" class="text-end">Total Amount</th>
+                                        <th style="width: 50px;">FOC</th>
+                                        <th style="width: 40px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="displaySelectedItems">
+    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="row mt-3 justify-content-between">
