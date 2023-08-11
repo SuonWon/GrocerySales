@@ -85,8 +85,8 @@ class PurchaseInvoiceController extends Controller
 
         } else {
             // If both startDate and endDate are null, retrieve records for the current month
-      
-            $query->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+       
+            $query->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->startOfMonth()->toDateString())
                   ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
 
             $deletequery->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
@@ -199,12 +199,14 @@ class PurchaseInvoiceController extends Controller
                     $unitPrice = $purchaseInvoiceDetail['UnitPrice'];
 
                     $data['ReferenceNo'] = $guid;
+                    $data['LineNo'] = $purchaseInvoiceDetail['LineNo'];
                     $data['WarehouseNo'] = $purchaseInvoiceDetail['WarehouseNo'];
-                    
                     $data['ItemCode'] = $purchaseInvoiceDetail['ItemCode'];
                     $data['Quantity'] = $purchaseInvoiceDetail['Quantity'];
+                    $data['NewQuantity'] = $purchaseInvoiceDetail['NewQuantity'];
                     $data['PackedUnit'] = $purchaseInvoiceDetail['PackedUnit'];
                     $data['QtyPerUnit'] = $purchaseInvoiceDetail['QtyPerUnit'];
+                    $data['ExtraViss'] = $purchaseInvoiceDetail['ExtraViss'];
                     $data['TotalViss'] = $purchaseInvoiceDetail['TotalViss'];
                     $data['UnitPrice'] = $purchaseInvoiceDetail['UnitPrice'];
                     $data['Amount'] = $purchaseInvoiceDetail['Amount'];
@@ -226,7 +228,7 @@ class PurchaseInvoiceController extends Controller
                         //if want to make increase
                         Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
                         StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
-                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->update(['Status' => 'O']);
+
 
                     } catch (QueryException $e) {
 
@@ -248,7 +250,8 @@ class PurchaseInvoiceController extends Controller
     public function show(PurchaseInvoice $purchaseinvoice)
     {
 
-        $purchaseinvoicedetails = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
+        $purchaseinvoicedetails = PurchaseInvoiceDetail::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('warehouses', 'purchase_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'purchase_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'purchase_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -369,11 +372,14 @@ class PurchaseInvoiceController extends Controller
 
 
                     $data['ReferenceNo'] = $guid;
+                    $data['LineNo'] = $purchaseInvoiceDetail['LineNo'];
                     $data['WarehouseNo'] = $purchaseInvoiceDetail['WarehouseNo'];
                     $data['ItemCode'] = $purchaseInvoiceDetail['ItemCode'];
                     $data['Quantity'] = $purchaseInvoiceDetail['Quantity'];
+                    $data['NewQuantity'] = $purchaseInvoiceDetail['NewQuantity'];
                     $data['PackedUnit'] = $purchaseInvoiceDetail['PackedUnit'];
                     $data['QtyPerUnit'] = $purchaseInvoiceDetail['QtyPerUnit'];
+                    $data['ExtraViss'] = $purchaseInvoiceDetail['ExtraViss'];
                     $data['TotalViss'] = $purchaseInvoiceDetail['TotalViss'];
                     $data['UnitPrice'] = $purchaseInvoiceDetail['UnitPrice'];
                     $data['Amount'] = $purchaseInvoiceDetail['Amount'];
@@ -473,7 +479,8 @@ class PurchaseInvoiceController extends Controller
     public function viewDetails(PurchaseInvoice $purchaseinvoice)
     {
 
-        $purchaseinvoicedetails = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
+        $purchaseinvoicedetails = PurchaseInvoiceDetail::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('warehouses', 'purchase_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'purchase_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'purchase_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -502,7 +509,8 @@ class PurchaseInvoiceController extends Controller
     public function printPreview(PurchaseInvoice $purchaseinvoice)
     {
 
-        $purchaseinvoicedetails = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
+        $purchaseinvoicedetails = PurchaseInvoiceDetail::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('warehouses', 'purchase_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'purchase_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'purchase_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -536,7 +544,8 @@ class PurchaseInvoiceController extends Controller
     public function detailsPreview(PurchaseInvoice $purchaseinvoice)
     {
 
-        $purchaseinvoicedetails = PurchaseInvoiceDetail::where('InvoiceNo', $purchaseinvoice->InvoiceNo)
+        $purchaseinvoicedetails = PurchaseInvoiceDetail::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $purchaseinvoice->InvoiceNo)
             ->join('warehouses', 'purchase_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'purchase_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'purchase_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')

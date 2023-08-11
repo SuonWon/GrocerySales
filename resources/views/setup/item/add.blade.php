@@ -142,7 +142,7 @@
                     <div class="col-6 mb-3">
                         <label for="weightByPrice" class="form-label cust-label">Weight By Price</label>
                         <input type="number" class="form-control cust-input-box" id="cWeightByPrice"
-                            name="WeightByPrice" value="1" required>
+                            name="WeightByPrice" value="0" onfocus="AutoSelectValue(event)" onblur="CheckNumber(event)" required>
                         <div class="invalid-feedback">
                             Please fill weight by price.
                         </div>
@@ -224,6 +224,13 @@
 
     dselect(document.querySelector("#cDefPurUnit"), config);
 
+    toastr.options.timeOut = 3000;
+    toastr.options.closeButton = true;
+    toastr.options.positionClass = "toast-top-right";
+    toastr.options.showMethod = "fadeIn";
+    toastr.options.progressBar = true;
+    toastr.options.hideMethod = "fadeOut";
+
     function AddStock(event, warehouseCode) {
 
         stockList.forEach(element => {
@@ -242,55 +249,65 @@
 
         event.preventDefault();
 
-        let data = {
-            ItemName : $("#cItemName").val(),
-            ItemCategoryCode : $("#cSelectCategory").val(),
-            BaseUnit : $("#cSelectUnit").val(),
-            UnitPrice : $("#cUnitPrice").val(),
-            LastPurPrice : $("#cLastPurchasePrice").val(),
-            WeightByPrice : $("#cWeightByPrice").val(),
-            DefSalesUnit : $("#cDefSalesUnit").val(),
-            DefPurUnit : $("#cDefPurUnit").val(),
-            Remark : $("#cItemRemark").val(),
-            Discontinued : document.getElementById("cDiscontinued").checked ? 'on' : 'off',
-            StockInWarehouses : stockList,
-        };
+        let weightByPrice = $("#cWeightByPrice").val();
 
-        data = JSON.stringify(data);
+        if (weightByPrice > 0) {
 
-        console.log(data);
+            let data = {
+                ItemName : $("#cItemName").val(),
+                ItemCategoryCode : $("#cSelectCategory").val(),
+                BaseUnit : $("#cSelectUnit").val(),
+                UnitPrice : $("#cUnitPrice").val(),
+                LastPurPrice : $("#cLastPurchasePrice").val(),
+                WeightByPrice : weightByPrice,
+                DefSalesUnit : $("#cDefSalesUnit").val(),
+                DefPurUnit : $("#cDefPurUnit").val(),
+                Remark : $("#cItemRemark").val(),
+                Discontinued : document.getElementById("cDiscontinued").checked ? 'on' : 'off',
+                StockInWarehouses : stockList,
+            };
 
-        $.ajaxSetup({
+            data = JSON.stringify(data);
 
-            headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+            $.ajaxSetup({
 
-        });
-
-        $.ajax({
-            url: '/item/add',
-            type: 'POST',
-            data: data,
-            dataType: 'json',
-            success: function(response) {
-
-                if (response.message == "good") {
-
-                    sessionStorage.setItem('save', 'success');
-
-                    window.location.href = "/item/index";
-
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
 
-            },
-            error: function(error) {
-                console.log('no');
-                console.log(error.responseText);
-                res = JSON.parse(error.responseText);
-                console.log(res);
-            }
-        });
+            });
+
+            $.ajax({
+                url: '/item/add',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function(response) {
+
+                    if (response.message == "good") {
+
+                        sessionStorage.setItem('save', 'success');
+
+                        window.location.href = "/item/index";
+
+                    }
+
+                },
+                error: function(error) {
+                    console.log('no');
+                    console.log(error.responseText);
+                    res = JSON.parse(error.responseText);
+                    console.log(res);
+                }
+            });
+
+        } else {
+
+            document.getElementById("cWeightByPrice").classList.add("warning-input");
+
+            toastr.warning("Weight By Price is 0 or less than 0.");
+
+        }
 
     });
 </script>

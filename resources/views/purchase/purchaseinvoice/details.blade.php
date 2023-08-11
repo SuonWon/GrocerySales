@@ -218,8 +218,10 @@
                             <th>Item Code</th>
                             <th>Warehouse Code</th>
                             <th class="text-end">Quantity</th>
+                            <th class="text-end">New Qty</th>
                             <th class="text-center">Unit</th>
-                            <th class="text-end">QPU</th>
+                            <th class="text-end">Qty Per Unit</th>
+                            <th class="text-end">Extra Viss</th>
                             <th class="text-end">Total Viss</th>
                             <th class="text-end">Unit Price</th>
                             <th class="text-end">Amount</th>
@@ -236,8 +238,10 @@
                                 <td>{{$purchaseinvoicedetail->ItemName}}</td>
                                 <td>{{$purchaseinvoicedetail->WarehouseName}}</td>
                                 <td class="text-end">{{$purchaseinvoicedetail->Quantity}}</td>
+                                <td class="text-end">{{$purchaseinvoicedetail->NewQuantity}}</td>
                                 <td class="text-center">{{$purchaseinvoicedetail->UnitDesc}}</td>
                                 <td class="text-end">{{$purchaseinvoicedetail->QtyPerUnit}}</td>
+                                <td class="text-end">{{$purchaseinvoicedetail->ExtraViss}}</td>
                                 <td class="text-end">{{$purchaseinvoicedetail->TotalViss}}</td>
                                 <td class="text-end">{{$purchaseinvoicedetail->UnitPrice}}</td>
                                 <td class="text-end">{{$purchaseinvoicedetail->Amount}}</td>

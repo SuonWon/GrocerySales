@@ -488,6 +488,10 @@ ul ul a {
     border-bottom: 2px solid #36616d;
 }
 
+.warning-input {
+    border: 2px solid orange !important;
+}
+
 .cust-label {
     font-size: 0.95rem;
 }
@@ -625,9 +629,12 @@ input[type="number"] {
 .purchaseTable,
 .saleTable {
     height: 300px;
-    overflow-x: auto;
-    overflow-y: auto;
-    white-space: nowrap;
+    overflow: auto;
+}
+
+.purchaseTable table,
+.saleTable table {
+    table-layout: fixed;
 }
 
 .purchaseTable table thead,
