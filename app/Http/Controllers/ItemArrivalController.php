@@ -54,8 +54,8 @@ class ItemArrivalController extends Controller
         } else {
             // If both startDate and endDate are null, retrieve records for the current month
        
-            $query->where('ArrivalDate', '>=', Carbon::now()->startOfMonth()->toDateString())
-                  ->where('ArrivalDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+            $query->where('ArrivalDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+                  ->where('ArrivalDate', '<=', Carbon::now()->endOfMonth()->toDateString()); 
         
         }
 
@@ -65,7 +65,7 @@ class ItemArrivalController extends Controller
         } elseif ($CompleteStatus === 'ongoing') {
             $query->where('Status', 'N');
         }else if($CompleteStatus == "delete"){
-
+            $query->where('Status', 'D');
         }else if($CompleteStatus == "all"){
             $query->where('Status', 'N')->orwhere('Status', 'O')->orwhere('Status','D');
         }

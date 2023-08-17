@@ -77,10 +77,11 @@ class SaleInvoiceController extends Controller
             $deletequery->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
         }else{
             
-            $query->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-                  ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
-            $deletequery->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-            ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
+            $query->where('sale_invoices.SalesDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+                  ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+                  
+            $deletequery->where('sale_invoices.SalesDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+            ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
         }
 
         
@@ -288,6 +289,7 @@ class SaleInvoiceController extends Controller
             $updatesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($formData);
 
             if (isset($updatesaleinvoice)) {
+                
                 SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)->delete();
 
                 foreach ($saleinvoicedetails as $saleinvoicedetail) {
@@ -318,7 +320,7 @@ class SaleInvoiceController extends Controller
                     try {
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
 
-                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['OldWarehouseNo'])->where('ItemCode',$saleinvoicedetail['OldItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
                         StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
                     } catch (QueryException $e) {
 
