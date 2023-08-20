@@ -79,7 +79,7 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
-    // Vendor DataTable
+    // Supplier DataTable
 
     $("#supplierList").DataTable({
         scrollX: true,
@@ -89,6 +89,8 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
+    // Company DataTable
+
     $("#companyList").DataTable({
         scrollX: true,
         fixedColumns: {
@@ -96,6 +98,8 @@ $(document).ready(function () {
         },
         dom: '<"toolbar">frtip',
     });
+
+    // User DataTable
 
     $("#userList").DataTable({
         scrollX: true,
@@ -105,6 +109,8 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
+    // System Role DataTable
+
     $("#systemroleList").DataTable({
         scrollX: true,
         fixedColumns: {
@@ -112,6 +118,9 @@ $(document).ready(function () {
         },
         dom: '<"toolbar">frtip',
     });
+
+    // Item Arrival DataTable
+
     $("#itemArrivalList").DataTable({
         scrollX: true,
         order: [],
@@ -120,6 +129,8 @@ $(document).ready(function () {
         },
         dom: '<"toolbar">frtip',
     });
+
+    // Purchase DataTable
 
     $("#purchaseList").DataTable({
         dom: '<"toolbar">frtip',
@@ -131,6 +142,8 @@ $(document).ready(function () {
         },
     });
 
+    // Sales DataTable
+
     $("#salesList").DataTable({
         scrollX: true,
         "lengthMenu": [20,30,50,75,100],
@@ -141,6 +154,8 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
+    // Delete Invoice DataTable
+
     $("#deleteInvoiceList").DataTable({
         scrollX: true,
         fixedColumns: {
@@ -149,6 +164,8 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
+    // Delete Sales DataTable
+
     $("#deleteSales").DataTable({
         scrollX: true,
         fixedColumns: {
@@ -156,6 +173,29 @@ $(document).ready(function () {
         },
         dom: '<"toolbar">frtip',
     });
+
+    // Stock Transfer List DataTable
+
+    $("#stockTransferList").DataTable({
+        scrollX: true,
+        order: [],
+        fixedColumns: {
+            right: 1,
+        },
+        dom: '<"toolbar">frtip',
+    }); 
+
+    // Stock Damage List DataTable
+
+    $("#stockDamageList").DataTable({
+        scrollX: true,
+        order: [],
+        fixedColumns: {
+            right: 1,
+        },
+        dom: '<"toolbar">frtip',
+    });
+
 });
 
 // Delete Category function
@@ -240,6 +280,18 @@ function PassPurchaseInNo(invoiceNo) {
 
 function PassSaleInNo(invoiceNo) {
     $("#deleteSaleBtn").attr("href", "/salesinvoices/delete/" + invoiceNo);
+}
+
+// Delete Stock Transfer
+
+function PassTransferNo(transferNo) {
+    $("#deleteTransferBtn").attr("href", "/stocktransfer/delete/" + transferNo);
+}
+
+// Delete Stock Damage
+
+function PassDamageNo(damageNo) {
+    $("#deleteDamageBtn").attr("href", "/stockdamage/delete/" + damageNo);
 }
 
 // Check Number Function

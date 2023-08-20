@@ -108,10 +108,8 @@ class StockTransferController extends Controller
         $TransferNo = $request->input('TransferNo');
 
         if($TransferNo != null){
-                $query->where('PlateNo', 'LIKE', '%' . $TransferNo . '%');
+            $query->where('TransferNo', 'LIKE', '%' . $TransferNo . '%');
         }
-        
-        
         
         $stocktransfers = $query->get();
         $deletestocktransfers = $deletequery->get();
@@ -124,17 +122,17 @@ class StockTransferController extends Controller
 
     public function create()
     {
-        $items = Item::where('Discontinued','==',1)->get();
+        $items = Item::where('Discontinued','=',1)->get();
         $warehouses = Warehouse::all();
-        
-
         $units = UnitMeasurement::where('IsActive', 1)->get();
+        $todayDate = Carbon::now()->format('Y-m-d');
 
   
-        return view('stock.stocktransfer.index',[
+        return view('stock.stocktransfer.add',[
             'items' => $items,
             'warehouses' => $warehouses,
-            'units' => $units
+            'units' => $units,
+            'todayDate'=>$todayDate,
         ]);
     }
 
@@ -180,9 +178,6 @@ class StockTransferController extends Controller
 
                     $data = [];
                     $data['TransferNo'] = $TransferNo;
-                    
-
-
                     
                     $data['LineNo'] = $stocktransferdetail['LineNo'];
                    
@@ -234,7 +229,7 @@ class StockTransferController extends Controller
             ->where('TransferNo', $stocktransfer->TransferNo)
             ->join('items', 'stock_transfer_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'stock_transfer_details.PackedUnit', '=', 'unit_measurements.UnitCode')
-            ->select('stock_transfer_details.*', 'items.ItemCode', 'items.ItemName', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
+            ->select('stock_transfer_details.*', 'items.ItemCode', 'items.ItemName', 'items.WeightByPrice', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
             ->get();
 
         $stocktransfer->stocktransferdetails = $stocktransferdetails;
@@ -255,14 +250,14 @@ class StockTransferController extends Controller
     public function update(StockTransfer $stocktransfer){
 
         $jsonData = json_decode(request()->getContent(), true);
-        
-        return response()->json(['message' => $jsonData]);
+
         // Validate the JSON data
         $formData = Validator::make($jsonData, [
 
             
             'TransferDate' => ['required'],
             'FromWarehouse' => ['required'],
+            'ToWarehouse' => ['required'],
             'OldFromWarehouse' => ['required'],
             'OldToWarehouse' => ['required'],
             'ToWarehouse' => ['required'],
@@ -412,8 +407,6 @@ class StockTransferController extends Controller
         try {
 
             $deletesaleinvoice = StockTransfer::where('TransferNo', $stocktransfer->TransferNo)->update($data);
-
-        
 
             if($deletesaleinvoice){
 

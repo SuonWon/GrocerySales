@@ -15,8 +15,10 @@
                 'referenceNo' => $key + 1,
                 'ReferenceNo' => $purchaseinvoicedetail->ReferenceNo,
                 'WarehouseNo' => $purchaseinvoicedetail->WarehouseCode,
+                'OldWarehouseNo' => $purchaseinvoicedetail->WarehouseCode,
                 'WarehouseName' => $purchaseinvoicedetail->WarehouseName,
                 'ItemCode' => $purchaseinvoicedetail->ItemCode,
+                'OldItemCode' => $purchaseinvoicedetail->ItemCode,
                 'ItemName' => $purchaseinvoicedetail->ItemName,
                 'WeightPrice' => $purchaseinvoicedetail->WeightByPrice,
                 'Quantity' => $purchaseinvoicedetail->Quantity,
@@ -235,8 +237,8 @@
                                 <thead class="sticky-top">
                                     <tr id="0">
                                         {{-- <th style="width: 50px;">No</th> --}}
-                                        <th style="width: 180px;">Item Name</th>
-                                        <th style="width: 180px;">Warehouse Name</th>
+                                        <th style="width: 200px;">Item Name</th>
+                                        <th style="width: 200px;">Warehouse Name</th>
                                         <th style="width: 80px;" class="text-end">Quantity</th>
                                         <th style="width: 80px;" class="text-end">New Qty</th>
                                         <th style="width: 120px;">Unit</th>
@@ -621,8 +623,10 @@
         let purchaseProductData = {
             referenceNo: rowNo,
             WarehouseNo: "",
+            OldWarehouseNo: "",
             WarehouseName: "",
             ItemCode: "",
+            OldItemCode: "",
             ItemName: "",
             WeightPrice: 1,
             Quantity: 1,
@@ -1548,7 +1552,9 @@
                 let purchaseInvoiceDetailsObject = {
                     LineNo: element.referenceNo,
                     WarehouseNo: element.WarehouseNo,
+                    OldWarehouseNo: element.OldWarehouseNo,
                     ItemCode: element.ItemCode,
+                    OldItemCode: element.OldItemCode,
                     Quantity: element.Quantity,
                     NewQuantity: element.NewQuantity,
                     PackedUnit: element.PackedUnit,

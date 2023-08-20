@@ -217,8 +217,8 @@
                                 <thead class="sticky-top">
                                     <tr id="0">
                                         {{-- <th style="width: 50px;">No</th> --}}
-                                        <th style="width: 180px;">Item Name</th>
-                                        <th style="width: 180px;">Warehouse Name</th>
+                                        <th style="width: 200px;">Item Name</th>
+                                        <th style="width: 200px;">Warehouse Name</th>
                                         <th style="width: 80px;" class="text-end">Quantity</th>
                                         <th style="width: 80px;" class="text-end">New Qty</th>
                                         <th style="width: 120px;">Unit</th>

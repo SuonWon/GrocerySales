@@ -29,18 +29,18 @@ class StockDamageController extends Controller
     public function index(Request $request){
 
         $query = StockDamage::orderBy('stock_damages.DamageDate', 'desc')
-                    ->Join('warehouses', 'stock_damages.WarehouseNo', '=', 'warehouses.WarehouseCode')
-                    ->select('stock_damages.*','warehouses.WarehouseCode','warehouses.WarehouseName')
-                    ->where(function($query){
-                        $query->where('stock_damages.Status', 'O');
-                    });
+            ->Join('warehouses', 'stock_damages.WarehouseNo', '=', 'warehouses.WarehouseCode')
+            ->select('stock_damages.*','warehouses.WarehouseCode','warehouses.WarehouseName')
+            ->where(function($query){
+                $query->where('stock_damages.Status', 'O');
+            });
 
         $deletequery = StockDamage::orderBy('stock_damages.DamageDate', 'desc')
-                        ->Join('warehouses', 'stock_damages.WarehouseNo', '=', 'warehouses.WarehouseCode')
-                        ->select('stock_damages.*','warehouses.WarehouseCode','warehouses.WarehouseName')
-                        ->where(function($query){
-                            $query->where('stock_damages.Status', 'D');
-                        });
+            ->Join('warehouses', 'stock_damages.WarehouseNo', '=', 'warehouses.WarehouseCode')
+            ->select('stock_damages.*','warehouses.WarehouseCode','warehouses.WarehouseName')
+            ->where(function($query){
+                $query->where('stock_damages.Status', 'D');
+            });
 
         
         if ($request->input('StartDate') !== null && $request->input('EndDate') !== null) {
@@ -121,17 +121,17 @@ class StockDamageController extends Controller
 
     public function create()
     {
-        $items = Item::where('Discontinued','==',1)->get();
+        $items = Item::where('Discontinued','=',1)->get();
         $warehouses = Warehouse::all();
-        
-
         $units = UnitMeasurement::where('IsActive', 1)->get();
+        $todayDate = Carbon::now()->format('Y-m-d');
 
   
-        return view('stock.stocktransfer.add',[
+        return view('stock.stockdamage.add',[
             'items' => $items,
             'warehouses' => $warehouses,
-            'units' => $units
+            'units' => $units,
+            'todayDate' => $todayDate,
         ]);
     }
 
@@ -226,10 +226,10 @@ class StockDamageController extends Controller
     {
 
         $stockdamagedetails = StockDamageDetails::orderBy('LineNo', 'asc')
-            ->where('DamageNo', $stockdamage->TransferNo)
+            ->where('DamageNo', $stockdamage->DamageNo)
             ->join('items', 'stock_damage_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'stock_damage_details.PackedUnit', '=', 'unit_measurements.UnitCode')
-            ->select('stock_damage_details.*', 'items.ItemCode', 'items.ItemName', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
+            ->select('stock_damage_details.*', 'items.ItemCode', 'items.ItemName', 'items.WeightByPrice', 'unit_measurements.UnitCode', 'unit_measurements.UnitDesc')
             ->get();
 
         $stockdamage->stockdamagedetails = $stockdamagedetails;
@@ -368,11 +368,6 @@ class StockDamageController extends Controller
 
                     //Increase Item Total Viss To FromWarehouse because of delete stock transfer
                     StockInWarehouse::where('WarehouseCode',$stockdamage->WarehouseNo)->where('ItemCode',$stockdamagedetail['ItemCode'])->increment('StockQty', $stockdamagedetail['TotalViss']);
-
-              
-                    
-                    
-
                     
                     
                 }

@@ -17,6 +17,7 @@ use App\Http\Controllers\SystemRoleController;
 use App\Http\Controllers\UnitMeasurementController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\SaleInvoice;
+use App\Models\StockTransfer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -180,9 +181,9 @@ Route::middleware('mymiddleware:setup')->group(function () {
         Route::get('/add',[StockTransferController::class, 'create'])->name('addstocktransfer');
         Route::post('/add',[StockTransferController::class, 'store'])->name('addstocktransfer');
         Route::get('/edit/{stocktransfer:TransferNo}',[StockTransferController::class, 'show'])->where('stocktransfer', '^TF-(\d+)$')->name('showstocktransfer');
-        Route::post('update/{stocktransfer:TransferNo}',[StockTransferController::class, 'update'])->where('stocktransfer','^TF-(\d+)$')->name('updatestocktransfer');
-        Route::get('delete/{stocktransfer:TransferNo}',[StockTransferController::class, 'destory'])->where('stocktransfer','^TF-(\d+)$')->name('deletestocktransfer');
-        Route::get('restore/{stocktransfer:TransferNo}',[StockTransferController::class, 'restore'])->where('stocktransfer','^TF-(\d+)$')->name('restorestocktransfer');
+        Route::post('/update/{stocktransfer:TransferNo}',[StockTransferController::class, 'update'])->where('stocktransfer','^TF-(\d+)$')->name('updatestocktransfer');
+        Route::get('/delete/{stocktransfer:TransferNo}',[StockTransferController::class, 'destory'])->where('stocktransfer','^TF-(\d+)$')->name('deletestocktransfer');
+        Route::get('/restore/{stocktransfer:TransferNo}',[StockTransferController::class, 'restore'])->where('stocktransfer','^TF-(\d+)$')->name('restorestocktransfer');
     });
 
     Route::prefix('stockadjustment')->group(function(){
@@ -288,4 +289,5 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/delete/{itemarrival:ArrivalCode}', [ItemArrivalController::class, 'destory'])->where('itemarrival', '^IA-(\d+)$');
         Route::get('/reports', [ItemArrivalController::class, 'itemarrivalreports']);
     });
+    
 });

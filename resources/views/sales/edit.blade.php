@@ -14,8 +14,10 @@
                 'ReferenceNo' => $saleinvoicedetail->ReferenceNo,
                 'WarehouseNo' => $saleinvoicedetail->WarehouseCode,
                 'WarehouseName' => $saleinvoicedetail->WarehouseName,
+                'OldWarehouseNo' => $saleinvoicedetail->WarehouseCode,
                 'ItemCode' => $saleinvoicedetail->ItemCode,
                 'ItemName' => $saleinvoicedetail->ItemName,
+                'OldItemCode' => $saleinvoicedetail->ItemCode,
                 'WeightPrice' => $saleinvoicedetail->WeightByPrice,
                 'Quantity' => $saleinvoicedetail->Quantity,
                 'NewQuantity' => $saleinvoicedetail->NewQuantity,
@@ -181,7 +183,7 @@
                                 <thead class="sticky-top">
                                     <tr id="0">
                                         {{-- <th style="width: 50px;">No</th> --}}
-                                        <th style="width: 180px;">Item Name</th>
+                                        <th style="width: 200px;">Item Name</th>
                                         <th style="width: 200px;">Warehouse Name</th>
                                         <th style="width: 80px;" class="text-end">Quantity</th>
                                         {{-- <th style="width: 120px;">NQty</th> --}}
@@ -529,8 +531,10 @@
             referenceNo: saleRowNo,
             WarehouseNo: "",
             WarehouseName: "",
+            OldWarehouseNo: "",
             ItemCode: "",
             ItemName: "",
+            OldItemCode: "",
             WeightPrice: 1,
             Quantity: 1,
             NewQuantity: 0,

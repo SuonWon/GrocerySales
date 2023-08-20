@@ -166,7 +166,8 @@ a:focus {
 #sidebar.active ul#settingSubmenu li a,
 #sidebar.active ul#purchaseSetting li a,
 #sidebar.active ul#saleSetting li a,
-#sidebar.active ul#reportSubmenu li a {
+#sidebar.active ul#reportSubmenu li a,
+#sidebar.active ul#stockMenu li a {
     padding: 10px 5px !important;
     text-align: center;
     font-size: 0.75em !important;
@@ -175,7 +176,8 @@ a:focus {
 #sidebar.active ul#settingSubmenu li a span,
 #sidebar.active ul#purchaseSetting li a span,
 #sidebar.active ul#saleSetting li a span,
-#sidebar.active ul#reportSubmenu li a span {
+#sidebar.active ul#reportSubmenu li a span,
+#sidebar.active ul#stockMenu li a span {
     margin-right: 0;
     display: block;
     font-size: 0.75em;
