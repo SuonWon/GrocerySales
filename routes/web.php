@@ -206,6 +206,38 @@ Route::middleware('mymiddleware:setup')->group(function () {
     });
 });
 
+Route::middleware('mymiddleware:stock')->group(function(){
+    Route::prefix('stocktransfer')->group(function(){
+        Route::get('/index',[StockTransferController::class, 'index'])->name('stocktransfer');
+        Route::get('/add',[StockTransferController::class, 'create'])->name('addstocktransfer');
+        Route::post('/add',[StockTransferController::class, 'store'])->name('addstocktransfer');
+        Route::get('/edit/{stocktransfer:TransferNo}',[StockTransferController::class, 'show'])->where('stocktransfer', '^TF-(\d+)$')->name('showstocktransfer');
+        Route::post('update/{stocktransfer:TransferNo}',[StockTransferController::class, 'update'])->where('stocktransfer','^TF-(\d+)$')->name('updatestocktransfer');
+        Route::get('delete/{stocktransfer:TransferNo}',[StockTransferController::class, 'destory'])->where('stocktransfer','^TF-(\d+)$')->name('deletestocktransfer');
+        Route::get('restore/{stocktransfer:TransferNo}',[StockTransferController::class, 'restore'])->where('stocktransfer','^TF-(\d+)$')->name('restorestocktransfer');
+    });
+
+    Route::prefix('stockadjustment')->group(function(){
+        Route::get('/index',[StockAdjustmentController::class, 'index'])->name('stockadjustment');
+        Route::get('/add',[StockAdjustmentController::class, 'create'])->name('addstockadjustment');
+        Route::post('/add',[StockAdjustmentController::class, 'store']);
+        Route::get('/edit/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'show'])->where('stockadjustment', '^AD-(\d+)$')->name('showstockadjustment');
+        Route::post('update/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'update'])->where('stockadjustment','^AD-(\d+)$')->name('updatestockadjustment');
+        Route::get('delete/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'destory'])->where('stockadjustment','^AD-(\d+)$')->name('deletestockadjustment');
+        Route::get('restore/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'restore'])->where('stockadjustment','^AD-(\d+)$')->name('restorestockadjustment');
+    });
+   
+    Route::prefix('stockdamage')->group(function(){
+        Route::get('/index',[StockDamageController::class, 'index'])->name('stockdamage');
+        Route::get('/add',[StockDamageController::class, 'create'])->name('addstockdamage');
+        Route::post('/add',[StockDamageController::class, 'store']);
+        Route::get('/edit/{stockdamage:DamageNo}',[StockDamageController::class, 'show'])->where('stockdamage', '^DM-(\d+)$')->name('showstockdamage');
+        Route::post('update/{stockdamage:DamageNo}',[StockDamageController::class, 'update'])->where('stockdamage','^DM-(\d+)$')->name('updatestockdamage');
+        Route::get('delete/{stockdamage:DamageNo}',[StockDamageController::class, 'destory'])->where('stockdamage','^DM-(\d+)$')->name('deletestockdamage');
+        Route::get('restore/{stockdamage:DamageNo}',[StockDamageController::class, 'restore'])->where('stockdamage','^DM-(\d+)$')->name('restorestockdamage');
+    });
+});
+
 //System Role and User
 Route::middleware('mymiddleware:system')->group(function () {
     // System User routes

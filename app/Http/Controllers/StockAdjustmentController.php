@@ -114,7 +114,7 @@ class StockAdjustmentController extends Controller
         $stockadjustments = $query->get();
         $deletestockadjustments = $deletequery->get();
 
-        dd($stockadjustments);
+       
 
         return view('stock.stockadjustment.index',[
         'stockadjustments' => $stockadjustments,

@@ -80,6 +80,12 @@
                                     Report
                                 </label>
                             </div>
+                            <div class="d-flex col-12 col-md-3 col-lg-4 mt-1">
+                                <input class="form-check-input cust-form-check me-2" type="checkbox" value="stock" name="rolepermissions[]" id="stock" {{ in_array('stock', $systemrole->RolePermissions) ? 'checked' : '' }}>
+                                <label class="cust-label" for="stock">
+                                    Stock
+                                </label>
+                            </div>
                         </div>
                         <div class="invalid-feedback">
                             Please fill the Role Permission.
