@@ -41,10 +41,10 @@
                 'Quantity' => (int)$stockDamageDetails->Quantity,
                 'WeightByPrice' => (int)$stockDamageDetails->WeightByPrice,
                 'PackedUnit' => $stockDamageDetails->PackedUnit,
-                'QtyPerUnit' => (int)$stockDamageDetails->QtyPerUnit,
+                'QtyPerUnit' => (float)$stockDamageDetails->QtyPerUnit,
                 'UnitName' => $stockDamageDetails->UnitDesc,
-                'TotalViss' => (int)$stockDamageDetails->TotalViss,
-                'OldTotalViss' => (int)$stockDamageDetails->TotalViss,
+                'TotalViss' => (float)$stockDamageDetails->TotalViss,
+                'OldTotalViss' => (float)$stockDamageDetails->TotalViss,
                 'UnitPrice' => (int)$stockDamageDetails->UnitPrice,
                 'Amount' => (int)$stockDamageDetails->Amount,
             ]
@@ -85,7 +85,7 @@
                 <div class="row">
                     {{-- Damage No --}}
                     <div class="col-12 col-md-6 col-xl-4 col-xxl-2 mb-2">
-                        <label for="damageNo" class="form-label cust-label">Invoice No</label>
+                        <label for="damageNo" class="form-label cust-label">Damage No</label>
                         <input type="text" class="form-control cust-input-box" id="damageNo" name="DamageNo"
                             value="{{ $stockdamage->DamageNo }}" disabled>
                     </div>
@@ -329,14 +329,14 @@
                     <td class="px-0 py-0">
                         <select name="" class="stockUnitList_` + lineNo + `" id="` + lineNo + `" onchange="AddStockUnit(event);">
                             <option selected disabled>Choose</option>
-                            @if (isset($items) && is_object($items) && count($items) > 0)
-                                @forelse ($items as $item)
-                                    <option value="{{ $item->ItemCode }}">{{ $item->ItemName }}</option>
+                            @if (isset($units) && is_object($units) && count($units) > 0)
+                                @forelse ($units as $unit)
+                                    <option value="{{ $unit->UnitCode }}">{{ $unit->UnitDesc }}</option>
                                 @empty
-                                    <option disabled>No Item Found</option>
+                                    <option disabled>No Unit Found</option>
                                 @endforelse
                             @else
-                                <option disabled selected>No Item Found</option>
+                                <option disabled selected>No Unit Found</option>
                             @endif
                         </select>
                     </td>
@@ -772,6 +772,12 @@
         if (errorMsg == "U") {
 
             toastr.warning('Please enter Unit Name in line no ' + rowNo);
+
+            return;
+
+        } else if (stockDamageDetails.length == 0) {
+
+            toastr.warning('Please choose at least one item.');
 
             return;
 

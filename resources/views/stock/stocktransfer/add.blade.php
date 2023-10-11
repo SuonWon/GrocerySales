@@ -747,6 +747,12 @@
 
             return;
 
+        } else if (stockTransferDetails.length == 0) {
+
+            toastr.warning('Please choose at least one item.');
+
+            return;
+
         }
 
         data.TransferDate = $("#transferDate").val();

@@ -718,6 +718,12 @@
 
             return;
 
+        } else if (stockDamageDetails.length == 0) {
+
+            toastr.warning('Please choose at least one item.');
+
+            return;
+
         }
 
         data.DamageDate = $("#damageDate").val();

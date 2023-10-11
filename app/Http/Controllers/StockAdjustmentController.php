@@ -114,7 +114,7 @@ class StockAdjustmentController extends Controller
         $stockadjustments = $query->get();
         $deletestockadjustments = $deletequery->get();
 
-        dd($stockadjustments);
+        //dd($stockadjustments);
 
         return view('stock.stockadjustment.index',[
         'stockadjustments' => $stockadjustments,
@@ -127,8 +127,9 @@ class StockAdjustmentController extends Controller
 
     public function create()
     {
-        $items = Item::where('Discontinued','==',1)->get();
+        $items = Item::where('Discontinued','=', 1)->get();
         $warehouses = Warehouse::all();
+        $todayDate = Carbon::now()->format('Y-m-d');
         
 
         $units = UnitMeasurement::where('IsActive', 1)->get();
@@ -137,7 +138,8 @@ class StockAdjustmentController extends Controller
         return view('stock.stockadjustment.add',[
             'items' => $items,
             'warehouses' => $warehouses,
-            'units' => $units
+            'units' => $units,
+            'todayDate'=>$todayDate
         ]);
     }
 
@@ -161,13 +163,13 @@ class StockAdjustmentController extends Controller
 
         $formData['AdjustmentNo'] = $AdjustmentNo;
 
-        
-
         $stockadjustmentdetails = $formData['stockadjustmentdetails'];
    
         // Add additional data to the form data
         $formData['CreatedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = null;
+
+        logger($formData);
 
         try {
             // Create a new sales invoice record
@@ -250,9 +252,7 @@ class StockAdjustmentController extends Controller
         $warehouses = Warehouse::all();
         $items = Item::where('Discontinued', '=', 1)->get()->sortBy('ItemName');
         $units = UnitMeasurement::where('IsActive', 1)->get();
-
-      
-        dd($stockadjustment);
+        
         return view('stock.stockadjustment.edit', [
             'stockadjustment' => $stockadjustment,
             'warehouses' => $warehouses,

@@ -192,6 +192,7 @@
                             <li>
                                 <a href="/stocktransfer/index"><span class="me-2"><i class="bi bi-arrow-left-right"></i></span>Stock Transfer</a>
                                 <a href="/stockdamage/index"><span class="me-2"><i class="bi bi-file-earmark-minus-fill"></i></span>Stock Damage</a>
+                                <a href="/stockadjustment/index"><span class="me-2"><i class="bi bi-file-earmark-minus-fill"></i></span>Stock Adjustment</a>
                             </li>
                         </ul>
                     </li>

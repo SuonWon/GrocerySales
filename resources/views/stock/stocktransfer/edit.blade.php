@@ -41,10 +41,10 @@
                 'Quantity' => (int)$stockTransferDetails->Quantity,
                 'WeightByPrice' => (int)$stockTransferDetails->WeightByPrice,
                 'PackedUnit' => $stockTransferDetails->PackedUnit,
-                'QtyPerUnit' => (int)$stockTransferDetails->QtyPerUnit,
+                'QtyPerUnit' => (float)$stockTransferDetails->QtyPerUnit,
                 'UnitName' => $stockTransferDetails->UnitDesc,
-                'TotalViss' => (int)$stockTransferDetails->TotalViss,
-                'OldTotalViss' => (int)$stockTransferDetails->TotalViss,
+                'TotalViss' => (float)$stockTransferDetails->TotalViss,
+                'OldTotalViss' => (float)$stockTransferDetails->TotalViss,
                 'UnitPrice' => (int)$stockTransferDetails->UnitPrice,
                 'Amount' => (int)$stockTransferDetails->Amount,
             ]
@@ -806,6 +806,12 @@
         if (errorMsg == "U") {
 
             toastr.warning('Please enter Unit Name in line no ' + rowNo);
+
+            return;
+
+        } else if (stockTransferDetails.length == 0) {
+
+            toastr.warning('Please choose at least one item.');
 
             return;
 

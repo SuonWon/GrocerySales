@@ -196,6 +196,17 @@ $(document).ready(function () {
         dom: '<"toolbar">frtip',
     });
 
+    // Stock Adjustment List DataTable
+
+    $("#stockAdjustmentList").DataTable({
+        scrollX: true,
+        order: [],
+        fixedColumns: {
+            right: 1,
+        },
+        dom: '<"toolbar">frtip',
+    });
+
 });
 
 // Delete Category function
@@ -292,6 +303,12 @@ function PassTransferNo(transferNo) {
 
 function PassDamageNo(damageNo) {
     $("#deleteDamageBtn").attr("href", "/stockdamage/delete/" + damageNo);
+}
+
+// Delete Adjustment Damage
+
+function PassAdjustmentNo(adjustNo) {
+    $("#deleteAdjustBtn").attr("href", "/stockadjustment/delete/" + adjustNo);
 }
 
 // Check Number Function
