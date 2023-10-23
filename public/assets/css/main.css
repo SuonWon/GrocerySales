@@ -110,7 +110,10 @@ a:focus {
 
 #sidebar.active .sidebar-footer p,
 #sidebar.active .logout span,
-#sidebar.active .sidebar-header h3 {
+#sidebar.active .sidebar-header h3,
+#faSaveRotate,
+#faPrintRotate,
+#faRawRotate {
     display: none;
 }
 

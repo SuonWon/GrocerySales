@@ -321,12 +321,18 @@
                 </div>
                 {{-- Save Button --}}
                 <div class="row mt-2">
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success me-2" id="saveData">
-                            <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Save
+                    <div class="col-12 text-end d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success me-2 d-flex align-items-center" id="saveData">
+                            <span class="me-2">
+                                <i class="fa fa-floppy-disk" id="faDisk"></i>
+                                <i class="fa-solid fa-rotate-right fa-spin" id="faSaveRotate"></i>
+                            </span> Save
                         </button>
-                        <button type="button" class="btn btn-primary" id="printPuBtn">
-                            <span class="me-2"><i class="fa fa-print"></i></span> Save & Preview
+                        <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="printPuBtn">
+                            <span class="me-2">
+                                <i class="fa fa-print" id="faPrint"></i>
+                                <i class="fa-solid fa-rotate-right fa-spin" id="faPrintRotate"></i>
+                            </span> Save & Preview
                         </button>
                     </div>
                 </div>
@@ -1322,17 +1328,29 @@
 
     // ========= Print Function ======== //
 
-    $("#printPuBtn").on('click', savePuData);
+    $("#printPuBtn").on('click', (event) => {
+        document.getElementById("faPrint").style.display = "none";
+        document.getElementById("faPrintRotate").style.display = "block";
+        savePuData(event);
+    });
 
     // ========= End of Print Function ======== //
 
     // ========= Save Data to Database =========== //
 
-    $("#saveFormData").submit(savePuData);
+    $("#saveFormData").submit( (event) => {
+        document.getElementById("faDisk").style.display = "none";
+        document.getElementById("faSaveRotate").style.display = "block";
+        savePuData(event);
+    });
 
     function savePuData(event){
 
         event.preventDefault();
+
+        $("#printPuBtn").attr("disabled", "");
+
+        $("#saveData").attr("disabled", "");
 
         let supplierCode = $("#supplierCodeList").val();
 
@@ -1342,11 +1360,27 @@
 
             toastr.warning('Please enter Supplier Name');
 
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
+            $("#printPuBtn").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+
             return;
 
         } else if (arrivalCode == null) {
 
             toastr.warning('Please enter Arrival Plate No/Name');
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
+            $("#printPuBtn").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
 
             return;
         }
@@ -1407,16 +1441,45 @@
 
             toastr.warning('Please enter Warehouse Name in line no ' + lineNo);
 
+            $("#printPuBtn").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
             return;
 
         } else if (errorMsg == "U") {
 
             toastr.warning('Please enter Unit Name in line no ' + lineNo);
 
+            $("#printPuBtn").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
+            return;
+
+        } else if (purchaseInvoiceDetailsArr.length === 0) {
+
+            toastr.warning('Please choose at least one item');
+
+            $("#printPuBtn").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
             return;
 
         }
-
 
         $.ajaxSetup({
 
@@ -1463,6 +1526,14 @@
                 console.log(response);
 
                 if(response.message == "good"){
+
+                    $("#printPuBtn").removeAttr("disabled");
+                    $("#saveData").removeAttr("disabled");
+
+                    document.getElementById("faDisk").style.display = "block";
+                    document.getElementById("faSaveRotate").style.display = "none";
+                    document.getElementById("faPrint").style.display = "block";
+                    document.getElementById("faPrintRotate").style.display = "none";
 
                     if(event.target.id == "printPuBtn") {
 
