@@ -87,7 +87,7 @@ class PurchaseInvoiceController extends Controller
             // If both startDate and endDate are null, retrieve records for the current month
        
             $query->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
-                  ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+                ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
 
             $deletequery->where('purchase_invoices.PurchaseDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
             ->where('purchase_invoices.PurchaseDate', '<=', Carbon::now()->endOfMonth()->toDateString());
@@ -228,7 +228,6 @@ class PurchaseInvoiceController extends Controller
                         //if want to make increase
                         Item::where('ItemCode', $ItemCode)->update(['LastPurPrice' => $unitPrice]);
                         StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
-                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->update(['Status' => 'O']);
 
 
                     } catch (QueryException $e) {
@@ -315,36 +314,6 @@ class PurchaseInvoiceController extends Controller
         $oldArrivalCode = $purchaseinvoice->ArrivalCode;
         $newArrivalCode = $formData['ArrivalCode'];
 
-        // if ($formData['IsComplete'] == 1) {
-
-        //     if ($oldArrivalCode != $newArrivalCode) {
-
-        //         ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
-
-        //         ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
-
-        //     }
-
-        //     ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "O"]);
-
-        //     PurchaseInvoice::where('ArrivalCode', $newArrivalCode)->update(['IsComplete' => 1]);
-
-        // } else {
-
-        //     if ($oldArrivalCode != $newArrivalCode) {
-
-        //         ItemArrival::where('ArrivalCode', $newArrivalCode)->update(['Status' => "N"]);
-
-        //         ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
-
-        //     }
-
-        //     ItemArrival::where('ArrivalCode', $oldArrivalCode)->update(['Status' => "N"]);
-
-        //     PurchaseInvoice::where('ArrivalCode', $oldArrivalCode)->update(['IsComplete' => 0]);
-
-        // }
-
         $formData['InvoiceNo'] = $purchaseinvoice->InvoiceNo;
         $formData['ModifiedBy'] = auth()->user()->Username;
         $formData['ModifiedDate'] = $this->datetime;
@@ -396,7 +365,7 @@ class PurchaseInvoiceController extends Controller
                         $newPurchaseInvoicedetails = PurchaseInvoiceDetail::create($data);
 
                         Item::where('ItemCode', $purchaseInvoiceDetail['ItemCode'])->update(['LastPurPrice' =>  $purchaseInvoiceDetail['UnitPrice']]);
-                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->decrement('StockQty', $purchaseInvoiceDetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['OldWarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['OldItemCode'])->decrement('StockQty', $purchaseInvoiceDetail['OldTotalViss']);
                         StockInWarehouse::where('WarehouseCode',$purchaseInvoiceDetail['WarehouseNo'])->where('ItemCode',$purchaseInvoiceDetail['ItemCode'])->increment('StockQty', $purchaseInvoiceDetail['TotalViss']);
 
                     } catch (QueryException $e) {

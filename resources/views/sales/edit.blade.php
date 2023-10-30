@@ -14,8 +14,10 @@
                 'ReferenceNo' => $saleinvoicedetail->ReferenceNo,
                 'WarehouseNo' => $saleinvoicedetail->WarehouseCode,
                 'WarehouseName' => $saleinvoicedetail->WarehouseName,
+                'OldWarehouseNo' => $saleinvoicedetail->WarehouseCode,
                 'ItemCode' => $saleinvoicedetail->ItemCode,
                 'ItemName' => $saleinvoicedetail->ItemName,
+                'OldItemCode' => $saleinvoicedetail->ItemCode,
                 'WeightPrice' => $saleinvoicedetail->WeightByPrice,
                 'Quantity' => $saleinvoicedetail->Quantity,
                 'NewQuantity' => $saleinvoicedetail->NewQuantity,
@@ -181,7 +183,7 @@
                                 <thead class="sticky-top">
                                     <tr id="0">
                                         {{-- <th style="width: 50px;">No</th> --}}
-                                        <th style="width: 180px;">Item Name</th>
+                                        <th style="width: 200px;">Item Name</th>
                                         <th style="width: 200px;">Warehouse Name</th>
                                         <th style="width: 80px;" class="text-end">Quantity</th>
                                         {{-- <th style="width: 120px;">NQty</th> --}}
@@ -449,15 +451,24 @@
                 </div>
                 {{-- Save Button --}}
                 <div class="row mt-2">
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success me-2" id="saveData">
-                            <span class="me-2"><i class="fa fa-floppy-disk"></i></span> Update
+                    <div class="col-12 text-end d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success me-2 d-flex align-items-center" id="saveData">
+                            <span class="me-2">
+                                <i class="fa fa-floppy-disk" id="faDisk"></i>
+                                <i class="fa-solid fa-rotate-right fa-spin" id="faSaveRotate"></i>
+                            </span> Save
                         </button>
-                        <button type="button" class="btn btn-primary me-2" id="pUpdateSalesVou">
-                            <span class="me-2"><i class="fa fa-print"></i></span> Save & Preview
+                        <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="pUpdateSalesVou">
+                            <span class="me-2">
+                                <i class="fa fa-print" id="faPrint"></i>
+                                <i class="fa-solid fa-rotate-right fa-spin" id="faPrintRotate"></i>
+                            </span> Save & Preview
                         </button>
-                        <button type="button" class="btn btn-primary me-2" id="saveRaw">
-                            <span class="me-2"><i class="bi bi-envelope-paper-fill"></i></span> Save & Raw
+                        <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="saveRaw">
+                            <span class="me-2">
+                                <i class="bi bi-envelope-paper-fill" id="faRaw"></i>
+                                <i class="fa-solid fa-rotate-right fa-spin" id="faRawRotate"></i>
+                            </span> Save & Raw
                         </button>
                         <button type="button" class="btn delete-btn" id="{{ $saleinvoice->InvoiceNo }}"
                             onclick="PassSaleInNo(this.id);" data-bs-toggle="modal"
@@ -529,8 +540,10 @@
             referenceNo: saleRowNo,
             WarehouseNo: "",
             WarehouseName: "",
+            OldWarehouseNo: "",
             ItemCode: "",
             ItemName: "",
+            OldItemCode: "",
             WeightPrice: 1,
             Quantity: 1,
             NewQuantity: 0,
@@ -1389,29 +1402,58 @@
 
     // ========= Print Update Sales Function ========== //
 
-    $("#pUpdateSalesVou").on('click', PrintSalesUpdate)
+    $("#pUpdateSalesVou").on('click', (event) => { 
+        document.getElementById("faPrint").style.display = "none";
+        document.getElementById("faPrintRotate").style.display = "block";
+        PrintSalesUpdate (event);
+    });
 
     // ========= End of Print Update Sales Function ========== //
 
     // ========= Save and Raw Function ========= //
 
-    $("#saveRaw").on('click', PrintSalesUpdate)
+    $("#saveRaw").on('click', (event) => { 
+        document.getElementById("faRaw").style.display = "none";
+        document.getElementById("faRawRotate").style.display = "block";
+        PrintSalesUpdate(event);
+    });
 
     // ========= End of Save and Raw Function
 
     // ========= Update Data to Database ========= //
 
-    $("#updateSalesForm").submit(PrintSalesUpdate)
+    $("#updateSalesForm").submit( (event) => {
+        document.getElementById("faDisk").style.display = "none";
+        document.getElementById("faSaveRotate").style.display = "block";
+        PrintSalesUpdate(event);
+    });
 
     function PrintSalesUpdate(event) {
 
         event.preventDefault();
+
+        $("#saveRaw").attr("disabled", "");
+
+        $("#saveData").attr("disabled", "");
+
+        $("#pUpdateSalesVou").attr("disabled", "");
 
         let customerCode = $("#customerNameList").val();
 
         if (customerCode == null) {
 
             toastr.warning('Please enter Customer Name');
+
+            $("#saveRaw").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+            $("#pUpdateSalesVou").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faRaw").style.display = "block";
+            document.getElementById("faRawRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
 
             return;
 
@@ -1448,7 +1490,9 @@
                 let purchaseInvoiceDetailsObject = {
                     LineNo: element.referenceNo,
                     WarehouseNo: element.WarehouseNo,
+                    OldWarehouseNo: element.OldWarehouseNo,
                     ItemCode: element.ItemCode,
+                    OldItemCode: element.OldItemCode,
                     Quantity: element.Quantity,
                     NewQuantity: 0,
                     PackedUnit: element.PackedUnit,
@@ -1474,11 +1518,50 @@
 
             toastr.warning('Please enter Warehouse Name in line no ' + lineNo);
 
+            $("#saveRaw").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+            $("#pUpdateSalesVou").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faRaw").style.display = "block";
+            document.getElementById("faRawRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
             return;
 
         } else if (errorMsg == "U") {
 
             toastr.warning('Please enter Unit Name in line no ' + lineNo);
+
+            $("#saveRaw").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+            $("#pUpdateSalesVou").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faRaw").style.display = "block";
+            document.getElementById("faRawRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
+
+            return;
+
+        } else if (saleInvoiceDetailsArr.length === 0) {
+
+            toastr.warning('Please choose at least one item');
+
+            $("#saveRaw").removeAttr("disabled");
+            $("#saveData").removeAttr("disabled");
+            $("#pUpdateSalesVou").removeAttr("disabled");
+
+            document.getElementById("faDisk").style.display = "block";
+            document.getElementById("faSaveRotate").style.display = "none";
+            document.getElementById("faRaw").style.display = "block";
+            document.getElementById("faRawRotate").style.display = "none";
+            document.getElementById("faPrint").style.display = "block";
+            document.getElementById("faPrintRotate").style.display = "none";
 
             return;
 
@@ -1525,6 +1608,18 @@
                 console.log(response);
 
                 if (response.message == "good") {
+
+                    $("#saveRaw").removeAttr("disabled");
+                    $("#saveData").removeAttr("disabled");
+                    $("#pUpdateSalesVou").removeAttr("disabled");
+
+                    document.getElementById("faDisk").style.display = "block";
+                    document.getElementById("faSaveRotate").style.display = "none";
+                    document.getElementById("faRaw").style.display = "block";
+                    document.getElementById("faRawRotate").style.display = "none";
+                    document.getElementById("faPrint").style.display = "block";
+                    document.getElementById("faPrintRotate").style.display = "none";
+
 
                     if (event.target.id == "pUpdateSalesVou") {
 
