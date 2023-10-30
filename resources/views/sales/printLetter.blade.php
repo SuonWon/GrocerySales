@@ -178,7 +178,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row default_fs text-end fixed-bottom">
+            <div class="row default_fs text-end">
                 <span id="printDate"></span>
             </div>
         </div>
@@ -259,11 +259,14 @@
 
             let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
-            let hour = date.getHours();
+            let hour = date.getHours() % 12;
+            hour = ((hour ? hour : 12) < 10 ? "0" : "") + hour;
 
-            let minute = date.getMinutes();
+            let minute = date.getMinutes() < 10 ? "0" + (date.getMinutes()) : date.getMinutes();
 
-            document.getElementById("printDate").innerHTML = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+            let second = date.getSeconds() < 10 ? "0" + (date.getSeconds()) : date.getSeconds();
+
+            document.getElementById("printDate").innerHTML = `${day}-${month}-${year} ${hour}:${minute}:${second} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
 
             window.print();
 

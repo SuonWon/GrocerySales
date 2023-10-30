@@ -110,7 +110,10 @@ a:focus {
 
 #sidebar.active .sidebar-footer p,
 #sidebar.active .logout span,
-#sidebar.active .sidebar-header h3 {
+#sidebar.active .sidebar-header h3,
+#faSaveRotate,
+#faPrintRotate,
+#faRawRotate {
     display: none;
 }
 
@@ -166,7 +169,8 @@ a:focus {
 #sidebar.active ul#settingSubmenu li a,
 #sidebar.active ul#purchaseSetting li a,
 #sidebar.active ul#saleSetting li a,
-#sidebar.active ul#reportSubmenu li a {
+#sidebar.active ul#reportSubmenu li a,
+#sidebar.active ul#stockMenu li a {
     padding: 10px 5px !important;
     text-align: center;
     font-size: 0.75em !important;
@@ -175,7 +179,8 @@ a:focus {
 #sidebar.active ul#settingSubmenu li a span,
 #sidebar.active ul#purchaseSetting li a span,
 #sidebar.active ul#saleSetting li a span,
-#sidebar.active ul#reportSubmenu li a span {
+#sidebar.active ul#reportSubmenu li a span,
+#sidebar.active ul#stockMenu li a span {
     margin-right: 0;
     display: block;
     font-size: 0.75em;
@@ -488,6 +493,10 @@ ul ul a {
     border-bottom: 2px solid #36616d;
 }
 
+.warning-input {
+    border: 2px solid orange !important;
+}
+
 .cust-label {
     font-size: 0.95rem;
 }
@@ -625,9 +634,12 @@ input[type="number"] {
 .purchaseTable,
 .saleTable {
     height: 300px;
-    overflow-x: auto;
-    overflow-y: auto;
-    white-space: nowrap;
+    overflow: auto;
+}
+
+.purchaseTable table,
+.saleTable table {
+    table-layout: fixed;
 }
 
 .purchaseTable table thead,

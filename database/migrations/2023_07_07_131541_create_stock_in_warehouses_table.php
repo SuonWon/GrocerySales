@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('WarehouseCode',10);
             $table->string('ItemCode',10);
             $table->float('StockQty',10,2);
-            $table->dateTime('LastUpdatedDate');
             
+            $table->dateTime('LastUpdatedDate');
+            $table->char('Status');
             $table->primary(['WarehouseCode', 'ItemCode']);
         });
     }

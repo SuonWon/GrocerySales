@@ -9,11 +9,15 @@ use App\Http\Controllers\ItemArrivalController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseInvoiceController;
 use App\Http\Controllers\SaleInvoiceController;
+use App\Http\Controllers\StockAdjustmentController;
+use App\Http\Controllers\StockDamageController;
+use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemRoleController;
 use App\Http\Controllers\UnitMeasurementController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\SaleInvoice;
+use App\Models\StockTransfer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -171,6 +175,36 @@ Route::middleware('mymiddleware:setup')->group(function () {
         Route::post('/update/{item:ItemCode}', [ItemController::class, 'update'])->where('item', '^SI-(\d+)$');
         Route::get('/delete/{item:ItemCode}', [ItemController::class, 'destory'])->where('item', '^SI-(\d+)$');
     });
+
+    Route::prefix('stocktransfer')->group(function(){
+        Route::get('/index',[StockTransferController::class, 'index'])->name('stocktransfer');
+        Route::get('/add',[StockTransferController::class, 'create'])->name('addstocktransfer');
+        Route::post('/add',[StockTransferController::class, 'store'])->name('addstocktransfer');
+        Route::get('/edit/{stocktransfer:TransferNo}',[StockTransferController::class, 'show'])->where('stocktransfer', '^TF-(\d+)$')->name('showstocktransfer');
+        Route::post('/update/{stocktransfer:TransferNo}',[StockTransferController::class, 'update'])->where('stocktransfer','^TF-(\d+)$')->name('updatestocktransfer');
+        Route::get('/delete/{stocktransfer:TransferNo}',[StockTransferController::class, 'destory'])->where('stocktransfer','^TF-(\d+)$')->name('deletestocktransfer');
+        Route::get('/restore/{stocktransfer:TransferNo}',[StockTransferController::class, 'restore'])->where('stocktransfer','^TF-(\d+)$')->name('restorestocktransfer');
+    });
+
+    Route::prefix('stockadjustment')->group(function(){
+        Route::get('/index',[StockAdjustmentController::class, 'index'])->name('stockadjustment');
+        Route::get('/add',[StockAdjustmentController::class, 'create'])->name('addstockadjustment');
+        Route::post('/add',[StockAdjustmentController::class, 'store']);
+        Route::get('/edit/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'show'])->where('stockadjustment', '^AD-(\d+)$')->name('showstockadjustment');
+        Route::post('update/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'update'])->where('stockadjustment','^AD-(\d+)$')->name('updatestockadjustment');
+        Route::get('delete/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'destory'])->where('stockadjustment','^AD-(\d+)$')->name('deletestockadjustment');
+        Route::get('restore/{stockadjustment:AdjustmentNo}',[StockAdjustmentController::class, 'restore'])->where('stockadjustment','^AD-(\d+)$')->name('restorestockadjustment');
+    });
+   
+    Route::prefix('stockdamage')->group(function(){
+        Route::get('/index',[StockDamageController::class, 'index'])->name('stockdamage');
+        Route::get('/add',[StockDamageController::class, 'create'])->name('addstockdamage');
+        Route::post('/add',[StockDamageController::class, 'store']);
+        Route::get('/edit/{stockdamage:DamageNo}',[StockDamageController::class, 'show'])->where('stockdamage', '^DM-(\d+)$')->name('showstockdamage');
+        Route::post('update/{stockdamage:DamageNo}',[StockDamageController::class, 'update'])->where('stockdamage','^DM-(\d+)$')->name('updatestockdamage');
+        Route::get('delete/{stockdamage:DamageNo}',[StockDamageController::class, 'destory'])->where('stockdamage','^DM-(\d+)$')->name('deletestockdamage');
+        Route::get('restore/{stockdamage:DamageNo}',[StockDamageController::class, 'restore'])->where('stockdamage','^DM-(\d+)$')->name('restorestockdamage');
+    });
 });
 
 //System Role and User
@@ -185,7 +219,7 @@ Route::middleware('mymiddleware:system')->group(function () {
         Route::get('/delete/{user:Username}', [AuthController::class, 'destory'])->where('user', '[A-z]+');
         Route::get('/reports', [AuthController::class, 'userreports']);
     });
-
+    
     // System Role routes
     Route::prefix('systemrole')->group(function () {
         Route::get('/index', [SystemRoleController::class, 'index'])->name('roles');
@@ -255,4 +289,5 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/delete/{itemarrival:ArrivalCode}', [ItemArrivalController::class, 'destory'])->where('itemarrival', '^IA-(\d+)$');
         Route::get('/reports', [ItemArrivalController::class, 'itemarrivalreports']);
     });
+    
 });

@@ -77,10 +77,11 @@ class SaleInvoiceController extends Controller
             $deletequery->where('sale_invoices.SalesDate', '<=', $request->input('saleEndDate'));
         }else{
             
-            $query->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-                  ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
-            $deletequery->where('sale_invoices.SalesDate', '>=', $this->currentMonth . '-01')
-            ->where('sale_invoices.SalesDate', '<=', $this->currentMonth . '-31');
+            $query->where('sale_invoices.SalesDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+                  ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
+                  
+            $deletequery->where('sale_invoices.SalesDate', '>=', Carbon::now()->subMonths(6)->startOfMonth()->toDateString())
+            ->where('sale_invoices.SalesDate', '<=', Carbon::now()->endOfMonth()->toDateString());
         }
 
         
@@ -177,12 +178,15 @@ class SaleInvoiceController extends Controller
 
 
                     $data['ReferenceNo'] = $guid;
+                    $data['LineNo'] = $saleDetails['LineNo'];
                     $data['WarehouseNo'] = $saleDetails['WarehouseNo'];
                     $data['ItemCode'] = $saleDetails['ItemCode'];
                     $data['Quantity'] = $saleDetails['Quantity'];
+                    $data['NewQuantity'] = $saleDetails['NewQuantity'];
                     $data['PackedUnit'] = $saleDetails['PackedUnit'];
                     $data['QtyPerUnit'] = $saleDetails['QtyPerUnit'];
                     $data['TotalViss'] = $saleDetails['TotalViss'];
+                    $data['ExtraViss'] = $saleDetails['ExtraViss'];
                     $data['UnitPrice'] = $saleDetails['UnitPrice'];
                     $data['Amount'] = $saleDetails['Amount'];
                     $data['LineDisPer'] = $saleDetails['LineDisPer'];
@@ -221,7 +225,8 @@ class SaleInvoiceController extends Controller
     public function show(SaleInvoice $saleinvoice)
     {
 
-        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+        $saleinvoicedetails = SaleInvoiceDetails::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $saleinvoice->InvoiceNo)
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -284,6 +289,7 @@ class SaleInvoiceController extends Controller
             $updatesaleinvoice = SaleInvoice::where('InvoiceNo', $saleinvoice->InvoiceNo)->update($formData);
 
             if (isset($updatesaleinvoice)) {
+                
                 SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)->delete();
 
                 foreach ($saleinvoicedetails as $saleinvoicedetail) {
@@ -295,11 +301,14 @@ class SaleInvoiceController extends Controller
 
 
                     $data['ReferenceNo'] = $guid;
+                    $data['LineNo'] = $saleinvoicedetail['LineNo'];
                     $data['WarehouseNo'] = $saleinvoicedetail['WarehouseNo'];
                     $data['ItemCode'] = $saleinvoicedetail['ItemCode'];
                     $data['Quantity'] = $saleinvoicedetail['Quantity'];
+                    $data['NewQuantity'] = $saleinvoicedetail['NewQuantity'];
                     $data['PackedUnit'] = $saleinvoicedetail['PackedUnit'];
                     $data['QtyPerUnit'] = $saleinvoicedetail['QtyPerUnit'];
+                    $data['ExtraViss'] = $saleinvoicedetail['ExtraViss'];
                     $data['TotalViss'] = $saleinvoicedetail['TotalViss'];
                     $data['UnitPrice'] = $saleinvoicedetail['UnitPrice'];
                     $data['Amount'] = $saleinvoicedetail['Amount'];
@@ -311,7 +320,7 @@ class SaleInvoiceController extends Controller
                     try {
                         $newSalesInvoicedetails = SaleInvoiceDetails::create($data);
 
-                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
+                        StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['OldWarehouseNo'])->where('ItemCode',$saleinvoicedetail['OldItemCode'])->increment('StockQty', $saleinvoicedetail['OldTotalViss']);
                         StockInWarehouse::where('WarehouseCode',$saleinvoicedetail['WarehouseNo'])->where('ItemCode',$saleinvoicedetail['ItemCode'])->decrement('StockQty', $saleinvoicedetail['TotalViss']);
                     } catch (QueryException $e) {
 
@@ -405,7 +414,8 @@ class SaleInvoiceController extends Controller
     public function viewDetails(SaleInvoice $saleinvoice)
     {
 
-        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+        $saleinvoicedetails = SaleInvoiceDetails::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $saleinvoice->InvoiceNo)
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -432,7 +442,8 @@ class SaleInvoiceController extends Controller
     public function printPreview(SaleInvoice $saleinvoice)
     {
 
-        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+        $saleinvoicedetails = SaleInvoiceDetails::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $saleinvoice->InvoiceNo)
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -462,7 +473,8 @@ class SaleInvoiceController extends Controller
     public function printLetter(SaleInvoice $saleinvoice)
     {
 
-        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+        $saleinvoicedetails = SaleInvoiceDetails::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $saleinvoice->InvoiceNo)
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')
@@ -492,7 +504,8 @@ class SaleInvoiceController extends Controller
     public function detailsPreview(SaleInvoice $saleinvoice)
     {
 
-        $saleinvoicedetails = SaleInvoiceDetails::where('InvoiceNo', $saleinvoice->InvoiceNo)
+        $saleinvoicedetails = SaleInvoiceDetails::orderBy('LineNo', 'asc')
+            ->where('InvoiceNo', $saleinvoice->InvoiceNo)
             ->join('warehouses', 'sale_invoice_details.WarehouseNo', '=', 'warehouses.WarehouseCode')
             ->join('items', 'sale_invoice_details.ItemCode', '=', 'items.ItemCode')
             ->join('unit_measurements', 'sale_invoice_details.PackedUnit', '=', 'unit_measurements.UnitCode')

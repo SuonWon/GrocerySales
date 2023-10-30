@@ -193,14 +193,6 @@
                         </div>
                         <div class="row justify-content-between p-0 m-0">
                             <div class="col-8 text-start p-0 m-0">
-                                <span>ကြိုထုတ်ငွေ</span>
-                            </div>
-                            <div class="col-4 p-0 d-flex justify-content-between">
-                                <span>:</span><span id="pVOtherCharges"></span>
-                            </div>
-                        </div>
-                        <div class="row justify-content-between p-0 m-0">
-                            <div class="col-8 text-start p-0 m-0">
                                 <span>ဝန်ဆောင်ခ</span>
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
@@ -213,6 +205,14 @@
                             </div>
                             <div class="col-4 p-0 d-flex justify-content-between">
                                 <span>:</span><span id="pVFactoryCharges"> </span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between p-0 m-0">
+                            <div class="col-8 text-start p-0 m-0">
+                                <span>ကြိုထုတ်ငွေ</span>
+                            </div>
+                            <div class="col-4 p-0 d-flex justify-content-between">
+                                <span>:</span><span id="pVOtherCharges"></span>
                             </div>
                         </div>
                         <div class="border-bottom border-1 border-dark my-1 col-12"></div>
@@ -267,7 +267,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row default_fs text-end fixed-bottom px-3">
+                <div class="row default_fs text-end px-3">
                     <span id="printDate"></span>
                 </div>
             </div>
@@ -316,7 +316,6 @@
             document.getElementById("pVGrandTotal").innerHTML = myanmarNumToWord.convertToBurmeseNumber(Number({{$purchaseinvoice->GrandTotal}}));
 
             purchaseDataList.forEach((e) => {
-                console.log(e.ItemName);
 
                 purchaseList += `<tr class="dataRow text-end mt-4 mf-normal">
                                 <td class="text-start">`+ e.LineNo +`</td>
@@ -367,11 +366,15 @@
 
             let day = date.getDate() < 10 ? "0" + (date.getDate()) : date.getDate();
 
-            let hour = date.getHours();
+            let hour = date.getHours() % 12;
+            hour = ((hour ? hour : 12) < 10 ? "0" : "") + hour;
 
-            let minute = date.getMinutes();
+            let minute = date.getMinutes() < 10 ? "0" + (date.getMinutes()) : date.getMinutes();
 
-            document.getElementById("printDate").innerHTML = day + "-" + month + "-" + year + " " + hour + ":" + minute;
+            let second = date.getSeconds() < 10 ? "0" + (date.getSeconds()) : date.getSeconds();
+
+            document.getElementById("printDate").innerHTML = `${day}-${month}-${year} ${hour}:${minute}:${second} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+            //day + "-" + month + "-" + year + " " + hour + ":" + minute;
 
             window.print();
 
