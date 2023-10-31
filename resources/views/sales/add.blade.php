@@ -272,19 +272,19 @@
                         <button type="submit" class="btn btn-success me-2 d-flex align-items-center" id="saveData">
                             <span class="me-2">
                                 <i class="fa fa-floppy-disk" id="faDisk"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faSaveRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faSaveRotate"></i>
                             </span> Save
                         </button>
                         <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="printSalesInBtn">
                             <span class="me-2">
                                 <i class="fa fa-print" id="faPrint"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faPrintRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faPrintRotate"></i>
                             </span> Save & Preview
                         </button>
                         <button type="button" class="btn btn-primary d-flex align-items-center" id="saveRaw">
                             <span class="me-2">
                                 <i class="bi bi-envelope-paper-fill" id="faRaw"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faRawRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faRawRotate"></i>
                             </span> Save & Raw
                         </button>
                     </div>

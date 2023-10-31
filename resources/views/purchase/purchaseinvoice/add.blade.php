@@ -325,13 +325,13 @@
                         <button type="submit" class="btn btn-success me-2 d-flex align-items-center" id="saveData">
                             <span class="me-2">
                                 <i class="fa fa-floppy-disk" id="faDisk"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faSaveRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faSaveRotate"></i>
                             </span> Save
                         </button>
                         <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="printPuBtn">
                             <span class="me-2">
                                 <i class="fa fa-print" id="faPrint"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faPrintRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faPrintRotate"></i>
                             </span> Save & Preview
                         </button>
                     </div>
@@ -1232,7 +1232,7 @@
         
         document.getElementById("subTotal").value = subTotal.toLocaleString();
 
-        AddSupplierData();
+        CalSupplierRate();
 
     }
 
@@ -1514,7 +1514,7 @@
 
         data = JSON.stringify(data);
 
-        // console.log(data);
+        console.log(data);
 
         $.ajax({
             url: '/purchaseinvoices/add' ,
@@ -1665,19 +1665,7 @@
 
         let arrivalCodeCheck = document.querySelector("#arrivalCodeList").value;
 
-        let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g,""));
-
         let arrivalOptions = "<option value='' selected disabled>Choose</option>";
-
-        supplierList.forEach((e) => {
-
-            if (e.supplierCode == supplierCode) {
-
-                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100)).toLocaleString();
-
-            }
-
-        });
 
         if (arrivalCodeCheck == '') {
 
@@ -1701,12 +1689,59 @@
 
             dselect(document.querySelector("#arrivalCodeList"), config);
 
+        } else {
+
+            document.querySelector("#arrivalCodeList").value = "";
+
+            let resultArrivals = itemArrival.filter(i => i.supplierCode == supplierCode);
+
+            if (resultArrivals == "") {
+
+                arrivalOptions = "<option value=''>There is no arrival.</option>";
+
+            } else {
+
+                resultArrivals.forEach(i => {
+
+                arrivalOptions += `<option value="`+ i.arrivalCode +`">`+ i.plateNo +`</option>`;
+
+                });
+
+            }
+
+            document.querySelector("#arrivalCodeList").innerHTML = arrivalOptions;
+
+            dselect(document.querySelector("#arrivalCodeList"), config);
+
         }
+
+        CalSupplierRate();
 
         DisplayTotalCharges();
 
     }
 
     // ========= End of Add Supplier Data ========= //
+
+    // ========= Calculate Supplier Rate ========== //
+
+    function CalSupplierRate() {
+
+        let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g,""));
+
+        let supplierCode = document.querySelector("#supplierCodeList").value;
+
+        supplierList.forEach((e) => {
+
+            if (e.supplierCode == supplierCode) {
+
+                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100)).toLocaleString();
+
+            }
+
+        });
+    }
+
+    // ========= End of Calculate Supplier Rate ========== //
 
 </script>

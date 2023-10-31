@@ -67,7 +67,10 @@
                     </label>
                 </div>
                 <div class="loginSubmitBtn my-2">
-                    <button type="button" id="loginSubmit">Login</button>
+                    <button type="button" id="loginSubmit">
+                        <i class="fa-solid fa-spinner fa-spin" id="loginRotate" style="display: none;"></i>
+                        <span id="loginText">Login</span>
+                    </button>
                 </div>
             </form>
             
@@ -107,12 +110,20 @@
         @if (Session::has('error'))
             toastr.error('{{ Session::get('error') }}');
         @elseif (Session::has('success'))
+            document.getElementById("loginRotate").style.display = "none";
+            document.getElementById("loginText").style.display = "block";
             toastr.success('{{ Session::get('success') }}');
+            
         @elseif (Session::has('warning'))
             toastr.warning('{{ Session::get('warning') }}');
         @elseif (Session::has('danger'))
-        toastr.error('{{ Session::get('danger') }}');
+            toastr.error('{{ Session::get('danger') }}');
         @endif
+
+        $("#loginSubmit").on('click', () => {
+            document.getElementById("loginRotate").style.display = "block";
+            document.getElementById("loginText").style.display = "none";
+        });
     </script>
 
 </body>
