@@ -113,7 +113,8 @@ a:focus {
 #sidebar.active .sidebar-header h3,
 #faSaveRotate,
 #faPrintRotate,
-#faRawRotate {
+#faRawRotate,
+#loginRotate {
     display: none;
 }
 

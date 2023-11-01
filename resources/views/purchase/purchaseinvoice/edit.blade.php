@@ -426,11 +426,7 @@
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="shippingCharges" name="ShippingCharges"
-                                    value=@foreach ($arrivals as $arrival)
-                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
-                                            {{number_format($arrival->TotalCharges)}}
-                                        @endif
-                                    @endforeach
+                                    value={{number_format($purchaseinvoice->ShippingCharges)}}
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
@@ -494,12 +490,8 @@
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="otherCharges" name="OtherCharges"
-                                    value=@foreach ($arrivals as $arrival)
-                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
-                                            {{number_format($arrival->OtherCharges)}}
-                                        @endif
-                                    @endforeach
-                                    onblur="PuEditCharges(event);">
+                                    value={{number_format($purchaseinvoice->OtherCharges)}}
+                                    onblur="PuEditCharges(event);" />
                             </div>
                         </div>
                         <hr>
@@ -542,13 +534,13 @@
                         <button type="submit" class="btn btn-success me-2 d-flex align-items-center" id="saveData">
                             <span class="me-2">
                                 <i class="fa fa-floppy-disk" id="faDisk"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faSaveRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faSaveRotate"></i>
                             </span> Save
                         </button>
                         <button type="button" class="btn btn-primary me-2 d-flex align-items-center" id="pUpdatePuVoucher">
                             <span class="me-2">
                                 <i class="fa fa-print" id="faPrint"></i>
-                                <i class="fa-solid fa-rotate-right fa-spin" id="faPrintRotate"></i>
+                                <i class="fa-solid fa-spinner fa-spin" id="faPrintRotate"></i>
                             </span> Save & Preview
                         </button>
                         <button type="button" class="btn delete-btn" id="{{ $purchaseinvoice->InvoiceNo }}"
@@ -1404,7 +1396,7 @@
 
         document.getElementById("subTotal").value = subTotal.toLocaleString();
 
-        AddSupplierData();
+        CalSupplierRate();
 
     }
 
@@ -1685,7 +1677,7 @@
 
         data = JSON.stringify(data);
 
-        //console.log(data);
+        console.log(data);
 
         let url = $("#updatePurchaseForm").attr('action');
 
@@ -1843,20 +1835,7 @@
 
         let arrivalCodeCheck = document.querySelector("#arrivalCodeList").value;
 
-        let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g, ""));
-
         let arrivalOptions = "<option value='' selected disabled>Choose</option>";
-
-        supplierList.forEach((e) => {
-
-            if (e.supplierCode == supplierCode) {
-
-                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100))
-                    .toLocaleString();
-
-            }
-
-        });
 
         if (arrivalCodeCheck == "") {
 
@@ -1880,11 +1859,59 @@
 
             dselect(document.querySelector("#arrivalCodeList"), config);
 
+        } else {
+
+            document.querySelector("#arrivalCodeList").value = "";
+
+            let resultArrivals = itemArrival.filter(i => i.supplierCode == supplierCode);
+
+            if (resultArrivals == "") {
+
+                arrivalOptions = "<option value=''>There is no arrival.</option>";
+
+            } else {
+
+                resultArrivals.forEach(i => {
+
+                arrivalOptions += `<option value="`+ i.arrivalCode +`">`+ i.plateNo +`</option>`;
+
+                });
+
+            }
+
+            document.querySelector("#arrivalCodeList").innerHTML = arrivalOptions;
+
+            dselect(document.querySelector("#arrivalCodeList"), config);
+
         }
+
+        CalSupplierRate();
 
         DisplayTotalCharges();
 
     }
 
     // ========= End of Add Supplier Data ========= //
+
+    // ========= Calculate Supplier Rate ========== //
+
+    function CalSupplierRate() {
+
+        let subTotal = Number(document.querySelector("#subTotal").value.replace(/,/g,""));
+
+        let supplierCode = document.querySelector("#supplierCodeList").value;
+
+        supplierList.forEach((e) => {
+
+            if (e.supplierCode == supplierCode) {
+
+                document.querySelector("#serviceCharges").value = Math.floor(subTotal * (e.profit / 100)).toLocaleString();
+
+            }
+
+        });
+    }
+
+    // ========= End of Calculate Supplier Rate ========== //
+
 </script>

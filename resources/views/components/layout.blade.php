@@ -156,19 +156,21 @@
                         </ul>
                     </li>
                 @endif
-               
-               
-                @if ($reportPermission)
-                    <li>
-                        <a href="/report/index">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                            Reports
-                        </a>
-                       
-                    </li>
-                @endif
 
                 @if ($systemPermission)
+                    <li>
+                        <a href="#stockMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="bi bi-sliders"></i>
+                            Stock
+                        </a>
+                        <ul class="collapse list-unstyled" id="stockMenu">
+                            <li>
+                                <a href="/stocktransfer/index"><span class="me-2"><i class="bi bi-arrow-left-right"></i></span>Stock Transfer</a>
+                                <a href="/stockdamage/index"><span class="me-2"><i class="bi bi-archive"></i></span>Stock Damage</a>
+                                <a href="/stockadjustment/index"><span class="me-2"><i class="bi bi-plus-slash-minus"></i></span>Stock Adjustment</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#settingSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <i class="bi bi-gear-wide-connected"></i>
@@ -183,18 +185,15 @@
                             </li>
                         </ul>
                     </li>
+                @endif
+
+                @if ($reportPermission)
                     <li>
-                        <a href="#stockMenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                            <i class="bi bi-sliders"></i>
-                            Stock
+                        <a href="/report/index">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            Reports
                         </a>
-                        <ul class="collapse list-unstyled" id="stockMenu">
-                            <li>
-                                <a href="/stocktransfer/index"><span class="me-2"><i class="bi bi-arrow-left-right"></i></span>Stock Transfer</a>
-                                <a href="/stockdamage/index"><span class="me-2"><i class="bi bi-file-earmark-minus-fill"></i></span>Stock Damage</a>
-                                <a href="/stockadjustment/index"><span class="me-2"><i class="bi bi-file-earmark-minus-fill"></i></span>Stock Adjustment</a>
-                            </li>
-                        </ul>
+                       
                     </li>
                 @endif
                     

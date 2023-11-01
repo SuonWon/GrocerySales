@@ -23,7 +23,9 @@ class ItemArrivalController extends Controller
 
     public function index(Request $request)
     {
-        $query = ItemArrival::orderBy('ArrivalDate', 'desc');
+        $query = ItemArrival::orderBy('ArrivalDate', 'desc')
+            ->join('suppliers', 'item_arrivals.SupplierCode', '=', 'suppliers.SupplierCode')
+            ->select('item_arrivals.*', 'suppliers.SupplierCode', 'suppliers.SupplierName');
 
         if ($request->input('StartDate') !== null && $request->input('EndDate') !== null) {
             $startDate = $request->input('StartDate');
