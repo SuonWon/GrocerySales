@@ -426,12 +426,7 @@
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="shippingCharges" name="ShippingCharges"
-                                    readonly
-                                    value=@foreach ($arrivals as $arrival)
-                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
-                                            {{number_format($arrival->TotalCharges)}}
-                                        @endif
-                                    @endforeach
+                                    value={{number_format($purchaseinvoice->ShippingCharges)}}
                                     onblur="PuEditCharges(event);">
                             </div>
                         </div>
@@ -495,12 +490,7 @@
                             <div class="col-5 col-xl-5 col-xxl-6 mb-2">
                                 <input type="text" class="form-control cust-input-box text-end"
                                     id="otherCharges" name="OtherCharges"
-                                    readonly
-                                    value=@foreach ($arrivals as $arrival)
-                                        @if ($arrival->ArrivalCode == $purchaseinvoice->ArrivalCode)
-                                            {{number_format($arrival->OtherCharges)}}
-                                        @endif
-                                    @endforeach
+                                    value={{number_format($purchaseinvoice->OtherCharges)}}
                                     onblur="PuEditCharges(event);" />
                             </div>
                         </div>
