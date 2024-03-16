@@ -43,12 +43,9 @@ class StockAdjustmentController extends Controller
                         $query->where('stock_adjustments.Status', 'D');
                     });
 
-
         if ($request->input('StartDate') !== null && $request->input('EndDate') !== null) {
         $startDate = $request->input('StartDate');
         $endDate = $request->input('EndDate');
-
-
 
         if($endDate < $startDate){
             return back()->with('warning','start date must be lower than end date');
@@ -181,22 +178,14 @@ class StockAdjustmentController extends Controller
 
                 foreach ($stockadjustmentdetails as $stockadjustmentdetail) {
 
-
                     $data = [];
                     $data['AdjustmentNo'] = $AdjustmentNo;
-                    
-
-
-                    
                     $data['LineNo'] = $stockadjustmentdetail['LineNo'];
-                   
                     $data['ItemCode'] = $stockadjustmentdetail['ItemCode'];
                     $data['Quantity'] = $stockadjustmentdetail['Quantity'];
-                    
                     $data['PackedUnit'] = $stockadjustmentdetail['PackedUnit'];
                     $data['QtyPerUnit'] = $stockadjustmentdetail['QtyPerUnit'];
                     $data['TotalViss'] = $stockadjustmentdetail['TotalViss'];
-                    
                     $data['UnitPrice'] = $stockadjustmentdetail['UnitPrice'];
                     $data['Amount'] = $stockadjustmentdetail['Amount'];
                     $data['AdjustType'] = $stockadjustmentdetail['AdjustType'];
@@ -215,12 +204,6 @@ class StockAdjustmentController extends Controller
                         }else if($stockadjustmentdetail['AdjustType'] == "minus"){
                             StockInWarehouse::where('WarehouseCode',$formData['Warehouse'])->where('ItemCode',$stockadjustmentdetail['ItemCode'])->decrement('StockQty', $stockadjustmentdetail['TotalViss']);
                         }
-
-                       
-                        
-
-                      
-
                     } catch (QueryException $e) {
 
                         return response()->json(['message' => $e->getMessage()]);
@@ -344,14 +327,6 @@ class StockAdjustmentController extends Controller
                         }else if ($stockadjustmentdetail['AdjustType'] == "minus"){
                             StockInWarehouse::where('WarehouseCode',$formData['Warehouse'])->where('ItemCode',$stockadjustmentdetail['ItemCode'])->decrement('StockQty', $stockadjustmentdetail['TotalViss']);
                         }
-                        
-                        
-
-                       
-
-                      
-                        
-
 
                     } catch (QueryException $e) {
 
@@ -371,7 +346,6 @@ class StockAdjustmentController extends Controller
 
     public function destory(StockAdjustment $stockadjustment)
     {
-        
 
         $data = [];
         $data['DeletedBy'] = auth()->user()->Username;
@@ -380,37 +354,17 @@ class StockAdjustmentController extends Controller
         $data['Status'] = 'D';
 
         $stockadjustmentdetails = StockAdjustmentDetails::where('AdjustmentNo',$stockadjustment->AdjustmentNo)->get();
-        
-      
 
         try {
-
             $deletestockadjustment = StockAdjustment::where('AdjustmentNo', $stockadjustment->AdjustmentNo)->update($data);
-
-            
-
             if($deletestockadjustment){
-
                 foreach ($stockadjustmentdetails as $stockadjustmentdetail) {
-
-                    
                     if($stockadjustmentdetail['AdjustType'] == "add"){
                         StockInWarehouse::where('WarehouseCode',$stockadjustment->Warehouse)->where('ItemCode',$stockadjustmentdetail['ItemCode'])->decrement('StockQty', $stockadjustmentdetail['TotalViss']);
                     }else if ($stockadjustmentdetail['AdjustType'] == "minus"){
                         StockInWarehouse::where('WarehouseCode',$stockadjustment->Warehouse)->where('ItemCode',$stockadjustmentdetail['ItemCode'])->increment('StockQty', $stockadjustmentdetail['TotalViss']);
                     }
-                    
-                   
-                    
-
-              
-                    
-                    
-
-                    
-                    
                 }
-                
             }
 
             return redirect()->route('stockadjustment')->with('success', 'Delete stockadjustment successful');

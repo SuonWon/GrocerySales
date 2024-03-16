@@ -15,10 +15,6 @@ class GenerateId extends Model
         $lastId = DB::table($table)->orderBy($idFieldName, 'desc')->first()->$idFieldName ?? 0;
         $lastId = trim($lastId, $deletepart);
     
-      
-
-       
-        
         // php build funcion  str_pad('မူလ စာ','ကိုယ်လိုချင်တဲ့ စာလုံးအရေအတွက်','လိုတဲ့နေရာဖြည့်ချင်တဲ့ ဂဏန်း');
         if($yearandmonth){
             $lastId = substr($lastId, 4); //trim first 4 character 

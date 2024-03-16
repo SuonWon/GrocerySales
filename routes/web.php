@@ -15,9 +15,11 @@ use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemRoleController;
 use App\Http\Controllers\UnitMeasurementController;
+use App\Http\Controllers\WalletTransactionController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\SaleInvoice;
 use App\Models\StockTransfer;
+use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -289,5 +291,12 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/delete/{itemarrival:ArrivalCode}', [ItemArrivalController::class, 'destory'])->where('itemarrival', '^IA-(\d+)$');
         Route::get('/reports', [ItemArrivalController::class, 'itemarrivalreports']);
     });
-    
+
+    Route::prefix('wallettransaction')->group(function() {
+        Route::get('/index', [WalletTransactionController::class, 'index']);
+        Route::post('/add', [WalletTransactionController::class, 'store']);
+        Route::get('/get/{Id}', [WalletTransactionController::class, 'showEdit']);
+        Route::post('/edit' [WalletTransactionController::class], 'update');
+        Route::post('/delete/{Id}', [WalletTransactionController::class], 'destroy');
+    });
 });

@@ -11,9 +11,7 @@ class CompanyInformation extends Model
 
     const CREATED_AT = 'CreatedDate';
     const UPDATED_AT = 'ModifiedDate';
-
     
-
     protected $primaryKey = 'CompanyCode';
 
     protected $casts = [
@@ -21,16 +19,16 @@ class CompanyInformation extends Model
     ];
 
     protected $fillable = [
-            'CompanyCode',
-            'CompanyName',
-            'CompanyLogo',
-            'Street',
-            'City',
-            'OfficeNo',
-            'HotLineNo',
-            'CreatedBy',
-            'CreatedDate',
-            'ModifiedBy',
-            'ModifiedDate'
+        'CompanyCode',
+        'CompanyName',
+        'CompanyLogo',
+        'Street',
+        'City',
+        'OfficeNo',
+        'HotLineNo',
+        'CreatedBy',
+        'CreatedDate',
+        'ModifiedBy',
+        'ModifiedDate'
     ];
 }
