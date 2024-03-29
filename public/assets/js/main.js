@@ -311,6 +311,13 @@ function PassAdjustmentNo(adjustNo) {
     $("#deleteAdjustBtn").attr("href", "/stockadjustment/delete/" + adjustNo);
 }
 
+// Delete Adjustment Damage
+
+function PassTransactionId(id) {
+    alert(id);
+    $("#deleteTransactionBtn").attr("href", "/walletTransaction/delete/" + id);
+}
+
 // Check Number Function
 
 function CheckNumber(event) {

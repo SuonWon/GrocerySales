@@ -315,10 +315,17 @@ ul ul a {
 }
 
 .section-title {
-    font-size: 1.6em;
+    font-size: 1.4em;
     color: black;
     border-left: 4px solid #36616d;
     padding: 0px 10px;
+}
+
+#modalHeader .section-title {
+    font-size: 1.4em;
+    color: #fff;
+    border-left: none;
+    padding: 0px;
 }
 
 .content-body {
@@ -536,8 +543,8 @@ input[type="number"] {
 
 .cust-btn-close {
     color: #f70808;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: 2px solid red;
     background-color: white;
@@ -552,6 +559,24 @@ input[type="number"] {
     color: white;
     background-color: red;
     cursor: pointer;
+}
+
+#modalHeader .cust-btn-close {
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
+    font-size: 1.5rem;
+}
+
+#modalHeader .cust-btn-close:hover {
+    color: black;
 }
 
 .delete-btn {

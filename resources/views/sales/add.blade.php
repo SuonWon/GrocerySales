@@ -98,8 +98,6 @@
                             @if (isset($customers) && is_object($customers) && count($customers) > 0)
                                 @forelse ($customers as $customer)
                                     <option value="{{ $customer->CustomerCode }}">{{ $customer->CustomerName }}</option>
-
-
                                 @empty
                                     <option disabled>No Customer Found</option>
                                 @endforelse
@@ -300,6 +298,7 @@
 </x-layout>
 
 <script>
+    
     dselect(document.querySelector("#customerNameList"), config);
 
     var saleRowNo = 1;

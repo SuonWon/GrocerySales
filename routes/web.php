@@ -232,6 +232,9 @@ Route::middleware('mymiddleware:system')->group(function () {
         Route::get('/delete/{role:RoleId}', [SystemRoleController::class, 'destory'])->where('role', '[\d]');
         Route::get('/reports', [SystemRoleController::class, 'systemrolereports']);
     });
+
+    //Transaction routes
+    // Route::get('transaction/index', function() {return view('transaction.index');});
 });
 
 // Sales Invoice routes
@@ -292,11 +295,11 @@ Route::middleware('mymiddleware:purchase')->group(function () {
         Route::get('/reports', [ItemArrivalController::class, 'itemarrivalreports']);
     });
 
-    Route::prefix('wallettransaction')->group(function() {
+    Route::prefix('walletTransaction')->group(function() {
         Route::get('/index', [WalletTransactionController::class, 'index']);
         Route::post('/add', [WalletTransactionController::class, 'store']);
-        Route::get('/get/{Id}', [WalletTransactionController::class, 'showEdit']);
-        Route::post('/edit' [WalletTransactionController::class], 'update');
-        Route::post('/delete/{Id}', [WalletTransactionController::class], 'destroy');
+        // Route::get('/get/{Id}', [WalletTransactionController::class, 'showEdit']);
+        Route::post('/edit/{id:Id}', [WalletTransactionController::class, 'update']);
+        Route::get('/delete/{id:Id}', [WalletTransactionController::class, 'destroy']);
     });
 });

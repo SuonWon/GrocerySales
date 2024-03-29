@@ -9,6 +9,8 @@ class WalletTransaction extends Model
 {
   use HasFactory;
 
+  protected $table = 'wallet_transaction';
+
   const CREATED_AT = 'CreatedDate';
   const UPDATED_AT = 'ModifiedDate';
 

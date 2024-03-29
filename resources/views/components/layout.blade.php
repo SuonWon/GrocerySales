@@ -185,6 +185,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="/walletTransaction/index">
+                            <i class="bi bi-wallet2"></i>
+                            Transaction
+                        </a>
+                       
+                    </li>
                 @endif
 
                 @if ($reportPermission)
