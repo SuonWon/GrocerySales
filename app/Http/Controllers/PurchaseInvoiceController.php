@@ -33,20 +33,20 @@ class PurchaseInvoiceController extends Controller
     public function index(Request $request)
     {
         $query = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
+            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName', 'item_arrivals.PlateNo')
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
-            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+            ->join('item_arrivals', 'item_arrivals.ArrivalCode', '=', 'purchase_invoices.ArrivalCode')
             ->where(function ($query) {
                 $query->where('purchase_invoices.Status', 'O');
-                    
             });
 
         $deletequery = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
-        ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
-        ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
-        ->where(function($delquery){
-            $delquery->where('purchase_invoices.Status', "=", "D");
-                            
-        });
+            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+            ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
+            ->join('item_arrivals', 'item_arrivals.ArrivalCode', '=', 'purchase_invoices.ArrivalCode')
+            ->where(function($delquery){
+                $delquery->where('purchase_invoices.Status', "=", "D");         
+            });
 
        
 
@@ -98,13 +98,9 @@ class PurchaseInvoiceController extends Controller
         
         $deletepurchaseinvoices = $deletequery->get();
 
-        $arrivals = ItemArrival::all();
-   
-
         return view('purchase.purchaseinvoice.index', [
             'purchaseinvoices' => $purchaseinvoices,
             'deletepurchaseinvoices' => $deletepurchaseinvoices,
-            'arrivals' => $arrivals,
         ]);
     }
 
