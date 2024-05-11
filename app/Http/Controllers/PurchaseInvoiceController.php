@@ -41,7 +41,7 @@ class PurchaseInvoiceController extends Controller
             });
 
         $deletequery = PurchaseInvoice::orderBy('purchase_invoices.PurchaseDate', 'desc')
-            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName')
+            ->select('purchase_invoices.*', 'suppliers.SupplierCode', 'suppliers.SupplierName', 'item_arrivals.PlateNo')
             ->join('suppliers', 'purchase_invoices.SupplierCode', '=', 'suppliers.SupplierCode')
             ->join('item_arrivals', 'item_arrivals.ArrivalCode', '=', 'purchase_invoices.ArrivalCode')
             ->where(function($delquery){
