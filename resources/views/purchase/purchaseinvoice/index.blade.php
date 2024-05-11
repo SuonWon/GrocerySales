@@ -134,11 +134,7 @@
                                         <td>{{$purchaseinvoice->PaidDate}}</td>
                                         <td>{{$purchaseinvoice->SupplierName}}</td>
                                         <td>
-                                             @foreach ($arrivals as $arrival)
-                                                  @if ($purchaseinvoice->ArrivalCode == $arrival->ArrivalCode)
-                                                       {{$arrival->PlateNo}}
-                                                  @endif
-                                             @endforeach
+                                             {{$purchaseinvoice->PlateNo}}
                                         </td>
                                         <td class="text-end">{{number_format($purchaseinvoice->SubTotal)}}</td>
                                         {{-- <td>{{$purchaseinvoice->LaborCharges}}</td>
@@ -214,7 +210,7 @@
                                                   <th class="column-sticky first-column-th">Invoice No</th>
                                                   <th>Purchase Date</th>
                                                   <th>Supplier Name</th>
-                                                  <th>Arrival Code</th>
+                                                  <th>Plante No</th>
                                                   <th>Sub Total</th>
                                                   <th>Shipping Charges</th>
                                                   <th>Labor Charges</th>
@@ -258,7 +254,7 @@
                                                        </td> --}}
                                                        <td>{{$deletepurchaseinvoice->PurchaseDate}}</td>
                                                        <td>{{$deletepurchaseinvoice->SupplierName}}</td>
-                                                       <td>{{$deletepurchaseinvoice->ArrivalCode}}</td>
+                                                       <td>{{$deletepurchaseinvoice->PlateNo}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->SubTotal)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->ShippingCharges)}}</td>
                                                        <td class="text-end">{{number_format($deletepurchaseinvoice->LaborCharges)}}</td>
